@@ -1,3 +1,4 @@
+import SearchBar from "../search/SearchBar";
 import { Box, Paper } from "@mui/material";
 
 import Header from "./Header";
@@ -25,13 +26,13 @@ export default function AppShell() {
                 <Header />
             </Box>
 
-            <Paper
-                square
-                elevation={1}
-                sx={{
-                    gridColumn: "1 / 4"
-                }}
-            />
+            <Box
+    sx={{
+        gridColumn: "1 / 4"
+    }}
+>
+    <SearchBar />
+</Box>
 
             <Paper
                 square
