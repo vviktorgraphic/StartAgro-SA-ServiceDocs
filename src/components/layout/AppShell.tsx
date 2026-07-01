@@ -1,7 +1,12 @@
 import { Box, Paper } from "@mui/material";
 
+import Header from "./Header";
+import StatusBar from "./StatusBar";
+
 export default function AppShell() {
+
     return (
+
         <Box
             sx={{
                 display: "grid",
@@ -11,16 +16,15 @@ export default function AppShell() {
                 bgcolor: "background.default"
             }}
         >
-            {/* Header */}
-            <Paper
-                square
-                elevation={2}
+
+            <Box
                 sx={{
                     gridColumn: "1 / 4"
                 }}
-            />
+            >
+                <Header />
+            </Box>
 
-            {/* Search */}
             <Paper
                 square
                 elevation={1}
@@ -29,7 +33,6 @@ export default function AppShell() {
                 }}
             />
 
-            {/* Sidebar */}
             <Paper
                 square
                 sx={{
@@ -38,7 +41,6 @@ export default function AppShell() {
                 }}
             />
 
-            {/* Document list */}
             <Paper
                 square
                 sx={{
@@ -47,17 +49,18 @@ export default function AppShell() {
                 }}
             />
 
-            {/* Preview */}
             <Paper square />
 
-            {/* Statusbar */}
-            <Paper
-                square
-                elevation={2}
+            <Box
                 sx={{
                     gridColumn: "1 / 4"
                 }}
-            />
+            >
+                <StatusBar />
+            </Box>
+
         </Box>
+
     );
+
 }
