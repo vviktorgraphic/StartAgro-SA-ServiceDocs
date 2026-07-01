@@ -1,3 +1,4 @@
+import Sidebar from "../sidebar/Sidebar";
 import SearchBar from "../search/SearchBar";
 import { Box, Paper } from "@mui/material";
 
@@ -48,7 +49,9 @@ export default function AppShell() {
                     borderRight: 1,
                     borderColor: "divider"
                 }}
-            />
+            >
+                <Sidebar />
+            </Paper>
 
             <Paper square />
 
