@@ -1,3 +1,5 @@
+import { ServiceVisit } from "./ServiceVisit";
+
 export interface WorkOrder {
 
     // Scanner tölti ki
@@ -31,5 +33,9 @@ export interface WorkOrder {
     reportedIssue?: string;
 
     completedWork?: string;
+
+    // Kiszállások
+
+    serviceVisits: ServiceVisit[];
 
 }

@@ -1,4 +1,7 @@
+import { PdfTextItem } from "../models/PdfTextItem";
+import { ServiceVisit } from "../models/ServiceVisit";
 import { fieldExtractor } from "./FieldExtractor";
+import { serviceVisitParser } from "./ServiceVisitParser";
 
 export interface ParsedPdfData {
 
@@ -18,63 +21,87 @@ export interface ParsedPdfData {
 
     completedWork?: string;
 
+    serviceVisits: ServiceVisit[];
+
 }
 
 export class PdfParser {
 
-    public parse(text: string): ParsedPdfData {
+    public parse(
+        pages: string[],
+        textItems: PdfTextItem[]
+    ): ParsedPdfData {
+
+        const firstPage =
+            pages[0] ?? "";
+
+        const serviceVisits =
+            serviceVisitParser.parse(textItems);
 
         return {
 
             partnerName:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Partner neve"
                 ) ?? undefined,
 
             taxNumber:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Adószám"
                 ) ?? undefined,
 
             contactName:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Kapcsolattartó"
                 ) ?? undefined,
+            email:
+                fieldExtractor.extract(
+                    firstPage,
+                    "Email"
+                ) ?? undefined,
+
+            phone:
+                fieldExtractor.extract(
+                    firstPage,
+                    "Telefon"
+                ) ?? undefined,    
 
             machineType:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Gép típusa"
                 ) ?? undefined,
 
             serialNumber:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Alvázszám"
                 ) ?? undefined,
 
             workType:
                 fieldExtractor.extract(
-                    text,
+                    firstPage,
                     "Munka típusa"
                 ) ?? undefined,
 
             reportedIssue:
                 fieldExtractor.extractMultiLine(
-                    text,
+                    firstPage,
                     "Bejelentett hiba részletei",
                     "Elvégzett munka részletes leírása"
                 ) ?? undefined,
 
             completedWork:
                 fieldExtractor.extractMultiLine(
-                    text,
+                    firstPage,
                     "Elvégzett munka részletes leírása",
-                    "Felhasznált anyagok"
-                ) ?? undefined
+                    "Fotó"
+                ) ?? undefined,
+
+            serviceVisits
 
         };
 

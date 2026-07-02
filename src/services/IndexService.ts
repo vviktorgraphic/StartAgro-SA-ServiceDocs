@@ -1,8 +1,8 @@
 import { WorkOrder } from "../models/WorkOrder";
 import { tauriService } from "../tauri/TauriService";
 import { matcherService } from "./MatcherService";
-import { pdfService } from "./PdfService";
 import { pdfParser } from "./PdfParser";
+import { pdfService } from "./PdfService";
 
 export class IndexService {
 
@@ -10,47 +10,58 @@ export class IndexService {
         folder: string
     ): Promise<WorkOrder[]> {
 
-        const result = await tauriService.scanDocuments(folder);
+        const result =
+            await tauriService.scanDocuments(folder);
 
         console.log(
             `PDF: ${result.pdf_count}, JPG: ${result.image_count}`
         );
 
-        const workOrders = matcherService.match(
-            result.pdf_files,
-            result.image_files
-        );
+        const workOrders =
+            matcherService.match(
+                result.pdf_files,
+                result.image_files
+            );
 
         console.log(
             `Felismert munkalapok: ${workOrders.length}`
         );
-            for (const workOrder of workOrders) {
 
-        try {
+        for (const workOrder of workOrders) {
 
-            const text =
-                await pdfService.readAllText(
-                    workOrder.pdfFile
+            try {
+
+                const pages =
+                    await pdfService.readPages(
+                        workOrder.pdfFile
+                    );
+
+                const textItems =
+                    await pdfService.readTextItems(
+                        workOrder.pdfFile
+                    );
+
+                const parsed =
+                    pdfParser.parse(
+                        pages,
+                        textItems
+                    );
+
+                Object.assign(
+                    workOrder,
+                    parsed
                 );
 
-            const parsed =
-                pdfParser.parse(text);
+            } catch (error) {
 
-            Object.assign(
-                workOrder,
-                parsed
-            );
+                console.error(
+                    `PDF feldolgozási hiba: ${workOrder.pdfFile}`,
+                    error
+                );
 
-        } catch (error) {
-
-            console.error(
-                `PDF feldolgozási hiba: ${workOrder.pdfFile}`,
-                error
-            );
+            }
 
         }
-
-    }
 
         return workOrders;
 
@@ -58,4 +69,5 @@ export class IndexService {
 
 }
 
-export const indexService = new IndexService();
+export const indexService =
+    new IndexService();

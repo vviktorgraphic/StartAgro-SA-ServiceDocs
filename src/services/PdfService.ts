@@ -1,7 +1,3 @@
-import { getDocument, type TextItem } from "pdfjs-dist";
-
-import { tauriService } from "../tauri/TauriService";
-
 import {
     getDocument,
     GlobalWorkerOptions,
@@ -10,10 +6,10 @@ import {
 
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
+import { PdfTextItem } from "../models/PdfTextItem";
 import { tauriService } from "../tauri/TauriService";
 
 GlobalWorkerOptions.workerSrc = pdfWorker;
-
 
 export class PdfService {
 
@@ -75,6 +71,44 @@ export class PdfService {
         }
 
         return pages;
+
+    }
+
+    public async readTextItems(
+        pdfPath: string
+    ): Promise<PdfTextItem[]> {
+
+        const pdf = await this.open(pdfPath);
+
+        const items: PdfTextItem[] = [];
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+
+            const page = await pdf.getPage(pageNumber);
+
+            const content = await page.getTextContent();
+
+            for (const item of content.items) {
+
+                const textItem = item as TextItem;
+
+                items.push({
+
+                    text: textItem.str,
+
+                    x: textItem.transform[4],
+
+                    y: textItem.transform[5],
+
+                    page: pageNumber
+
+                });
+
+            }
+
+        }
+
+        return items;
 
     }
 

@@ -5,6 +5,7 @@ import {
 } from "@mui/material";
 
 import { useAppContext } from "../../context/AppContext";
+import ServiceVisitTable from "./ServiceVisitTable";
 
 export default function PreviewPanel() {
 
@@ -71,72 +72,133 @@ export default function PreviewPanel() {
             <Box
                 sx={{
                     flex: 1,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    overflow: "auto",
                     p: 2
                 }}
             >
 
                 {selectedWorkOrder ? (
 
-                    <Typography
-                        color="text.secondary"
-                        align="center"
-                    >
+                    <>
 
-                        PDF előnézet
-                        <br />
-                        <Divider />
+                        <Typography
+                            color="text.secondary"
+                            align="center"
+                        >
 
-<Box
-    sx={{
-        p: 2,
-        display: "flex",
-        flexDirection: "column",
-        gap: 1
-    }}
->
+                            PDF előnézet
+                            <br />
+                            <br />
+                            (a következő sprintben)
 
-    <Typography variant="subtitle2">
+                        </Typography>
 
-        PDF adatok
+                        <Divider sx={{ my: 2 }} />
 
-    </Typography>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 1
+                            }}
+                        >
 
-    <Typography>
+                            <Typography variant="subtitle2">
 
-        <strong>Partner:</strong>{" "}
-        {selectedWorkOrder?.partnerName ?? "-"}
+                                PDF adatok
 
-    </Typography>
+                            </Typography>
 
-    <Typography>
+                            <Typography>
 
-        <strong>Adószám:</strong>{" "}
-        {selectedWorkOrder?.taxNumber ?? "-"}
+                                <strong>Partner:</strong>{" "}
+                                {selectedWorkOrder.partnerName ?? "-"}
 
-    </Typography>
+                            </Typography>
 
-    <Typography>
+                            <Typography>
 
-        <strong>Gép:</strong>{" "}
-        {selectedWorkOrder?.machineType ?? "-"}
+                                <strong>Adószám:</strong>{" "}
+                                {selectedWorkOrder.taxNumber ?? "-"}
 
-    </Typography>
+                            </Typography>
 
-    <Typography>
+                            <Typography>
 
-        <strong>Alvázszám:</strong>{" "}
-        {selectedWorkOrder?.serialNumber ?? "-"}
+                                <strong>Kapcsolattartó:</strong>{" "}
+                                {selectedWorkOrder.contactName ?? "-"}
 
-    </Typography>
+                            </Typography>
 
-</Box>
-                        <br />
-                        (a következő sprintben)
+                            <Typography>
 
-                    </Typography>
+                                <strong>Telefon:</strong>{" "}
+                                {selectedWorkOrder.phone ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>E-mail:</strong>{" "}
+                                {selectedWorkOrder.email ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Gép:</strong>{" "}
+                                {selectedWorkOrder.machineType ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Alvázszám:</strong>{" "}
+                                {selectedWorkOrder.serialNumber ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Munka típusa:</strong>{" "}
+                                {selectedWorkOrder.workType ?? "-"}
+
+                            </Typography>
+
+                            <Typography sx={{ whiteSpace: "pre-wrap" }}>
+
+                                <strong>Bejelentett hiba:</strong>
+                                {"\n"}
+                                {selectedWorkOrder.reportedIssue ?? "-"}
+
+                            </Typography>
+
+                            <Typography sx={{ whiteSpace: "pre-wrap" }}>
+
+                                <strong>Elvégzett munka:</strong>
+                                {"\n"}
+                                {selectedWorkOrder.completedWork ?? "-"}
+
+                            </Typography>
+
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ mt: 2 }}
+                            >
+
+                                Kiszállások
+
+                            </Typography>
+
+                            <ServiceVisitTable
+                                serviceVisits={
+                                    selectedWorkOrder.serviceVisits
+                                }
+                            />
+
+                        </Box>
+
+                    </>
 
                 ) : (
 

@@ -1,12 +1,12 @@
-import { DiscoveredWorkOrder } from "../models/DiscoveredWorkOrder";
+import { WorkOrder } from "../models/WorkOrder";
 import { nameParser } from "./NameParser";
 
 export class MatcherService {
 
     public match(
-            pdfFiles: string[],
-            imageFiles: string[]
-        ): WorkOrder[] {
+        pdfFiles: string[],
+        imageFiles: string[]
+    ): WorkOrder[] {
 
         const workOrders: WorkOrder[] = [];
 
@@ -41,7 +41,9 @@ export class MatcherService {
 
                 pdfFile: pdf,
 
-                imageFiles: images
+                imageFiles: images,
+
+                serviceVisits: []
 
             });
 
