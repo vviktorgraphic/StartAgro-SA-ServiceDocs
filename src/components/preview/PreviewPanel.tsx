@@ -4,7 +4,11 @@ import {
     Typography
 } from "@mui/material";
 
+import { useAppContext } from "../../context/AppContext";
+
 export default function PreviewPanel() {
+
+    const { selectedWorkOrder } = useAppContext();
 
     return (
 
@@ -39,19 +43,24 @@ export default function PreviewPanel() {
 
                 <Typography>
 
-                    <strong>Munkalap:</strong> -
+                    <strong>Munkalap:</strong>{" "}
+                    {selectedWorkOrder?.workOrderNumber ?? "-"}
 
                 </Typography>
 
                 <Typography>
 
-                    <strong>Partner:</strong> -
+                    <strong>Szervizcsapat:</strong>{" "}
+                    {selectedWorkOrder?.prefix ?? "-"}
 
                 </Typography>
 
                 <Typography>
 
-                    <strong>Szervizcsapat:</strong> -
+                    <strong>PDF:</strong>{" "}
+                    {selectedWorkOrder
+                        ? selectedWorkOrder.pdfFile.split(/[\\/]/).pop()
+                        : "-"}
 
                 </Typography>
 
@@ -64,15 +73,34 @@ export default function PreviewPanel() {
                     flex: 1,
                     display: "flex",
                     justifyContent: "center",
-                    alignItems: "center"
+                    alignItems: "center",
+                    p: 2
                 }}
             >
 
-                <Typography color="text.secondary">
+                {selectedWorkOrder ? (
 
-                    Nincs kiválasztott munkalap.
+                    <Typography
+                        color="text.secondary"
+                        align="center"
+                    >
 
-                </Typography>
+                        PDF előnézet
+                        <br />
+                        <br />
+                        (a következő sprintben)
+
+                    </Typography>
+
+                ) : (
+
+                    <Typography color="text.secondary">
+
+                        Nincs kiválasztott munkalap.
+
+                    </Typography>
+
+                )}
 
             </Box>
 
@@ -95,7 +123,9 @@ export default function PreviewPanel() {
                     color="text.secondary"
                 >
 
-                    Nincs kapcsolódó fénykép.
+                    {selectedWorkOrder
+                        ? `${selectedWorkOrder.imageFiles.length} db kép`
+                        : "Nincs kapcsolódó fénykép."}
 
                 </Typography>
 

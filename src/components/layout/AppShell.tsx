@@ -1,5 +1,5 @@
 import PreviewPanel from "../preview/PreviewPanel";
-import DocumentList from "../document/DocumentList";
+import WorkOrderList from "../workorder/WorkOrderList";
 import Sidebar from "../sidebar/Sidebar";
 import SearchBar from "../search/SearchBar";
 import { Box, Paper } from "@mui/material";
@@ -57,7 +57,7 @@ export default function AppShell() {
                     borderColor: "divider"
                 }}
             >
-                <DocumentList />
+                <WorkOrderList />
             </Paper>
 
 

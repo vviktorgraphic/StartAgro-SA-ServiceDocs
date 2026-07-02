@@ -8,20 +8,32 @@ import {
 
 import { dialogService } from "../../services/DialogService";
 import { indexService } from "../../services/IndexService";
+import { useAppContext } from "../../context/AppContext";
 
 export default function Header() {
+
+    const {
+        setDocumentsFolder,
+        setWorkOrders
+    } = useAppContext();
 
     async function handleSelectFolder() {
 
         try {
 
-            const folder = await dialogService.selectDocumentsFolder();
+            const folder =
+                await dialogService.selectDocumentsFolder();
 
             if (!folder) {
                 return;
             }
 
-            await indexService.run(folder);
+            const workOrders =
+                await indexService.run(folder);
+
+            setDocumentsFolder(folder);
+
+            setWorkOrders(workOrders);
 
         } catch (err) {
 
@@ -60,15 +72,11 @@ export default function Header() {
                 </Button>
 
                 <Button color="inherit">
-
                     🔄 Mappa indexelése
-
                 </Button>
 
                 <Button color="inherit">
-
                     ⚙
-
                 </Button>
 
             </Toolbar>

@@ -1,9 +1,12 @@
+import { DiscoveredWorkOrder } from "../models/DiscoveredWorkOrder";
 import { tauriService } from "../tauri/TauriService";
-import { nameParser } from "./NameParser";
+import { matcherService } from "./MatcherService";
 
 export class IndexService {
 
-    public async run(folder: string): Promise<void> {
+    public async run(
+        folder: string
+    ): Promise<DiscoveredWorkOrder[]> {
 
         const result = await tauriService.scanDocuments(folder);
 
@@ -11,29 +14,16 @@ export class IndexService {
             `PDF: ${result.pdf_count}, JPG: ${result.image_count}`
         );
 
-        for (const filePath of result.pdf_files) {
+        const workOrders = matcherService.match(
+            result.pdf_files,
+            result.image_files
+        );
 
-            const fileName =
-                filePath.split(/[\\/]/).pop() ?? filePath;
+        console.log(
+            `Felismert munkalapok: ${workOrders.length}`
+        );
 
-            const parsed =
-                nameParser.parse(fileName);
-
-            if (parsed) {
-
-                console.log(
-                    `✓ ${parsed.workOrderNumber}`
-                );
-
-            } else {
-
-                console.warn(
-                    `❌ Ismeretlen fájlnév: ${fileName}`
-                );
-
-            }
-
-        }
+        return workOrders;
 
     }
 
