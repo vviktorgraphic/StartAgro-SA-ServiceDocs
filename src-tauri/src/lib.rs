@@ -4,12 +4,31 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
+#[derive(serde::Serialize)]
+struct ScanResult {
+    pdf_count: usize,
+    image_count: usize,
+}
+
+#[tauri::command]
+fn scan_documents(folder: String) -> ScanResult {
+    println!("Indexelés indult: {}", folder);
+
+    ScanResult {
+        pdf_count: 0,
+        image_count: 0,
+    }
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            scan_documents
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
