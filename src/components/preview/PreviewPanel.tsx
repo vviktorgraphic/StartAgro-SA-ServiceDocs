@@ -87,6 +87,52 @@ export default function PreviewPanel() {
 
                         PDF előnézet
                         <br />
+                        <Divider />
+
+<Box
+    sx={{
+        p: 2,
+        display: "flex",
+        flexDirection: "column",
+        gap: 1
+    }}
+>
+
+    <Typography variant="subtitle2">
+
+        PDF adatok
+
+    </Typography>
+
+    <Typography>
+
+        <strong>Partner:</strong>{" "}
+        {selectedWorkOrder?.partnerName ?? "-"}
+
+    </Typography>
+
+    <Typography>
+
+        <strong>Adószám:</strong>{" "}
+        {selectedWorkOrder?.taxNumber ?? "-"}
+
+    </Typography>
+
+    <Typography>
+
+        <strong>Gép:</strong>{" "}
+        {selectedWorkOrder?.machineType ?? "-"}
+
+    </Typography>
+
+    <Typography>
+
+        <strong>Alvázszám:</strong>{" "}
+        {selectedWorkOrder?.serialNumber ?? "-"}
+
+    </Typography>
+
+</Box>
                         <br />
                         (a következő sprintben)
 
