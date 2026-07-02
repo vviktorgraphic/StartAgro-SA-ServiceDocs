@@ -4,11 +4,11 @@ import { nameParser } from "./NameParser";
 export class MatcherService {
 
     public match(
-        pdfFiles: string[],
-        imageFiles: string[]
-    ): DiscoveredWorkOrder[] {
+            pdfFiles: string[],
+            imageFiles: string[]
+        ): WorkOrder[] {
 
-        const workOrders: DiscoveredWorkOrder[] = [];
+        const workOrders: WorkOrder[] = [];
 
         for (const pdf of pdfFiles) {
 

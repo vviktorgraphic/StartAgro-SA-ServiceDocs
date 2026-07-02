@@ -1,4 +1,4 @@
-import { DiscoveredWorkOrder } from "../models/DiscoveredWorkOrder";
+import { WorkOrder } from "../models/WorkOrder";
 import { tauriService } from "../tauri/TauriService";
 import { matcherService } from "./MatcherService";
 
@@ -6,7 +6,7 @@ export class IndexService {
 
     public async run(
         folder: string
-    ): Promise<DiscoveredWorkOrder[]> {
+    ): Promise<WorkOrder[]> {
 
         const result = await tauriService.scanDocuments(folder);
 

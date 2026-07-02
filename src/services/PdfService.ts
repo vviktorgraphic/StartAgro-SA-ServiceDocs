@@ -1,4 +1,4 @@
-import { getDocument } from "pdfjs-dist";
+import { getDocument, type TextItem } from "pdfjs-dist";
 
 import { tauriService } from "../tauri/TauriService";
 
@@ -32,14 +32,50 @@ export class PdfService {
         const content = await page.getTextContent();
 
         const text = content.items
-            .map((item: any) => item.str ?? "")
+            .map(item => (item as TextItem).str)
             .join("\n");
 
         return text;
 
     }
 
+    public async readPages(
+        pdfPath: string
+    ): Promise<string[]> {
+
+        const pdf = await this.open(pdfPath);
+
+        const pages: string[] = [];
+
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+
+            const page = await pdf.getPage(pageNumber);
+
+            const content = await page.getTextContent();
+
+            const text = content.items
+                .map(item => (item as TextItem).str)
+                .join("\n");
+
+            pages.push(text);
+
+        }
+
+        return pages;
+
+    }
+
+    public async readAllText(
+        pdfPath: string
+    ): Promise<string> {
+
+        const pages =
+            await this.readPages(pdfPath);
+
+        return pages.join("\n\n");
+
+    }
+
 }
 
 export const pdfService = new PdfService();
-

@@ -5,21 +5,21 @@ import {
     ReactNode
 } from "react";
 
-import { DiscoveredWorkOrder } from "../models/DiscoveredWorkOrder";
+import { WorkOrder } from "../models/WorkOrder";
 
 interface AppContextType {
 
     documentsFolder: string | null;
     setDocumentsFolder: (folder: string | null) => void;
 
-    workOrders: DiscoveredWorkOrder[];
+    workOrders: WorkOrder[];
     setWorkOrders: (
-        workOrders: DiscoveredWorkOrder[]
+        workOrders: WorkOrder[]
     ) => void;
 
-    selectedWorkOrder: DiscoveredWorkOrder | null;
+    selectedWorkOrder: WorkOrder | null;
     setSelectedWorkOrder: (
-        workOrder: DiscoveredWorkOrder | null
+        workOrder: WorkOrder | null
     ) => void;
 
 }
@@ -37,10 +37,10 @@ export function AppProvider({
         useState<string | null>(null);
 
     const [workOrders, setWorkOrders] =
-        useState<DiscoveredWorkOrder[]>([]);
+        useState<WorkOrder[]>([]);
 
     const [selectedWorkOrder, setSelectedWorkOrder] =
-        useState<DiscoveredWorkOrder | null>(null);
+        useState<WorkOrder | null>(null);
 
     return (
 
