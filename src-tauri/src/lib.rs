@@ -1,4 +1,5 @@
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
+use std::fs;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
@@ -8,16 +9,72 @@ fn greet(name: &str) -> String {
 struct ScanResult {
     pdf_count: usize,
     image_count: usize,
+    pdf_files: Vec<String>,
+    image_files: Vec<String>,
 }
 
 #[tauri::command]
 fn scan_documents(folder: String) -> ScanResult {
+
     println!("Indexelés indult: {}", folder);
 
-    ScanResult {
-        pdf_count: 0,
-        image_count: 0,
+    let mut pdf_count = 0;
+    let mut image_count = 0;
+
+    let mut pdf_files: Vec<String> = Vec::new();
+    let mut image_files: Vec<String> = Vec::new();
+
+    if let Ok(entries) = fs::read_dir(folder) {
+
+        for entry in entries.flatten() {
+
+            let path = entry.path();
+
+            if let Some(ext) = path.extension() {
+
+                let ext = ext.to_string_lossy().to_lowercase();
+
+                match ext.as_str() {
+
+                    "pdf" => {
+
+                        pdf_count += 1;
+
+                        pdf_files.push(
+                            path.to_string_lossy().to_string()
+                        );
+
+                    }
+
+                    "jpg" | "jpeg" => {
+
+                        image_count += 1;
+
+                        image_files.push(
+                            path.to_string_lossy().to_string()
+                        );
+
+                    }
+
+                    _ => {}
+
+                }
+
+            }
+
+        }
+
     }
+
+    ScanResult {
+
+        pdf_count,
+        image_count,
+        pdf_files,
+        image_files,
+
+    }
+
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]

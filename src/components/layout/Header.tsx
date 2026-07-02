@@ -7,29 +7,29 @@ import {
 } from "@mui/material";
 
 import { dialogService } from "../../services/DialogService";
-import { useAppContext } from "../../context/AppContext";
+import { indexService } from "../../services/IndexService";
 
 export default function Header() {
 
-    const { setDocumentsFolder } = useAppContext();
+    async function handleSelectFolder() {
 
-async function handleSelectFolder() {
+        try {
 
-    try {
+            const folder = await dialogService.selectDocumentsFolder();
 
-        const folder = await dialogService.selectDocumentsFolder();
+            if (!folder) {
+                return;
+            }
 
-        if (folder) {
-            setDocumentsFolder(folder);
+            await indexService.run(folder);
+
+        } catch (err) {
+
+            console.error("Dialog hiba:", err);
+
         }
 
-    } catch (err) {
-
-        console.error("Dialog hiba:", err);
-
     }
-
-}
 
     return (
 
@@ -43,8 +43,9 @@ async function handleSelectFolder() {
 
                 <Typography
                     variant="h6"
-                    sx={{ fontWeight: 600 }}
-                    onClick={() => console.log("Cím kattintva")}
+                    sx={{
+                        fontWeight: 600
+                    }}
                 >
                     Start Agro – Szerviz Munkalapok
                 </Typography>
