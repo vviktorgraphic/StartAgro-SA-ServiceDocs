@@ -2,6 +2,19 @@ import { getDocument, type TextItem } from "pdfjs-dist";
 
 import { tauriService } from "../tauri/TauriService";
 
+import {
+    getDocument,
+    GlobalWorkerOptions,
+    type TextItem
+} from "pdfjs-dist";
+
+import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+
+import { tauriService } from "../tauri/TauriService";
+
+GlobalWorkerOptions.workerSrc = pdfWorker;
+
+
 export class PdfService {
 
     public async open(pdfPath: string) {

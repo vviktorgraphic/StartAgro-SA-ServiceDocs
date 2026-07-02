@@ -1,6 +1,8 @@
 import { WorkOrder } from "../models/WorkOrder";
 import { tauriService } from "../tauri/TauriService";
 import { matcherService } from "./MatcherService";
+import { pdfService } from "./PdfService";
+import { pdfParser } from "./PdfParser";
 
 export class IndexService {
 
@@ -22,6 +24,33 @@ export class IndexService {
         console.log(
             `Felismert munkalapok: ${workOrders.length}`
         );
+            for (const workOrder of workOrders) {
+
+        try {
+
+            const text =
+                await pdfService.readAllText(
+                    workOrder.pdfFile
+                );
+
+            const parsed =
+                pdfParser.parse(text);
+
+            Object.assign(
+                workOrder,
+                parsed
+            );
+
+        } catch (error) {
+
+            console.error(
+                `PDF feldolgozási hiba: ${workOrder.pdfFile}`,
+                error
+            );
+
+        }
+
+    }
 
         return workOrders;
 
