@@ -1,25 +1,35 @@
 export interface WorkOrder {
 
-    id: string;
-
-    prefix: string;
-
-    serialNumber: string;
+    // Scanner tölti ki
 
     workOrderNumber: string;
 
-    partner: string;
+    prefix: string;
 
-    technician: string;
+    pdfFile: string;
 
-    machineType: string;
+    imageFiles: string[];
 
-    serial: string;
+    // PDF parser tölti ki
 
-    workDate: string;
+    partnerName?: string;
 
-    pdfPath: string;
+    taxNumber?: string;
 
-    images: string[];
+    contactName?: string;
+
+    email?: string;
+
+    phone?: string;
+
+    machineType?: string;
+
+    serialNumber?: string;
+
+    workType?: string;
+
+    reportedIssue?: string;
+
+    completedWork?: string;
 
 }

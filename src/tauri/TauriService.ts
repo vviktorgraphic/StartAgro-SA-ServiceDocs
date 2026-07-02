@@ -21,6 +21,21 @@ class TauriService {
 
     }
 
+    public async readPdfBytes(
+    path: string
+): Promise<Uint8Array> {
+
+    const bytes = await invoke<number[]>(
+        "read_pdf_bytes",
+        {
+            path
+        }
+    );
+
+    return new Uint8Array(bytes);
+
+}
+
 }
 
 export const tauriService = new TauriService();
