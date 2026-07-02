@@ -87,10 +87,7 @@ export default function PreviewPanel() {
                         >
 
                             PDF előnézet
-                            <br />
-                            <br />
-                            (a következő sprintben)
-
+                            
                         </Typography>
 
                         <Divider sx={{ my: 2 }} />

@@ -1,3 +1,4 @@
+import { workOrderRepository } from "../database/WorkOrderRepository";
 import { WorkOrder } from "../models/WorkOrder";
 import { tauriService } from "../tauri/TauriService";
 import { matcherService } from "./MatcherService";
@@ -50,6 +51,10 @@ export class IndexService {
                 Object.assign(
                     workOrder,
                     parsed
+                );
+
+                await workOrderRepository.save(
+                    workOrder
                 );
 
             } catch (error) {
