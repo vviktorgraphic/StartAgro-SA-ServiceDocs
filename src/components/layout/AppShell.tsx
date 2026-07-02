@@ -1,3 +1,5 @@
+import PreviewPanel from "../preview/PreviewPanel";
+import DocumentList from "../document/DocumentList";
 import Sidebar from "../sidebar/Sidebar";
 import SearchBar from "../search/SearchBar";
 import { Box, Paper } from "@mui/material";
@@ -28,36 +30,50 @@ export default function AppShell() {
             </Box>
 
             <Box
-    sx={{
-        gridColumn: "1 / 4"
-    }}
->
-    <SearchBar />
-</Box>
-
-            <Paper
-                square
                 sx={{
-                    borderRight: 1,
-                    borderColor: "divider"
+                    gridColumn: "1 / 4",
+                    gridRow: "2"
                 }}
-            />
+            >
+                <SearchBar />
+            </Box>
 
             <Paper
                 square
                 sx={{
+                    gridRow: "3",
                     borderRight: 1,
                     borderColor: "divider"
                 }}
             >
                 <Sidebar />
             </Paper>
+            
+            <Paper
+                square
+                sx={{
+                    gridRow: "3",
+                    borderRight: 1,
+                    borderColor: "divider"
+                }}
+            >
+                <DocumentList />
+            </Paper>
 
-            <Paper square />
+
+            <Paper
+                square
+                sx={{
+                    gridRow: "3"
+                }}
+            >
+                <PreviewPanel />
+            </Paper>
 
             <Box
                 sx={{
-                    gridColumn: "1 / 4"
+                    gridColumn: "1 / 4",
+                    gridRow: "4"
                 }}
             >
                 <StatusBar />
