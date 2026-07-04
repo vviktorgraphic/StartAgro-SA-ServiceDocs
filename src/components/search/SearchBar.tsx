@@ -15,7 +15,8 @@ export default function SearchBar() {
                 display: "flex",
                 alignItems: "center",
                 height: "100%",
-                px: 2
+                px: 2,
+                bgcolor: "background.paper"
             }}
         >
 

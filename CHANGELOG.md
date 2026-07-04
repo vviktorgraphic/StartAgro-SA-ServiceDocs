@@ -184,9 +184,23 @@ Felhasznalobarat hibauzenet
 
 ---
 
+## v0.16
+
+Sticky header and filter UX cleanup
+
+Sticky fo header
+
+Sticky global keresosav
+
+Kompakt indexelesi allapot a headerben
+
+Duplikalt gyorskereso eltavolitva a szurok kozul
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles futas kozben visszajelzest ad, es a vegen osszesitot mutat.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a globalis keresosav kulon sticky sorban marad.
 
 Kovetkezo cel:
 

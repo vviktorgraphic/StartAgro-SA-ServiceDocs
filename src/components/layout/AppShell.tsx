@@ -17,13 +17,17 @@ export default function AppShell() {
                 gridTemplateColumns: "280px 420px 1fr",
                 gridTemplateRows: "64px 56px 1fr 36px",
                 height: "100vh",
+                overflow: "hidden",
                 bgcolor: "background.default"
             }}
         >
 
             <Box
                 sx={{
-                    gridColumn: "1 / 4"
+                    gridColumn: "1 / 4",
+                    position: "sticky",
+                    top: 0,
+                    zIndex: theme => theme.zIndex.drawer + 2
                 }}
             >
                 <Header />
@@ -32,7 +36,13 @@ export default function AppShell() {
             <Box
                 sx={{
                     gridColumn: "1 / 4",
-                    gridRow: "2"
+                    gridRow: "2",
+                    position: "sticky",
+                    top: 64,
+                    zIndex: theme => theme.zIndex.drawer + 1,
+                    bgcolor: "background.paper",
+                    borderBottom: 1,
+                    borderColor: "divider"
                 }}
             >
                 <SearchBar />

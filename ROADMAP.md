@@ -146,7 +146,19 @@ Hibauzenet UI
 
 ---
 
-## Current Sprint 015
+## Done Sprint 015
+
+Sticky header and filter UX cleanup
+
+Sticky header
+
+Sticky global keresosav
+
+Duplikalt gyorskereso eltavolitasa
+
+---
+
+## Current Sprint 016
 
 SQLite visszaolvasas
 
@@ -158,7 +170,7 @@ React Context frissitese
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 ImageRepository
 
@@ -166,7 +178,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 Gyors kereso
 
@@ -178,7 +190,7 @@ Munkalap
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 PDF Preview fejlesztese
 
@@ -188,13 +200,13 @@ Zoom
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 Beallitasok
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 Export
 
@@ -206,12 +218,12 @@ CSV
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 Performance optimalizalas
 
 ---
 
-## Sprint 022
+## Sprint 023
 
 v1.0 kiadas

@@ -32,12 +32,6 @@ export default function Sidebar() {
             <Divider />
 
             <TextField
-                size="small"
-                label="Gyorskereső"
-                fullWidth
-            />
-
-            <TextField
                 select
                 size="small"
                 label="Szervizcsapat"
