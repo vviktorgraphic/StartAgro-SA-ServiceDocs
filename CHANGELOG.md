@@ -148,9 +148,19 @@ Tauri file src hasznalata kepekhez
 
 ---
 
+## v0.13
+
+Sprint 7 regression fixes
+
+Tallozas csak mappat valaszt
+
+Tauri asset protocol engedelyezve thumbnail kepekhez
+
+---
+
 ## Jelenlegi allapot
 
-Kivalasztott munkalaphoz tartozo fotok thumbnail nezetben lathatok.
+Tallozas nem indit indexelest, a thumbnail kepek asset protocolon toltodnek.
 
 Kovetkezo cel:
 

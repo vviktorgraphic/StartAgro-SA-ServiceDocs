@@ -44,8 +44,6 @@ export default function Header() {
                 return;
             }
 
-            await indexService.run(folder);
-
             setDocumentsFolder(folder);
 
             await refreshWorkOrders();

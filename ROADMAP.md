@@ -114,7 +114,17 @@ Tauri file src thumbnail
 
 ---
 
-## Current Sprint 012
+## Done Sprint 012
+
+Sprint 7 regression fixes
+
+Tallozas viselkedes javitas
+
+Thumbnail asset protocol
+
+---
+
+## Current Sprint 013
 
 SQLite visszaolvasas
 
@@ -126,7 +136,7 @@ React Context frissitese
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 ImageRepository
 
@@ -134,7 +144,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 Gyors kereso
 
@@ -146,7 +156,7 @@ Munkalap
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 PDF Preview fejlesztese
 
@@ -156,13 +166,13 @@ Zoom
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 Beallitasok
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 Export
 
@@ -174,12 +184,12 @@ CSV
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 Performance optimalizalas
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 v1.0 kiadas
