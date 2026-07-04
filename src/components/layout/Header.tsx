@@ -14,10 +14,24 @@ import { loadWorkOrdersService } from "../../services/LoadWorkOrdersService";
 export default function Header() {
 
     const {
+        documentsFolder,
         setDocumentsFolder,
         setWorkOrders,
         setSelectedWorkOrder
     } = useAppContext();
+
+    async function refreshWorkOrders() {
+
+        const workOrders =
+            await loadWorkOrdersService.loadAll();
+
+        setWorkOrders(workOrders);
+
+        setSelectedWorkOrder(
+            workOrders[0] ?? null
+        );
+
+    }
 
     async function handleSelectFolder() {
 
@@ -32,25 +46,37 @@ export default function Header() {
 
             await indexService.run(folder);
 
-            const workOrders =
-                await loadWorkOrdersService.loadAll();
-
             setDocumentsFolder(folder);
 
-            setWorkOrders(workOrders);
-
-            if (workOrders.length > 0) {
-
-                setSelectedWorkOrder(
-                    workOrders[0]
-                );
-
-            }
+            await refreshWorkOrders();
 
         } catch (err) {
 
             console.error(
                 "Dialog hiba:",
+                err
+            );
+
+        }
+
+    }
+
+    async function handleIndexFolder() {
+
+        try {
+
+            if (!documentsFolder) {
+                return;
+            }
+
+            await indexService.run(documentsFolder);
+
+            await refreshWorkOrders();
+
+        } catch (err) {
+
+            console.error(
+                "Indexeles hiba:",
                 err
             );
 
@@ -83,10 +109,13 @@ export default function Header() {
                     color="inherit"
                     onClick={handleSelectFolder}
                 >
-                    📂 Dokumentummappa
+                    Tallózás
                 </Button>
 
-                <Button color="inherit">
+                <Button
+                    color="inherit"
+                    onClick={handleIndexFolder}
+                >
                     🔄 Mappa indexelése
                 </Button>
 

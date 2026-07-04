@@ -94,7 +94,17 @@ Image file paths persisted
 
 ---
 
-## Current Sprint 010
+## Done Sprint 010
+
+UI refresh and browse label fix
+
+Indexeles utan lista frissites
+
+Tallozas cimke
+
+---
+
+## Current Sprint 011
 
 SQLite visszaolvasas
 
@@ -106,7 +116,7 @@ React Context frissitese
 
 ---
 
-## Sprint 011
+## Sprint 012
 
 ImageRepository
 
@@ -114,7 +124,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 012
+## Sprint 013
 
 Gyors kereso
 
@@ -126,7 +136,7 @@ Munkalap
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 PDF Preview fejlesztese
 
@@ -136,13 +146,13 @@ Zoom
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 Beallitasok
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 Export
 
@@ -154,12 +164,12 @@ CSV
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 Performance optimalizalas
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 v1.0 kiadas

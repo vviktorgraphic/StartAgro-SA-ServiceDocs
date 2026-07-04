@@ -128,9 +128,19 @@ IndexService concise counters
 
 ---
 
+## v0.11
+
+UI refresh fix
+
+Indexeles utan lista ujratoltese
+
+Tallozas gomb cimke
+
+---
+
 ## Jelenlegi allapot
 
-Incremental indexing mirrors PDFs and image matches from the selected folder.
+Indexeles utan a lathato munkalap lista frissul.
 
 Kovetkezo cel:
 
