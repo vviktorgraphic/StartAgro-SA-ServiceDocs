@@ -29,7 +29,10 @@ class LoadWorkOrdersService {
 
                 pdfFile: record.pdfFile,
 
-                imageFiles: [],
+                imageFiles:
+                    this.parseImageFiles(
+                        record.imageFiles
+                    ),
 
                 partnerName: record.partnerName,
 
@@ -58,6 +61,29 @@ class LoadWorkOrdersService {
         }
 
         return workOrders;
+
+    }
+
+    private parseImageFiles(
+        imageFiles: string
+    ): string[] {
+
+        try {
+
+            const parsed =
+                JSON.parse(
+                    imageFiles
+                );
+
+            return Array.isArray(parsed)
+                ? parsed.filter(item => typeof item === "string")
+                : [];
+
+        } catch {
+
+            return [];
+
+        }
 
     }
 

@@ -82,7 +82,19 @@ MigrationService cleanup
 
 ---
 
-## Current Sprint 009
+## Done Sprint 009
+
+Incremental indexing regression fixes
+
+PDF worker bundled
+
+Path normalized mirror compare
+
+Image file paths persisted
+
+---
+
+## Current Sprint 010
 
 SQLite visszaolvasas
 
@@ -94,7 +106,7 @@ React Context frissitese
 
 ---
 
-## Sprint 010
+## Sprint 011
 
 ImageRepository
 
@@ -102,7 +114,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 011
+## Sprint 012
 
 Gyors kereso
 
@@ -114,7 +126,7 @@ Munkalap
 
 ---
 
-## Sprint 012
+## Sprint 013
 
 PDF Preview fejlesztese
 
@@ -124,13 +136,13 @@ Zoom
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 Beallitasok
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 Export
 
@@ -142,12 +154,12 @@ CSV
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 Performance optimalizalas
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 v1.0 kiadas

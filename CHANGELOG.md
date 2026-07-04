@@ -114,9 +114,23 @@ MigrationService compatibility cleanup
 
 ---
 
+## v0.10
+
+Incremental indexing regression fixes
+
+PDF worker bundled for Tauri/Vite
+
+Normalized path compare for import mirror
+
+Image file paths saved and loaded
+
+IndexService concise counters
+
+---
+
 ## Jelenlegi allapot
 
-Import metadata csak work_order_imports tablaban van az uj schemaban.
+Incremental indexing mirrors PDFs and image matches from the selected folder.
 
 Kovetkezo cel:
 

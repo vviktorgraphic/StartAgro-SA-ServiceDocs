@@ -9,6 +9,8 @@ export interface WorkOrderRecord {
 
     pdfFile: string;
 
+    imageFiles: string;
+
     partnerName?: string;
 
     taxNumber?: string;
@@ -45,6 +47,7 @@ class WorkOrderRepository {
                 work_order_number,
                 prefix,
                 pdf_file,
+                image_files,
 
                 partner_name,
                 tax_number,
@@ -65,12 +68,12 @@ class WorkOrderRepository {
 
             VALUES (
 
-                $1,$2,$3,
-                $4,$5,$6,$7,$8,
-                $9,$10,
-                $11,
+                $1,$2,$3,$4,
+                $5,$6,$7,$8,$9,
+                $10,$11,
                 $12,
-                $13
+                $13,
+                $14
 
             )
 
@@ -80,6 +83,7 @@ class WorkOrderRepository {
 
                 prefix = excluded.prefix,
                 pdf_file = excluded.pdf_file,
+                image_files = excluded.image_files,
 
                 partner_name = excluded.partner_name,
                 tax_number = excluded.tax_number,
@@ -104,6 +108,10 @@ class WorkOrderRepository {
                 workOrder.prefix,
 
                 workOrder.pdfFile,
+
+                JSON.stringify(
+                    workOrder.imageFiles
+                ),
 
                 workOrder.partnerName ?? null,
 
@@ -173,6 +181,8 @@ class WorkOrderRepository {
 
                 pdf_file AS pdfFile,
 
+                image_files AS imageFiles,
+
                 partner_name AS partnerName,
 
                 tax_number AS taxNumber,
@@ -197,6 +207,33 @@ class WorkOrderRepository {
 
             ORDER BY work_order_number
             `
+
+        );
+
+    }
+
+    public async updateImageFiles(
+        workOrderNumber: string,
+        imageFiles: string[]
+    ): Promise<void> {
+
+        await database.connection.execute(
+
+            `
+            UPDATE work_orders
+            SET image_files = $2
+            WHERE work_order_number = $1
+            `,
+
+            [
+
+                workOrderNumber,
+
+                JSON.stringify(
+                    imageFiles
+                )
+
+            ]
 
         );
 

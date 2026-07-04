@@ -24,6 +24,10 @@ export class IndexService {
             `PDF: ${result.pdf_count}, JPG: ${result.image_count}`
         );
 
+        let parsedCount = 0;
+        let skippedCount = 0;
+        let errorCount = 0;
+
         const workOrders =
             matcherService.match(
                 result.pdf_files,
@@ -47,10 +51,11 @@ export class IndexService {
                 result.pdf_files
             );
 
-        await this.deleteMissingRecords(
-            imports,
-            pdfFileByPath
-        );
+        const deletedCount =
+            await this.deleteMissingRecords(
+                imports,
+                pdfFileByPath
+            );
 
         for (const workOrder of workOrders) {
 
@@ -58,7 +63,9 @@ export class IndexService {
 
                 const pdfFile =
                     pdfFileByPath.get(
-                        workOrder.pdfFile
+                        this.normalizePath(
+                            workOrder.pdfFile
+                        )
                     );
 
                 if (!pdfFile) {
@@ -75,6 +82,13 @@ export class IndexService {
                     workOrderImport,
                     importByPath
                 )) {
+                    skippedCount++;
+
+                    await workOrderRepository.updateImageFiles(
+                        workOrder.workOrderNumber,
+                        workOrder.imageFiles
+                    );
+
                     continue;
                 }
 
@@ -83,7 +97,11 @@ export class IndexService {
                     workOrderImport
                 );
 
+                parsedCount++;
+
             } catch (error) {
+
+                errorCount++;
 
                 console.error(
                     `PDF feldolgozasi hiba: ${workOrder.pdfFile}`,
@@ -93,6 +111,17 @@ export class IndexService {
             }
 
         }
+
+        console.log(
+            [
+                `Index scanned PDFs: ${result.pdf_count}`,
+                `images: ${result.image_count}`,
+                `parsed: ${parsedCount}`,
+                `skipped: ${skippedCount}`,
+                `deleted: ${deletedCount}`,
+                `errors: ${errorCount}`
+            ].join(", ")
+        );
 
         return workOrders;
 
@@ -104,7 +133,9 @@ export class IndexService {
 
         return new Map(
             imports.map(workOrderImport => [
-                workOrderImport.pdfFile,
+                this.normalizePath(
+                    workOrderImport.pdfFile
+                ),
                 workOrderImport
             ])
         );
@@ -117,7 +148,9 @@ export class IndexService {
 
         return new Map(
             pdfFiles.map(pdfFile => [
-                pdfFile.path,
+                this.normalizePath(
+                    pdfFile.path
+                ),
                 pdfFile
             ])
         );
@@ -127,11 +160,17 @@ export class IndexService {
     private async deleteMissingRecords(
         imports: WorkOrderImport[],
         pdfFileByPath: Map<string, PdfFile>
-    ): Promise<void> {
+    ): Promise<number> {
+
+        let deletedCount = 0;
 
         for (const workOrderImport of imports) {
 
-            if (pdfFileByPath.has(workOrderImport.pdfFile)) {
+            if (pdfFileByPath.has(
+                this.normalizePath(
+                    workOrderImport.pdfFile
+                )
+            )) {
                 continue;
             }
 
@@ -143,7 +182,11 @@ export class IndexService {
                 workOrderImport.workOrderNumber
             );
 
+            deletedCount++;
+
         }
+
+        return deletedCount;
 
     }
 
@@ -173,7 +216,9 @@ export class IndexService {
 
         const existing =
             importByPath.get(
-                workOrderImport.pdfFile
+                this.normalizePath(
+                    workOrderImport.pdfFile
+                )
             );
 
         if (!existing) {
@@ -224,6 +269,16 @@ export class IndexService {
         await workOrderImportRepository.save(
             workOrderImport
         );
+
+    }
+
+    private normalizePath(
+        path: string
+    ): string {
+
+        return path
+            .replace(/\\/g, "/")
+            .toLowerCase();
 
     }
 

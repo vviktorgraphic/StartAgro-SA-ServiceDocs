@@ -20,6 +20,43 @@ class MigrationService {
 
         }
 
+        await this.addColumnIfMissing(
+            "work_orders",
+            "image_files",
+            "TEXT NOT NULL DEFAULT '[]'"
+        );
+
+    }
+
+    private async addColumnIfMissing(
+        table: string,
+        column: string,
+        definition: string
+    ): Promise<void> {
+
+        const columns =
+            await database.connection.select<
+                { name: string }[]
+            >(
+                `PRAGMA table_info(${table})`
+            );
+
+        const exists =
+            columns.some(c => c.name === column);
+
+        if (exists) {
+            return;
+        }
+
+        await database.connection.execute(
+
+            `
+            ALTER TABLE ${table}
+            ADD COLUMN ${column} ${definition}
+            `
+
+        );
+
     }
 
 }

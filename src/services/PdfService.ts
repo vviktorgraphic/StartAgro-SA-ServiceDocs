@@ -4,12 +4,12 @@ import {
 } from "pdfjs-dist";
 
 import type { TextItem } from "pdfjs-dist/types/src/display/api";
-import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+import PdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?worker";
 
 import { PdfTextItem } from "../models/PdfTextItem";
 import { tauriService } from "../tauri/TauriService";
 
-GlobalWorkerOptions.workerSrc = pdfWorker;
+GlobalWorkerOptions.workerPort = new PdfWorker();
 
 export class PdfService {
 

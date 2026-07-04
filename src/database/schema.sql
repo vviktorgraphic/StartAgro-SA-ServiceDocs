@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS work_orders (
 
     pdf_file TEXT NOT NULL,
 
+    image_files TEXT NOT NULL DEFAULT '[]',
+
     partner_name TEXT,
     tax_number TEXT,
     contact_name TEXT,
