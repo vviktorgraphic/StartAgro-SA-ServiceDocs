@@ -1,8 +1,8 @@
 # Roadmap
 
-## ✅ Sprint 001
+## Done Sprint 001
 
-Projekt létrehozása
+Projekt letrehozasa
 
 React
 
@@ -12,7 +12,7 @@ Material UI
 
 ---
 
-## ✅ Sprint 002
+## Done Sprint 002
 
 PDF Engine
 
@@ -22,13 +22,13 @@ FieldExtractor
 
 ---
 
-## ✅ Sprint 003
+## Done Sprint 003
 
 ServiceVisit parser
 
 ---
 
-## ✅ Sprint 004
+## Done Sprint 004
 
 SQLite
 
@@ -36,33 +36,55 @@ Migration
 
 Repository
 
-Mentés
+Mentes
 
 ---
 
-## 🔄 Sprint 005
+## Done Sprint 005
 
-SQLite visszaolvasás
+WorkOrderImport infrastruktura
 
-WorkOrderRepository.loadAll()
+WorkOrderImport model
 
-ServiceVisit betöltése
+WorkOrderImportRepository
 
-React Context frissítése
+work_order_imports SQLite tabla
 
 ---
 
-## Sprint 006
+## Current Sprint 006
 
-ImageRepository
+IndexService import metadata atvezetese
 
-Fotók adatbázisban
+Valtozatlan PDF kihagyasa
+
+Torolt PDF eltavolitasa SQLite-bol
 
 ---
 
 ## Sprint 007
 
-Gyors kereső
+SQLite visszaolvasas
+
+WorkOrderRepository.loadAll()
+
+ServiceVisit betoltese
+
+React Context frissitese
+
+---
+
+## Sprint 008
+
+ImageRepository
+
+Fotok adatbazisban
+
+---
+
+## Sprint 009
+
+Gyors kereso
 
 Partner
 
@@ -72,23 +94,23 @@ Munkalap
 
 ---
 
-## Sprint 008
+## Sprint 010
 
-PDF Preview fejlesztése
+PDF Preview fejlesztese
 
-Oldal navigáció
+Oldal navigacio
 
 Zoom
 
 ---
 
-## Sprint 009
+## Sprint 011
 
-Beállítások
+Beallitasok
 
 ---
 
-## Sprint 010
+## Sprint 012
 
 Export
 
@@ -100,12 +122,12 @@ CSV
 
 ---
 
-## Sprint 011
+## Sprint 013
 
-Performance optimalizálás
+Performance optimalizalas
 
 ---
 
-## Sprint 012
+## Sprint 014
 
-v1.0 kiadás
+v1.0 kiadas

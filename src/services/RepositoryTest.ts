@@ -1,5 +1,5 @@
 import { WorkOrder } from "../models/WorkOrder";
-import { workOrderRepository } from "./WorkOrderRepository";
+import { workOrderRepository } from "../database/WorkOrderRepository";
 
 class RepositoryTest {
 

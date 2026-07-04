@@ -1,9 +1,9 @@
 import {
     getDocument,
-    GlobalWorkerOptions,
-    type TextItem
+    GlobalWorkerOptions
 } from "pdfjs-dist";
 
+import type { TextItem } from "pdfjs-dist/types/src/display/api";
 import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 
 import { PdfTextItem } from "../models/PdfTextItem";

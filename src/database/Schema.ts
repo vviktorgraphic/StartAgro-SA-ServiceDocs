@@ -34,6 +34,26 @@ CREATE TABLE IF NOT EXISTS work_orders (
 CREATE INDEX IF NOT EXISTS idx_work_order_number
 ON work_orders(work_order_number);
 
+CREATE TABLE IF NOT EXISTS work_order_imports (
+
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    work_order_number TEXT NOT NULL UNIQUE,
+
+    pdf_file TEXT NOT NULL,
+
+    pdf_last_modified INTEGER NOT NULL,
+
+    pdf_file_size INTEGER NOT NULL
+
+);
+
+CREATE INDEX IF NOT EXISTS idx_work_order_import_number
+ON work_order_imports(work_order_number);
+
+CREATE INDEX IF NOT EXISTS idx_work_order_import_pdf_file
+ON work_order_imports(pdf_file);
+
 CREATE TABLE IF NOT EXISTS service_visits (
 
     id INTEGER PRIMARY KEY AUTOINCREMENT,

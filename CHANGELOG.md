@@ -2,7 +2,7 @@
 
 ## v0.1
 
-Projekt létrehozása
+Projekt letrehozasa
 
 React + Tauri
 
@@ -12,9 +12,9 @@ Material UI
 
 ## v0.2
 
-PDF feldolgozás
+PDF feldolgozas
 
-pdf.js integráció
+pdf.js integracio
 
 FieldExtractor
 
@@ -26,9 +26,9 @@ Parser
 
 ServiceVisit parser
 
-2. oldal feldolgozása
+2. oldal feldolgozasa
 
-Táblázat felismerés
+Tablazat felismeres
 
 ---
 
@@ -52,24 +52,36 @@ ServiceVisitRepository
 
 ## v0.5
 
-SQLite mentés működik
+SQLite mentes mukodik
 
-Foreign key javítva
+Foreign key javitva
 
-Parser hibák javítva
+Parser hibak javitva
 
 Telefon
 
 Email
 
-Service Visit javítás
+Service Visit javitas
 
 ---
 
-## Jelenlegi állapot
+## v0.6
 
-Minden munkalap SQLite-ba menthető.
+WorkOrderImport model
 
-Következő cél:
+WorkOrderImportRepository
 
-SQLite visszaolvasás.
+work_order_imports SQLite tabla
+
+Build hibak javitva
+
+---
+
+## Jelenlegi allapot
+
+Minden munkalap SQLite-ba mentheto.
+
+Kovetkezo cel:
+
+IndexService import metadata atvezetese WorkOrderImportRepository-re.

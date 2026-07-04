@@ -1,5 +1,5 @@
 import { WorkOrder } from "../models/WorkOrder";
-import { PdfFile } from "./TauriService";
+import { PdfFile } from "../tauri/TauriService";
 import { nameParser } from "./NameParser";
 
 export class MatcherService {
