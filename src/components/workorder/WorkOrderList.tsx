@@ -23,7 +23,8 @@ export default function WorkOrderList() {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                height: "100%"
+                height: "100%",
+                minHeight: 0
             }}
         >
 
@@ -43,6 +44,7 @@ export default function WorkOrderList() {
                 sx={{
                     overflow: "auto",
                     flex: 1,
+                    minHeight: 0,
                     p: 0
                 }}
             >

@@ -82,7 +82,8 @@ export default function PreviewPanel() {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                height: "100%"
+                height: "100%",
+                minHeight: 0
             }}
         >
 
@@ -137,6 +138,7 @@ export default function PreviewPanel() {
             <Box
                 sx={{
                     flex: 1,
+                    minHeight: 0,
                     overflow: "auto",
                     p: 2
                 }}

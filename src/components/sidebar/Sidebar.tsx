@@ -17,6 +17,7 @@ export default function Sidebar() {
                 display: "flex",
                 flexDirection: "column",
                 height: "100%",
+                minHeight: 0,
                 p: 2,
                 gap: 2,
                 overflowY: "auto"

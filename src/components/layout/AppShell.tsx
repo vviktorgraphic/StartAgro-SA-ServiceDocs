@@ -15,7 +15,7 @@ export default function AppShell() {
             sx={{
                 display: "grid",
                 gridTemplateColumns: "280px 420px 1fr",
-                gridTemplateRows: "64px 56px 1fr 36px",
+                gridTemplateRows: "64px 56px minmax(0, 1fr) 36px",
                 height: "100vh",
                 overflow: "hidden",
                 bgcolor: "background.default"
@@ -52,6 +52,8 @@ export default function AppShell() {
                 square
                 sx={{
                     gridRow: "3",
+                    minHeight: 0,
+                    overflow: "hidden",
                     borderRight: 1,
                     borderColor: "divider"
                 }}
@@ -63,6 +65,8 @@ export default function AppShell() {
                 square
                 sx={{
                     gridRow: "3",
+                    minHeight: 0,
+                    overflow: "hidden",
                     borderRight: 1,
                     borderColor: "divider"
                 }}
@@ -74,7 +78,9 @@ export default function AppShell() {
             <Paper
                 square
                 sx={{
-                    gridRow: "3"
+                    gridRow: "3",
+                    minHeight: 0,
+                    overflow: "hidden"
                 }}
             >
                 <PreviewPanel />
