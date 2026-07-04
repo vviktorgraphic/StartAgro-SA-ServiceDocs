@@ -158,9 +158,21 @@ Tauri asset protocol engedelyezve thumbnail kepekhez
 
 ---
 
+## v0.14
+
+Fotodokumentacio UI refinement
+
+Egységes thumbnail meretek
+
+Lightbox kepnezo billentyuzet navigacioval
+
+Ures foto allapot megjelenites
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, a thumbnail kepek asset protocolon toltodnek.
+Tallozas nem indit indexelest, a thumbnail kepek asset protocolon toltodnek, es lightboxban megnyithatok.
 
 Kovetkezo cel:
 

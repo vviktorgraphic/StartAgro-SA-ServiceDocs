@@ -124,7 +124,17 @@ Thumbnail asset protocol
 
 ---
 
-## Current Sprint 013
+## Done Sprint 013
+
+Fotodokumentacio UI refinement
+
+Thumbnail lightbox
+
+Ures foto allapot
+
+---
+
+## Current Sprint 014
 
 SQLite visszaolvasas
 
@@ -136,7 +146,7 @@ React Context frissitese
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 ImageRepository
 
@@ -144,7 +154,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 Gyors kereso
 
@@ -156,7 +166,7 @@ Munkalap
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 PDF Preview fejlesztese
 
@@ -166,13 +176,13 @@ Zoom
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 Beallitasok
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 Export
 
@@ -184,12 +194,12 @@ CSV
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 Performance optimalizalas
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 v1.0 kiadas

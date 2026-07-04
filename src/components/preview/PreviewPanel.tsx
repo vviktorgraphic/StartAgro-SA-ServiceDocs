@@ -1,9 +1,12 @@
 import {
     Box,
+    Button,
+    Dialog,
     Divider,
     Typography
 } from "@mui/material";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { useEffect, useState } from "react";
 
 import { useAppContext } from "../../context/AppContext";
 import ServiceVisitTable from "./ServiceVisitTable";
@@ -11,6 +14,67 @@ import ServiceVisitTable from "./ServiceVisitTable";
 export default function PreviewPanel() {
 
     const { selectedWorkOrder } = useAppContext();
+    const [openImageIndex, setOpenImageIndex] = useState<number | null>(null);
+
+    const imageFiles = selectedWorkOrder?.imageFiles ?? [];
+    const openImage =
+        openImageIndex === null ? null : imageFiles[openImageIndex];
+
+    function getFileName(path: string) {
+        return path.split(/[\\/]/).pop() ?? path;
+    }
+
+    function showPreviousImage() {
+        setOpenImageIndex(current => {
+            if (current === null || imageFiles.length === 0) {
+                return current;
+            }
+
+            return current === 0 ? imageFiles.length - 1 : current - 1;
+        });
+    }
+
+    function showNextImage() {
+        setOpenImageIndex(current => {
+            if (current === null || imageFiles.length === 0) {
+                return current;
+            }
+
+            return current === imageFiles.length - 1 ? 0 : current + 1;
+        });
+    }
+
+    useEffect(() => {
+        if (openImageIndex !== null && openImageIndex >= imageFiles.length) {
+            setOpenImageIndex(null);
+        }
+    }, [imageFiles.length, openImageIndex]);
+
+    useEffect(() => {
+        if (openImageIndex === null) {
+            return;
+        }
+
+        function handleKeyDown(event: KeyboardEvent) {
+            if (event.key === "Escape") {
+                setOpenImageIndex(null);
+            }
+
+            if (event.key === "ArrowLeft") {
+                showPreviousImage();
+            }
+
+            if (event.key === "ArrowRight") {
+                showNextImage();
+            }
+        }
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [openImageIndex, imageFiles.length]);
 
     return (
 
@@ -88,7 +152,7 @@ export default function PreviewPanel() {
                         >
 
                             PDF előnézet
-                            
+
                         </Typography>
 
                         <Divider sx={{ my: 2 }} />
@@ -229,51 +293,236 @@ export default function PreviewPanel() {
                     color="text.secondary"
                 >
 
-                    {selectedWorkOrder
-                        ? `${selectedWorkOrder.imageFiles.length} db kép`
+                    {selectedWorkOrder && imageFiles.length > 0
+                        ? `${imageFiles.length} db kép`
                         : "Nincs kapcsolódó fénykép."}
 
                 </Typography>
 
-                {selectedWorkOrder &&
-                    selectedWorkOrder.imageFiles.length > 0 && (
+                {selectedWorkOrder && imageFiles.length > 0 ? (
+
+                    <Box
+                        sx={{
+                            display: "grid",
+                            gridTemplateColumns:
+                                "repeat(auto-fill, 96px)",
+                            gap: 1,
+                            mt: 1
+                        }}
+                    >
+
+                        {imageFiles.map((imageFile, index) => {
+                            const fileName = getFileName(imageFile);
+
+                            return (
+                                <Box
+                                    key={imageFile}
+                                    sx={{
+                                        width: 96
+                                    }}
+                                >
+
+                                    <Box
+                                        component="button"
+                                        type="button"
+                                        onClick={() =>
+                                            setOpenImageIndex(index)
+                                        }
+                                        title={fileName}
+                                        sx={{
+                                            width: 96,
+                                            height: 96,
+                                            p: 0,
+                                            display: "block",
+                                            overflow: "hidden",
+                                            cursor: "pointer",
+                                            borderRadius: 1,
+                                            border: 1,
+                                            borderColor: "divider",
+                                            bgcolor: "background.default"
+                                        }}
+                                    >
+
+                                        <Box
+                                            component="img"
+                                            src={convertFileSrc(imageFile)}
+                                            alt={fileName}
+                                            sx={{
+                                                width: "100%",
+                                                height: "100%",
+                                                display: "block",
+                                                objectFit: "cover"
+                                            }}
+                                        />
+
+                                    </Box>
+
+                                    <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        title={fileName}
+                                        noWrap
+                                        sx={{
+                                            display: "block",
+                                            width: 96,
+                                            mt: 0.5
+                                        }}
+                                    >
+
+                                        {fileName}
+
+                                    </Typography>
+
+                                </Box>
+                            );
+                        })}
+
+                    </Box>
+
+                ) : selectedWorkOrder ? (
+
+                    <Box
+                        sx={{
+                            mt: 1,
+                            p: 2,
+                            border: 1,
+                            borderColor: "divider",
+                            borderRadius: 1,
+                            bgcolor: "background.default"
+                        }}
+                    >
+
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                        >
+
+                            Ehhez a munkalaphoz nincs fotódokumentáció.
+
+                        </Typography>
+
+                    </Box>
+
+                ) : null}
+
+            </Box>
+
+            <Dialog
+                open={openImage !== null}
+                onClose={() => setOpenImageIndex(null)}
+                maxWidth="lg"
+                fullWidth
+            >
+
+                {openImage && openImageIndex !== null && (
+
+                    <Box
+                        sx={{
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 2
+                        }}
+                    >
 
                         <Box
                             sx={{
-                                display: "grid",
-                                gridTemplateColumns:
-                                    "repeat(auto-fill, minmax(88px, 1fr))",
-                                gap: 1,
-                                mt: 1
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                gap: 2
                             }}
                         >
 
-                            {selectedWorkOrder.imageFiles.map(imageFile => (
+                            <Typography
+                                variant="subtitle2"
+                                noWrap
+                                title={getFileName(openImage)}
+                            >
 
-                                <Box
-                                    key={imageFile}
-                                    component="img"
-                                    src={convertFileSrc(imageFile)}
-                                    alt={imageFile.split(/[\\/]/).pop()}
-                                    title={imageFile.split(/[\\/]/).pop()}
-                                    sx={{
-                                        width: "100%",
-                                        aspectRatio: "1",
-                                        objectFit: "cover",
-                                        borderRadius: 1,
-                                        border: 1,
-                                        borderColor: "divider",
-                                        bgcolor: "background.default"
-                                    }}
-                                />
+                                {getFileName(openImage)}
 
-                            ))}
+                            </Typography>
+
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                    flexShrink: 0
+                                }}
+                            >
+
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+
+                                    {openImageIndex + 1} / {imageFiles.length}
+
+                                </Typography>
+
+                                <Button
+                                    size="small"
+                                    onClick={() => setOpenImageIndex(null)}
+                                >
+
+                                    Bezárás
+
+                                </Button>
+
+                            </Box>
 
                         </Box>
 
-                    )}
+                        <Box
+                            component="img"
+                            src={convertFileSrc(openImage)}
+                            alt={getFileName(openImage)}
+                            sx={{
+                                width: "100%",
+                                maxHeight: "70vh",
+                                objectFit: "contain",
+                                bgcolor: "background.default",
+                                borderRadius: 1
+                            }}
+                        />
 
-            </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                gap: 1
+                            }}
+                        >
+
+                            <Button
+                                variant="outlined"
+                                onClick={showPreviousImage}
+                                disabled={imageFiles.length < 2}
+                            >
+
+                                Előző
+
+                            </Button>
+
+                            <Button
+                                variant="outlined"
+                                onClick={showNextImage}
+                                disabled={imageFiles.length < 2}
+                            >
+
+                                Következő
+
+                            </Button>
+
+                        </Box>
+
+                    </Box>
+
+                )}
+
+            </Dialog>
 
         </Box>
 
