@@ -104,7 +104,17 @@ Tallozas cimke
 
 ---
 
-## Current Sprint 011
+## Done Sprint 011
+
+Image thumbnails
+
+WorkOrder imageFiles megjelenites
+
+Tauri file src thumbnail
+
+---
+
+## Current Sprint 012
 
 SQLite visszaolvasas
 
@@ -116,7 +126,7 @@ React Context frissitese
 
 ---
 
-## Sprint 012
+## Sprint 013
 
 ImageRepository
 
@@ -124,7 +134,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 Gyors kereso
 
@@ -136,7 +146,7 @@ Munkalap
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 PDF Preview fejlesztese
 
@@ -146,13 +156,13 @@ Zoom
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 Beallitasok
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 Export
 
@@ -164,12 +174,12 @@ CSV
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 Performance optimalizalas
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 v1.0 kiadas

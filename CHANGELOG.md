@@ -138,9 +138,19 @@ Tallozas gomb cimke
 
 ---
 
+## v0.12
+
+Image thumbnails
+
+Kivalasztott munkalap foto thumbnail megjelenites
+
+Tauri file src hasznalata kepekhez
+
+---
+
 ## Jelenlegi allapot
 
-Indexeles utan a lathato munkalap lista frissul.
+Kivalasztott munkalaphoz tartozo fotok thumbnail nezetben lathatok.
 
 Kovetkezo cel:
 

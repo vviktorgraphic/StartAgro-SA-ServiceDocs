@@ -3,6 +3,7 @@ import {
     Divider,
     Typography
 } from "@mui/material";
+import { convertFileSrc } from "@tauri-apps/api/core";
 
 import { useAppContext } from "../../context/AppContext";
 import ServiceVisitTable from "./ServiceVisitTable";
@@ -233,6 +234,44 @@ export default function PreviewPanel() {
                         : "Nincs kapcsolódó fénykép."}
 
                 </Typography>
+
+                {selectedWorkOrder &&
+                    selectedWorkOrder.imageFiles.length > 0 && (
+
+                        <Box
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns:
+                                    "repeat(auto-fill, minmax(88px, 1fr))",
+                                gap: 1,
+                                mt: 1
+                            }}
+                        >
+
+                            {selectedWorkOrder.imageFiles.map(imageFile => (
+
+                                <Box
+                                    key={imageFile}
+                                    component="img"
+                                    src={convertFileSrc(imageFile)}
+                                    alt={imageFile.split(/[\\/]/).pop()}
+                                    title={imageFile.split(/[\\/]/).pop()}
+                                    sx={{
+                                        width: "100%",
+                                        aspectRatio: "1",
+                                        objectFit: "cover",
+                                        borderRadius: 1,
+                                        border: 1,
+                                        borderColor: "divider",
+                                        bgcolor: "background.default"
+                                    }}
+                                />
+
+                            ))}
+
+                        </Box>
+
+                    )}
 
             </Box>
 
