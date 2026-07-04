@@ -134,7 +134,19 @@ Ures foto allapot
 
 ---
 
-## Current Sprint 014
+## Done Sprint 014
+
+Indexing status and user feedback
+
+Indexelesi allapot
+
+Indexelesi osszesito
+
+Hibauzenet UI
+
+---
+
+## Current Sprint 015
 
 SQLite visszaolvasas
 
@@ -146,7 +158,7 @@ React Context frissitese
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 ImageRepository
 
@@ -154,7 +166,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 016
+## Sprint 017
 
 Gyors kereso
 
@@ -166,7 +178,7 @@ Munkalap
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 PDF Preview fejlesztese
 
@@ -176,13 +188,13 @@ Zoom
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 Beallitasok
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 Export
 
@@ -194,12 +206,12 @@ CSV
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 Performance optimalizalas
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 v1.0 kiadas

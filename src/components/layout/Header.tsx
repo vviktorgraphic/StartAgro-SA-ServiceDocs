@@ -1,14 +1,20 @@
 import {
+    Alert,
     AppBar,
     Box,
     Button,
+    LinearProgress,
     Toolbar,
     Typography
 } from "@mui/material";
+import { useState } from "react";
 
 import { useAppContext } from "../../context/AppContext";
 import { dialogService } from "../../services/DialogService";
-import { indexService } from "../../services/IndexService";
+import {
+    IndexingSummary,
+    indexService
+} from "../../services/IndexService";
 import { loadWorkOrdersService } from "../../services/LoadWorkOrdersService";
 
 export default function Header() {
@@ -19,6 +25,15 @@ export default function Header() {
         setWorkOrders,
         setSelectedWorkOrder
     } = useAppContext();
+
+    const [isIndexing, setIsIndexing] =
+        useState(false);
+
+    const [indexSummary, setIndexSummary] =
+        useState<IndexingSummary | null>(null);
+
+    const [indexError, setIndexError] =
+        useState<string | null>(null);
 
     async function refreshWorkOrders() {
 
@@ -61,24 +76,52 @@ export default function Header() {
 
     async function handleIndexFolder() {
 
+        if (!documentsFolder || isIndexing) {
+            return;
+        }
+
+        setIsIndexing(true);
+        setIndexSummary(null);
+        setIndexError(null);
+
         try {
 
-            if (!documentsFolder) {
-                return;
-            }
-
-            await indexService.run(documentsFolder);
+            const result =
+                await indexService.run(documentsFolder);
 
             await refreshWorkOrders();
+
+            setIndexSummary(result.summary);
 
         } catch (err) {
 
             console.error(
-                "Indexeles hiba:",
+                "Indexelés hiba:",
                 err
             );
 
+            setIndexError(
+                "Az indexelés nem sikerült. Ellenőrizd a dokumentummappát, majd próbáld újra."
+            );
+
+        } finally {
+
+            setIsIndexing(false);
+
         }
+
+    }
+
+    function renderSummary(summary: IndexingSummary) {
+
+        return [
+            `${summary.scannedPdfs} PDF`,
+            `${summary.scannedImages} kép`,
+            `${summary.parsed} feldolgozva`,
+            `${summary.skipped} kihagyva`,
+            `${summary.deleted} törölve`,
+            `${summary.errors} hiba`
+        ].join(" | ");
 
     }
 
@@ -98,7 +141,7 @@ export default function Header() {
                         fontWeight: 600
                     }}
                 >
-                    Start Agro – Szerviz Munkalapok
+                    Start Agro - Szerviz Munkalapok
                 </Typography>
 
                 <Box sx={{ flexGrow: 1 }} />
@@ -106,6 +149,7 @@ export default function Header() {
                 <Button
                     color="inherit"
                     onClick={handleSelectFolder}
+                    disabled={isIndexing}
                 >
                     Tallózás
                 </Button>
@@ -113,8 +157,11 @@ export default function Header() {
                 <Button
                     color="inherit"
                     onClick={handleIndexFolder}
+                    disabled={!documentsFolder || isIndexing}
                 >
-                    🔄 Mappa indexelése
+                    {isIndexing
+                        ? "Indexelés..."
+                        : "Mappa indexelése"}
                 </Button>
 
                 <Button color="inherit">
@@ -122,6 +169,65 @@ export default function Header() {
                 </Button>
 
             </Toolbar>
+
+            {(isIndexing || indexSummary || indexError) && (
+
+                <Box
+                    sx={{
+                        px: 2,
+                        pb: 1
+                    }}
+                >
+
+                    {isIndexing && (
+
+                        <Box>
+
+                            <Typography variant="body2">
+
+                                Indexelés folyamatban...
+
+                            </Typography>
+
+                            <LinearProgress color="inherit" />
+
+                        </Box>
+
+                    )}
+
+                    {indexSummary && !isIndexing && (
+
+                        <Alert
+                            severity={
+                                indexSummary.errors > 0
+                                    ? "warning"
+                                    : "success"
+                            }
+                            sx={{ py: 0 }}
+                        >
+
+                            {renderSummary(indexSummary)}
+
+                        </Alert>
+
+                    )}
+
+                    {indexError && !isIndexing && (
+
+                        <Alert
+                            severity="error"
+                            sx={{ py: 0 }}
+                        >
+
+                            {indexError}
+
+                        </Alert>
+
+                    )}
+
+                </Box>
+
+            )}
 
         </AppBar>
 

@@ -11,11 +11,25 @@ import { matcherService } from "./MatcherService";
 import { pdfParser } from "./PdfParser";
 import { pdfService } from "./PdfService";
 
+export interface IndexingSummary {
+    scannedPdfs: number;
+    scannedImages: number;
+    parsed: number;
+    skipped: number;
+    deleted: number;
+    errors: number;
+}
+
+export interface IndexingResult {
+    workOrders: WorkOrder[];
+    summary: IndexingSummary;
+}
+
 export class IndexService {
 
     public async run(
         folder: string
-    ): Promise<WorkOrder[]> {
+    ): Promise<IndexingResult> {
 
         const result =
             await tauriService.scanDocuments(folder);
@@ -112,18 +126,30 @@ export class IndexService {
 
         }
 
+        const summary: IndexingSummary = {
+            scannedPdfs: result.pdf_count,
+            scannedImages: result.image_count,
+            parsed: parsedCount,
+            skipped: skippedCount,
+            deleted: deletedCount,
+            errors: errorCount
+        };
+
         console.log(
             [
-                `Index scanned PDFs: ${result.pdf_count}`,
-                `images: ${result.image_count}`,
-                `parsed: ${parsedCount}`,
-                `skipped: ${skippedCount}`,
-                `deleted: ${deletedCount}`,
-                `errors: ${errorCount}`
+                `Index scanned PDFs: ${summary.scannedPdfs}`,
+                `images: ${summary.scannedImages}`,
+                `parsed: ${summary.parsed}`,
+                `skipped: ${summary.skipped}`,
+                `deleted: ${summary.deleted}`,
+                `errors: ${summary.errors}`
             ].join(", ")
         );
 
-        return workOrders;
+        return {
+            workOrders,
+            summary
+        };
 
     }
 

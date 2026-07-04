@@ -170,9 +170,23 @@ Ures foto allapot megjelenites
 
 ---
 
+## v0.15
+
+Indexing status and user feedback
+
+Indexeles kozbeni lathato allapot
+
+Indexeles gomb tiltasa futas kozben
+
+Indexelesi osszesito megjelenites
+
+Felhasznalobarat hibauzenet
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, a thumbnail kepek asset protocolon toltodnek, es lightboxban megnyithatok.
+Tallozas nem indit indexelest, az indexeles futas kozben visszajelzest ad, es a vegen osszesitot mutat.
 
 Kovetkezo cel:
 
