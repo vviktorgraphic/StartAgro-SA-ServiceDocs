@@ -62,7 +62,17 @@ Torolt PDF eltavolitasa SQLite-bol
 
 ---
 
-## Current Sprint 007
+## Done Sprint 007
+
+Repository separation
+
+WorkOrderRepository domain persistence
+
+WorkOrderImportRepository import metadata
+
+---
+
+## Current Sprint 008
 
 SQLite visszaolvasas
 
@@ -74,7 +84,7 @@ React Context frissitese
 
 ---
 
-## Sprint 008
+## Sprint 009
 
 ImageRepository
 
@@ -82,7 +92,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 009
+## Sprint 010
 
 Gyors kereso
 
@@ -94,7 +104,7 @@ Munkalap
 
 ---
 
-## Sprint 010
+## Sprint 011
 
 PDF Preview fejlesztese
 
@@ -104,13 +114,13 @@ Zoom
 
 ---
 
-## Sprint 011
+## Sprint 012
 
 Beallitasok
 
 ---
 
-## Sprint 012
+## Sprint 013
 
 Export
 
@@ -122,12 +132,12 @@ CSV
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 Performance optimalizalas
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 v1.0 kiadas

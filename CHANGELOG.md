@@ -92,9 +92,21 @@ openai-api-key.txt gitignore
 
 ---
 
+## v0.8
+
+Repository separation
+
+WorkOrderRepository csak domain persistence
+
+WorkOrderImportRepository import lookup/update/delete
+
+IndexService import metadata tisztitas
+
+---
+
 ## Jelenlegi allapot
 
-Az indexeles csak az uj vagy modositott PDF-eket dolgozza fel.
+Repository felelossegek szetvalasztva.
 
 Kovetkezo cel:
 

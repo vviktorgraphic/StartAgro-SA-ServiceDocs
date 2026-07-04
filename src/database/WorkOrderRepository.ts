@@ -31,18 +31,6 @@ export interface WorkOrderRecord {
 
 }
 
-export interface WorkOrderIndexRecord {
-
-    workOrderNumber: string;
-
-    pdfFile: string;
-
-    pdfLastModified: number;
-
-    pdfFileSize: number;
-
-}
-
 class WorkOrderRepository {
 
     public async save(
@@ -208,28 +196,6 @@ class WorkOrderRepository {
             FROM work_orders
 
             ORDER BY work_order_number
-            `
-
-        );
-
-    }
-
-    public async loadIndexInfo(): Promise<WorkOrderIndexRecord[]> {
-
-        return await database.connection.select<WorkOrderIndexRecord[]>(
-
-            `
-            SELECT
-
-                work_order_number AS workOrderNumber,
-
-                pdf_file AS pdfFile,
-
-                pdf_last_modified AS pdfLastModified,
-
-                pdf_file_size AS pdfFileSize
-
-            FROM work_orders
             `
 
         );

@@ -139,7 +139,7 @@ export class IndexService {
                 workOrderImport.workOrderNumber
             );
 
-            await workOrderImportRepository.deleteByWorkOrderNumber(
+            await workOrderImportRepository.delete(
                 workOrderImport.workOrderNumber
             );
 
