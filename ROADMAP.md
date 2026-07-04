@@ -72,7 +72,17 @@ WorkOrderImportRepository import metadata
 
 ---
 
-## Current Sprint 008
+## Done Sprint 008
+
+Schema cleanup
+
+work_orders import metadata eltavolitasa
+
+MigrationService cleanup
+
+---
+
+## Current Sprint 009
 
 SQLite visszaolvasas
 
@@ -84,7 +94,7 @@ React Context frissitese
 
 ---
 
-## Sprint 009
+## Sprint 010
 
 ImageRepository
 
@@ -92,7 +102,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 010
+## Sprint 011
 
 Gyors kereso
 
@@ -104,7 +114,7 @@ Munkalap
 
 ---
 
-## Sprint 011
+## Sprint 012
 
 PDF Preview fejlesztese
 
@@ -114,13 +124,13 @@ Zoom
 
 ---
 
-## Sprint 012
+## Sprint 013
 
 Beallitasok
 
 ---
 
-## Sprint 013
+## Sprint 014
 
 Export
 
@@ -132,12 +142,12 @@ CSV
 
 ---
 
-## Sprint 014
+## Sprint 015
 
 Performance optimalizalas
 
 ---
 
-## Sprint 015
+## Sprint 016
 
 v1.0 kiadas

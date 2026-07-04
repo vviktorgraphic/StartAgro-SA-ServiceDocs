@@ -104,9 +104,19 @@ IndexService import metadata tisztitas
 
 ---
 
+## v0.9
+
+Schema cleanup
+
+work_orders import metadata oszlopok eltavolitva
+
+MigrationService compatibility cleanup
+
+---
+
 ## Jelenlegi allapot
 
-Repository felelossegek szetvalasztva.
+Import metadata csak work_order_imports tablaban van az uj schemaban.
 
 Kovetkezo cel:
 

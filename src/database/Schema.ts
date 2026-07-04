@@ -10,10 +10,6 @@ CREATE TABLE IF NOT EXISTS work_orders (
 
     pdf_file TEXT NOT NULL,
 
-    pdf_last_modified INTEGER NOT NULL DEFAULT 0,
-
-    pdf_file_size INTEGER NOT NULL DEFAULT 0,
-
     partner_name TEXT,
     tax_number TEXT,
     contact_name TEXT,
