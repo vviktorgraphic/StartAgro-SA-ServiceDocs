@@ -1,80 +1,63 @@
-# StartAgro-SA-ServiceDocs
+# StartAgro – Service Documents
 
 ## Cél
 
-A StartAgro-SA-ServiceDocs egy Windows asztali alkalmazás, amely a Start Agro Kft. szervizmunkalapjait dolgozza fel.
+A Start Agro Kft. szerviz munkalapjainak digitális feldolgozása.
 
-Feladata:
+Az alkalmazás:
 
-- dokumentummappa indexelése
-- PDF munkalapok felismerése
-- fotódokumentáció automatikus hozzárendelése
-- PDF-ekből üzleti adatok kinyerése
-- SQLite adatbázis építése
-- gyors keresés partner, adószám, munkalapszám és gépadatok alapján
+- PDF munkalapokat indexel
+- JPG fotókat párosít
+- SQLite adatbázisba ment
+- kereshető adatbázist épít
+- megjeleníti a munkalapokat
+- PDF előnézetet biztosít
 
 ---
 
-# Technológia
+## Technológia
 
 - Tauri 2
-- React 19
+- React
 - TypeScript
-- Rust
+- Vite
 - Material UI
-- pdfjs-dist
-- SQLite (következő fejlesztési szakasz)
+- SQLite (@tauri-apps/plugin-sql)
+- pdf.js
 
 ---
 
-# Architektúra
+## Projekt filozófia
 
-Rust
+Offline desktop alkalmazás.
 
-- fájlkezelés
-- dokumentumok keresése
-- PDF bájtok beolvasása
+Minden adat helyben tárolódik.
 
-↓
+Nincs backend.
 
-TypeScript
+Nincs felhő.
 
-- IndexService
-- MatcherService
-- PdfService
-- PdfParser
-- FieldExtractor
+Gyors működés.
 
-↓
-
-React
-
-- WorkOrderList
-- PreviewPanel
-- Search
-- Sidebar
+Egyszerű karbantarthatóság.
 
 ---
 
-# Adatfolyam
+## Architektúra
 
-Dokumentummappa
-
-↓
-
-Scanner
+PDF
 
 ↓
 
-Matcher
+Parser
 
 ↓
 
-WorkOrder
+Model
 
 ↓
 
-PdfParser
+Repository
 
 ↓
 
@@ -82,40 +65,36 @@ SQLite
 
 ↓
 
-Kereső
+React Context
+
+↓
+
+UI
 
 ---
 
-# Adatmodell
+## Fő modulok
 
-WorkOrder
-
-- workOrderNumber
-- prefix
-- pdfFile
-- imageFiles
-
-PDF parser tölti ki:
-
-- partnerName
-- taxNumber
-- contactName
-- email
-- phone
-- machineType
-- serialNumber
-- workType
-- reportedIssue
-- completedWork
+- PDF Engine
+- Parser Engine
+- SQLite Repository
+- Search Engine
+- Preview Engine
 
 ---
 
-# Fejlesztési alapelvek
+## Jelenlegi állapot
 
-- egyetlen WorkOrder modell
-- Rust csak fájlkezelés
-- PDF parser TypeScriptben
-- PDF csak adatforrás
-- SQLite lesz a végleges adatforrás
-- egyszerű, olvasható kód
-- kis, működő fejlesztési lépések
+PDF indexelés működik
+
+PDF parser működik
+
+SQLite mentés működik
+
+Repository működik
+
+ServiceVisit parser működik
+
+A következő feladat:
+
+SQLite visszaolvasás

@@ -1,4 +1,3 @@
-
 import { migrationService } from "../database/MigrationService";
 
 class StartupService {
@@ -7,19 +6,23 @@ class StartupService {
 
     public async initialize(): Promise<void> {
 
-    console.log("Startup indul");
+        if (this.initialized) {
+            return;
+        }
 
-    if (this.initialized) {
-        return;
+        console.log(
+            "Startup indul..."
+        );
+
+        await migrationService.migrate();
+
+        this.initialized = true;
+
+        console.log(
+            "Alkalmazás inicializálva."
+        );
+
     }
-
-    await migrationService.migrate();
-
-    this.initialized = true;
-
-    console.log("Alkalmazás inicializálva.");
-
-}
 
 }
 

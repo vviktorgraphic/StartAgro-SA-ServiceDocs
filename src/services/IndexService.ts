@@ -1,3 +1,4 @@
+import { serviceVisitRepository } from "../database/ServiceVisitRepository";
 import { workOrderRepository } from "../database/WorkOrderRepository";
 import { WorkOrder } from "../models/WorkOrder";
 import { tauriService } from "../tauri/TauriService";
@@ -53,8 +54,14 @@ export class IndexService {
                     parsed
                 );
 
-                await workOrderRepository.save(
-                    workOrder
+                const workOrderId =
+                    await workOrderRepository.save(
+                        workOrder
+                    );
+
+                await serviceVisitRepository.save(
+                    workOrderId,
+                    workOrder.serviceVisits
                 );
 
             } catch (error) {

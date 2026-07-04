@@ -6,15 +6,17 @@ import {
     Typography
 } from "@mui/material";
 
+import { useAppContext } from "../../context/AppContext";
 import { dialogService } from "../../services/DialogService";
 import { indexService } from "../../services/IndexService";
-import { useAppContext } from "../../context/AppContext";
+import { loadWorkOrdersService } from "../../services/LoadWorkOrdersService";
 
 export default function Header() {
 
     const {
         setDocumentsFolder,
-        setWorkOrders
+        setWorkOrders,
+        setSelectedWorkOrder
     } = useAppContext();
 
     async function handleSelectFolder() {
@@ -28,16 +30,29 @@ export default function Header() {
                 return;
             }
 
+            await indexService.run(folder);
+
             const workOrders =
-                await indexService.run(folder);
+                await loadWorkOrdersService.loadAll();
 
             setDocumentsFolder(folder);
 
             setWorkOrders(workOrders);
 
+            if (workOrders.length > 0) {
+
+                setSelectedWorkOrder(
+                    workOrders[0]
+                );
+
+            }
+
         } catch (err) {
 
-            console.error("Dialog hiba:", err);
+            console.error(
+                "Dialog hiba:",
+                err
+            );
 
         }
 

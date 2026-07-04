@@ -14,6 +14,10 @@ class DatabaseService {
             "sqlite:startagro.db"
         );
 
+        await this.db.execute(
+            "PRAGMA foreign_keys = ON"
+        );
+
         console.log(
             "SQLite adatbázis megnyitva."
         );

@@ -11,6 +11,10 @@ export interface ParsedPdfData {
 
     contactName?: string;
 
+    email?: string;
+
+    phone?: string;
+
     machineType?: string;
 
     serialNumber?: string;

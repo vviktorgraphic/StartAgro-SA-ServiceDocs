@@ -1,10 +1,11 @@
 import { WorkOrder } from "../models/WorkOrder";
+import { PdfFile } from "./TauriService";
 import { nameParser } from "./NameParser";
 
 export class MatcherService {
 
     public match(
-        pdfFiles: string[],
+        pdfFiles: PdfFile[],
         imageFiles: string[]
     ): WorkOrder[] {
 
@@ -13,7 +14,7 @@ export class MatcherService {
         for (const pdf of pdfFiles) {
 
             const pdfFileName =
-                pdf.split(/[\\/]/).pop() ?? pdf;
+                pdf.path.split(/[\\/]/).pop() ?? pdf.path;
 
             const parsed =
                 nameParser.parse(pdfFileName);
@@ -39,7 +40,7 @@ export class MatcherService {
 
                 prefix: parsed.prefix,
 
-                pdfFile: pdf,
+                pdfFile: pdf.path,
 
                 imageFiles: images,
 

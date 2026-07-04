@@ -1,79 +1,61 @@
 # Architectural Decisions
 
----
+## ADR-001
 
-## 2026-07
+Offline desktop alkalmazás.
 
-### Egységes WorkOrder modell
-
-A DiscoveredWorkOrder megszűnt.
-
-Az alkalmazás egyetlen WorkOrder modellt használ.
-
-Indok:
-
-- egyszerűbb
-- nincs objektum másolás
-- könnyebb SQLite kezelés
+Nincs szerver.
 
 ---
 
-### PDF parser TypeScriptben
+## ADR-002
 
-A PDF tartalmát TypeScript dolgozza fel.
-
-Rust csak fájlműveleteket végez.
-
-Indok:
-
-- egyszerűbb fejlesztés
-- gyorsabb hibakeresés
-- könnyebb karbantartás
+SQLite az egyetlen adatbázis.
 
 ---
 
-### Rust feladata
+## ADR-003
 
-Rust kizárólag:
+Repository minta.
 
-- scanner
-- fájlkezelés
-- PDF bájtok beolvasása
-
-Üzleti logika nincs Rustban.
+UI nem érheti el közvetlenül az adatbázist.
 
 ---
 
-### Egyetlen keresőmező
+## ADR-004
 
-A kereső egyszerre keres:
+Parser osztályok külön fájlban.
 
-- partner
-- adószám
-- munkalapszám
-- géptípus
-- alvázszám
-
-Nem lesz külön partner- vagy adószám mező.
+Nem lehet parser logika a UI-ban.
 
 ---
 
-### PDF csak adatforrás
+## ADR-005
 
-A PDF nem az elsődleges adatforrás.
+Minden módosítás teljes fájlként történik.
 
-Indexelés után minden adat SQLite-ba kerül.
-
-A napi használat során az alkalmazás az adatbázisból dolgozik.
+Nem patch-eket használunk.
 
 ---
 
-### Kódolási alapelvek
+## ADR-006
 
-- kis szolgáltatások
-- egy felelősség egy osztály
-- olvasható kód
-- egyszerű architektúra
-- minimális függőség
-- működő checkpointok
-- Git commit minden mérföldkő után
+Valós PDF-ekkel tesztelünk.
+
+Nem készítünk külön RepositoryTest vagy DatabaseTest fájlokat.
+
+---
+
+## ADR-007
+
+SQLite az elsődleges adatforrás.
+
+A UI hosszú távon kizárólag Repository-n keresztül dolgozik.
+
+---
+
+## ADR-008
+
+A WorkOrder az alkalmazás központi modellje.
+
+Minden adat ebből épül fel.

@@ -1,105 +1,75 @@
 # Changelog
 
-A projekt fejlesztési naplója.
+## v0.1
 
-A verziószámozás a főbb mérföldköveket követi.
+Projekt létrehozása
 
----
+React + Tauri
 
-# v0.2.0 (Development)
-
-## Added
-
-- PDF Engine előkészítése
-- PdfService
-- FieldExtractor
-- PdfParser
-- PDF byte olvasás Rustból
-- WorkOrder egységes adatmodell
-
-## Changed
-
-- DiscoveredWorkOrder → WorkOrder
-- Egységes adatmodell bevezetése
-- AppContext módosítása
-- MatcherService frissítése
-
-## Architecture
-
-- Rust kizárólag fájlkezelést végez
-- PDF parser TypeScriptben működik
-- PDF csak adatforrás
-- SQLite lesz az elsődleges adatforrás
+Material UI
 
 ---
 
-# v0.1.0
+## v0.2
 
-## Added
+PDF feldolgozás
 
-### Projekt
+pdf.js integráció
 
-- Tauri 2 projekt
-- React
-- Material UI
-- TypeScript
+FieldExtractor
 
-### Scanner
-
-- Dokumentummappa kiválasztása
-- PDF felismerés
-- JPG felismerés
-- Rust scanner
-
-### Parser
-
-- NameParser
-- MatcherService
-
-### UI
-
-- AppContext
-- WorkOrderList
-- PreviewPanel
-- Sidebar
-- SearchBar
-- Header
-- StatusBar
-
-### Core
-
-- WorkOrder modell
-- Dokumentum indexelés
-- PDF és képek összerendelése
+Parser
 
 ---
-
-# Next
 
 ## v0.3
 
-Tervezett funkciók
+ServiceVisit parser
 
-- SQLite
-- Repository
-- Index cache
-- Gyors keresés
-- Partner adatok
-- Gépadatok
+2. oldal feldolgozása
+
+Táblázat felismerés
 
 ---
 
 ## v0.4
 
-Tervezett funkciók
+SQLite
 
-- PDF Preview
-- Fotógaléria
-- Nyomtatás
-- Export
+Schema
+
+Migration
+
+Database
+
+Repository
+
+WorkOrderRepository
+
+ServiceVisitRepository
 
 ---
 
-## v1.0
+## v0.5
 
-Első éles verzió.
+SQLite mentés működik
+
+Foreign key javítva
+
+Parser hibák javítva
+
+Telefon
+
+Email
+
+Service Visit javítás
+
+---
+
+## Jelenlegi állapot
+
+Minden munkalap SQLite-ba menthető.
+
+Következő cél:
+
+SQLite visszaolvasás.

@@ -1,69 +1,111 @@
-# ROADMAP
+# Roadmap
 
-## ✅ v0.1 Core
+## ✅ Sprint 001
 
-- [x] Tauri projekt
-- [x] MUI felület
-- [x] Dokumentummappa kiválasztása
-- [x] Rust scanner
-- [x] PDF felismerés
-- [x] JPG felismerés
-- [x] NameParser
-- [x] Matcher
-- [x] WorkOrder modell
-- [x] AppContext
-- [x] WorkOrderList
-- [x] PreviewPanel
+Projekt létrehozása
+
+React
+
+Tauri
+
+Material UI
 
 ---
 
-## 🚧 v0.2 PDF Engine
+## ✅ Sprint 002
 
-- [ ] PdfService
-- [ ] PDF szöveg kiolvasása
-- [ ] FieldExtractor
-- [ ] PdfParser
-- [ ] Partner neve
-- [ ] Adószám
-- [ ] Kapcsolattartó
-- [ ] Géptípus
-- [ ] Alvázszám
-- [ ] Munka típusa
-- [ ] Többsoros mezők
+PDF Engine
+
+Parser
+
+FieldExtractor
 
 ---
 
-## v0.3 Database
+## ✅ Sprint 003
 
-- [ ] SQLite
-- [ ] Repository réteg
-- [ ] Indexelés adatbázisba
-- [ ] Újraindexelés
-- [ ] Módosult fájlok felismerése
+ServiceVisit parser
 
 ---
 
-## v0.4 Search
+## ✅ Sprint 004
 
-- [ ] Partner
-- [ ] Adószám
-- [ ] Munkalapszám
-- [ ] Géptípus
-- [ ] Alvázszám
-- [ ] Teljes szöveg keresés
+SQLite
 
----
+Migration
 
-## v0.5 UI
+Repository
 
-- [ ] PDF előnézet
-- [ ] Fotógaléria
-- [ ] Nagyítás
-- [ ] Nyomtatás
-- [ ] Beállítások
+Mentés
 
 ---
 
-## v1.0
+## 🔄 Sprint 005
 
-Első éles verzió.
+SQLite visszaolvasás
+
+WorkOrderRepository.loadAll()
+
+ServiceVisit betöltése
+
+React Context frissítése
+
+---
+
+## Sprint 006
+
+ImageRepository
+
+Fotók adatbázisban
+
+---
+
+## Sprint 007
+
+Gyors kereső
+
+Partner
+
+Technikus
+
+Munkalap
+
+---
+
+## Sprint 008
+
+PDF Preview fejlesztése
+
+Oldal navigáció
+
+Zoom
+
+---
+
+## Sprint 009
+
+Beállítások
+
+---
+
+## Sprint 010
+
+Export
+
+PDF
+
+Excel
+
+CSV
+
+---
+
+## Sprint 011
+
+Performance optimalizálás
+
+---
+
+## Sprint 012
+
+v1.0 kiadás

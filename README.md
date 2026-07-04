@@ -1,7 +1,43 @@
-# Tauri + React + Typescript
+# StartAgro Service Documents
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+Desktop alkalmazás szerviz munkalapok feldolgozására.
 
-## Recommended IDE Setup
+## Funkciók
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+- PDF indexelés
+- Fotók párosítása
+- SQLite adatbázis
+- PDF előnézet
+- Gyors keresés
+
+## Technológia
+
+Tauri
+
+React
+
+TypeScript
+
+SQLite
+
+Material UI
+
+pdf.js
+
+## Indítás
+
+npm install
+
+npm run tauri dev
+
+## Build
+
+npm run tauri build
+
+## Fejlesztési elv
+
+Valós fájlokon dolgozunk.
+
+Nincs külön teszt projekt.
+
+A testdata mappa szolgál tesztelésre.

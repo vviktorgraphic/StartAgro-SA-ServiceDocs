@@ -9,19 +9,58 @@ class MigrationService {
 
         const statements = SCHEMA
             .split(";")
-            .map(sql => sql.trim())
-            .filter(sql => sql.length > 0);
+            .map(statement => statement.trim())
+            .filter(statement => statement.length > 0);
 
-        for (const sql of statements) {
+        for (const statement of statements) {
 
-            console.log("SQL:", sql);
-
-            await database.connection.execute(sql);
+            await database.connection.execute(
+                statement
+            );
 
         }
 
-        console.log(
-            "SQLite séma létrehozva."
+        await this.addColumnIfMissing(
+            "work_orders",
+            "pdf_last_modified",
+            "INTEGER NOT NULL DEFAULT 0"
+        );
+
+        await this.addColumnIfMissing(
+            "work_orders",
+            "pdf_file_size",
+            "INTEGER NOT NULL DEFAULT 0"
+        );
+
+    }
+
+    private async addColumnIfMissing(
+        table: string,
+        column: string,
+        definition: string
+    ): Promise<void> {
+
+        const columns =
+            await database.connection.select<
+                { name: string }[]
+            >(
+                `PRAGMA table_info(${table})`
+            );
+
+        const exists =
+            columns.some(c => c.name === column);
+
+        if (exists) {
+            return;
+        }
+
+        await database.connection.execute(
+
+            `
+            ALTER TABLE ${table}
+            ADD COLUMN ${column} ${definition}
+            `
+
         );
 
     }
