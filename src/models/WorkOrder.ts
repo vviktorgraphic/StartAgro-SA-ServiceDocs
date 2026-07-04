@@ -2,7 +2,7 @@ import { ServiceVisit } from "./ServiceVisit";
 
 export interface WorkOrder {
 
-    // Scanner tölti ki
+    // Scanner tolti ki
 
     workOrderNumber: string;
 
@@ -12,7 +12,7 @@ export interface WorkOrder {
 
     imageFiles: string[];
 
-    // PDF parser tölti ki
+    // PDF parser tolti ki
 
     partnerName?: string;
 
@@ -34,7 +34,25 @@ export interface WorkOrder {
 
     completedWork?: string;
 
-    // Kiszállások
+    billingAddress?: string;
+
+    serviceLocation?: string;
+
+    materialTotal?: string;
+
+    totalKilometers?: string;
+
+    totalWorkHours?: string;
+
+    washing?: string;
+
+    closedAt?: string;
+
+    handedOverBy?: string;
+
+    receivedBy?: string;
+
+    // Kiszallasok
 
     serviceVisits: ServiceVisit[];
 

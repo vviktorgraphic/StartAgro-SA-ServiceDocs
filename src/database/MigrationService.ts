@@ -26,6 +26,34 @@ class MigrationService {
             "TEXT NOT NULL DEFAULT '[]'"
         );
 
+        await this.addWorkOrderColumnMigrations();
+
+    }
+
+    private async addWorkOrderColumnMigrations(): Promise<void> {
+
+        const columns = [
+            "billing_address",
+            "service_location",
+            "material_total",
+            "total_kilometers",
+            "total_work_hours",
+            "washing",
+            "closed_at",
+            "handed_over_by",
+            "received_by"
+        ];
+
+        for (const column of columns) {
+
+            await this.addColumnIfMissing(
+                "work_orders",
+                column,
+                "TEXT"
+            );
+
+        }
+
     }
 
     private async addColumnIfMissing(

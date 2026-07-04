@@ -23,7 +23,17 @@ CREATE TABLE IF NOT EXISTS work_orders (
 
     reported_issue TEXT,
 
-    completed_work TEXT
+    completed_work TEXT,
+
+    billing_address TEXT,
+    service_location TEXT,
+    material_total TEXT,
+    total_kilometers TEXT,
+    total_work_hours TEXT,
+    washing TEXT,
+    closed_at TEXT,
+    handed_over_by TEXT,
+    received_by TEXT
 
 );
 

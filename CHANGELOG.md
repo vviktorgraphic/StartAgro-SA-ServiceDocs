@@ -198,9 +198,23 @@ Duplikalt gyorskereso eltavolitva a szurok kozul
 
 ---
 
+## v0.17
+
+Extended parsed WorkOrder fields
+
+Szamlazasi cim es szerviz helyszine mezok
+
+Osszesito es lezaro munkalap mezok
+
+Atado es atvevo mezok
+
+SQLite schema es repository bovites
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a globalis keresosav kulon sticky sorban marad.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a WorkOrder adatok bovultek uj parser mezokkel.
 
 Kovetkezo cel:
 

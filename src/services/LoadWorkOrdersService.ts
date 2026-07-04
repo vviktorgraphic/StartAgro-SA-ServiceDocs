@@ -54,6 +54,24 @@ class LoadWorkOrdersService {
 
                 completedWork: record.completedWork,
 
+                billingAddress: record.billingAddress,
+
+                serviceLocation: record.serviceLocation,
+
+                materialTotal: record.materialTotal,
+
+                totalKilometers: record.totalKilometers,
+
+                totalWorkHours: record.totalWorkHours,
+
+                washing: record.washing,
+
+                closedAt: record.closedAt,
+
+                handedOverBy: record.handedOverBy,
+
+                receivedBy: record.receivedBy,
+
                 serviceVisits
 
             });

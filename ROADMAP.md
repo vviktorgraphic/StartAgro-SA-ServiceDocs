@@ -158,7 +158,19 @@ Duplikalt gyorskereso eltavolitasa
 
 ---
 
-## Current Sprint 016
+## Done Sprint 016
+
+Extend parsed WorkOrder fields
+
+Uj parser mezok
+
+SQLite schema bovites
+
+Preview mezok megjelenitese
+
+---
+
+## Current Sprint 017
 
 SQLite visszaolvasas
 
@@ -170,7 +182,7 @@ React Context frissitese
 
 ---
 
-## Sprint 017
+## Sprint 018
 
 ImageRepository
 
@@ -178,7 +190,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 Gyors kereso
 
@@ -190,7 +202,7 @@ Munkalap
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 PDF Preview fejlesztese
 
@@ -200,13 +212,13 @@ Zoom
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 Beallitasok
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 Export
 
@@ -218,12 +230,12 @@ CSV
 
 ---
 
-## Sprint 022
+## Sprint 023
 
 Performance optimalizalas
 
 ---
 
-## Sprint 023
+## Sprint 024
 
 v1.0 kiadas

@@ -31,6 +31,24 @@ export interface WorkOrderRecord {
 
     completedWork?: string;
 
+    billingAddress?: string;
+
+    serviceLocation?: string;
+
+    materialTotal?: string;
+
+    totalKilometers?: string;
+
+    totalWorkHours?: string;
+
+    washing?: string;
+
+    closedAt?: string;
+
+    handedOverBy?: string;
+
+    receivedBy?: string;
+
 }
 
 class WorkOrderRepository {
@@ -62,7 +80,17 @@ class WorkOrderRepository {
 
                 reported_issue,
 
-                completed_work
+                completed_work,
+
+                billing_address,
+                service_location,
+                material_total,
+                total_kilometers,
+                total_work_hours,
+                washing,
+                closed_at,
+                handed_over_by,
+                received_by
 
             )
 
@@ -73,7 +101,8 @@ class WorkOrderRepository {
                 $10,$11,
                 $12,
                 $13,
-                $14
+                $14,
+                $15,$16,$17,$18,$19,$20,$21,$22,$23
 
             )
 
@@ -98,7 +127,17 @@ class WorkOrderRepository {
 
                 reported_issue = excluded.reported_issue,
 
-                completed_work = excluded.completed_work
+                completed_work = excluded.completed_work,
+
+                billing_address = excluded.billing_address,
+                service_location = excluded.service_location,
+                material_total = excluded.material_total,
+                total_kilometers = excluded.total_kilometers,
+                total_work_hours = excluded.total_work_hours,
+                washing = excluded.washing,
+                closed_at = excluded.closed_at,
+                handed_over_by = excluded.handed_over_by,
+                received_by = excluded.received_by
             `,
 
             [
@@ -131,7 +170,25 @@ class WorkOrderRepository {
 
                 workOrder.reportedIssue ?? null,
 
-                workOrder.completedWork ?? null
+                workOrder.completedWork ?? null,
+
+                workOrder.billingAddress ?? null,
+
+                workOrder.serviceLocation ?? null,
+
+                workOrder.materialTotal ?? null,
+
+                workOrder.totalKilometers ?? null,
+
+                workOrder.totalWorkHours ?? null,
+
+                workOrder.washing ?? null,
+
+                workOrder.closedAt ?? null,
+
+                workOrder.handedOverBy ?? null,
+
+                workOrder.receivedBy ?? null
 
             ]
 
@@ -201,7 +258,25 @@ class WorkOrderRepository {
 
                 reported_issue AS reportedIssue,
 
-                completed_work AS completedWork
+                completed_work AS completedWork,
+
+                billing_address AS billingAddress,
+
+                service_location AS serviceLocation,
+
+                material_total AS materialTotal,
+
+                total_kilometers AS totalKilometers,
+
+                total_work_hours AS totalWorkHours,
+
+                washing,
+
+                closed_at AS closedAt,
+
+                handed_over_by AS handedOverBy,
+
+                received_by AS receivedBy
 
             FROM work_orders
 

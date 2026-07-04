@@ -245,6 +245,69 @@ export default function PreviewPanel() {
 
                             </Typography>
 
+                            <Typography>
+
+                                <strong>Számlázási cím:</strong>{" "}
+                                {selectedWorkOrder.billingAddress ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Szerviz helyszíne:</strong>{" "}
+                                {selectedWorkOrder.serviceLocation ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Rezsianyag összesen (Ft):</strong>{" "}
+                                {selectedWorkOrder.materialTotal ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Megtett km összesen:</strong>{" "}
+                                {selectedWorkOrder.totalKilometers ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Munkaidő összesen (óra):</strong>{" "}
+                                {selectedWorkOrder.totalWorkHours ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Mosás:</strong>{" "}
+                                {selectedWorkOrder.washing ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Munkalap lezárásának dátuma:</strong>{" "}
+                                {selectedWorkOrder.closedAt ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Átadó:</strong>{" "}
+                                {selectedWorkOrder.handedOverBy ?? "-"}
+
+                            </Typography>
+
+                            <Typography>
+
+                                <strong>Átvevő:</strong>{" "}
+                                {selectedWorkOrder.receivedBy ?? "-"}
+
+                            </Typography>
+
                             <Typography
                                 variant="subtitle2"
                                 sx={{ mt: 2 }}
