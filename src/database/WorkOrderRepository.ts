@@ -248,6 +248,28 @@ class WorkOrderRepository {
 
     }
 
+    public async deleteByWorkOrderNumber(
+        workOrderNumber: string
+    ): Promise<void> {
+
+        await database.connection.execute(
+
+            `
+            DELETE
+            FROM work_orders
+            WHERE work_order_number = $1
+            `,
+
+            [
+
+                workOrderNumber
+
+            ]
+
+        );
+
+    }
+
 }
 
 export const workOrderRepository =

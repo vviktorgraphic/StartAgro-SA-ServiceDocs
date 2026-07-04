@@ -78,10 +78,24 @@ Build hibak javitva
 
 ---
 
+## v0.7
+
+IndexService incremental indexing
+
+WorkOrderImportRepository hasznalata indexeleshez
+
+Valtozatlan PDF-ek kihagyasa
+
+Torolt PDF-ek eltavolitasa SQLite-bol
+
+openai-api-key.txt gitignore
+
+---
+
 ## Jelenlegi allapot
 
-Minden munkalap SQLite-ba mentheto.
+Az indexeles csak az uj vagy modositott PDF-eket dolgozza fel.
 
 Kovetkezo cel:
 
-IndexService import metadata atvezetese WorkOrderImportRepository-re.
+SQLite visszaolvasas fejlesztese.

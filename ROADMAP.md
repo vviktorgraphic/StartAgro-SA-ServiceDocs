@@ -52,7 +52,7 @@ work_order_imports SQLite tabla
 
 ---
 
-## Current Sprint 006
+## Done Sprint 006
 
 IndexService import metadata atvezetese
 
@@ -62,7 +62,7 @@ Torolt PDF eltavolitasa SQLite-bol
 
 ---
 
-## Sprint 007
+## Current Sprint 007
 
 SQLite visszaolvasas
 
