@@ -11,6 +11,12 @@ node_modules
 dist
 dist-ssr
 install
+release
+target
+testdata
+*.db
+*.db-shm
+*.db-wal
 *.local
 openai-api-key.txt
 
