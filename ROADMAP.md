@@ -208,7 +208,19 @@ Ures talalati allapot
 
 ---
 
-## Current Sprint 020
+## Done Sprint 020
+
+Filter refinements
+
+Alvazszam szuro
+
+Nativ datumvalaszto szurok
+
+Memoria alapu szures megtartasa
+
+---
+
+## Current Sprint 021
 
 SQLite visszaolvasas
 
@@ -220,7 +232,7 @@ React Context frissitese
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 Portable storage implementation
 
@@ -234,7 +246,7 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 022
+## Sprint 023
 
 ImageRepository
 
@@ -242,7 +254,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 023
+## Sprint 024
 
 PDF Preview fejlesztese
 
@@ -252,13 +264,13 @@ Zoom
 
 ---
 
-## Sprint 024
+## Sprint 025
 
 Beallitasok
 
 ---
 
-## Sprint 025
+## Sprint 026
 
 Export
 
@@ -270,12 +282,12 @@ CSV
 
 ---
 
-## Sprint 026
+## Sprint 027
 
 Performance optimalizalas
 
 ---
 
-## Sprint 027
+## Sprint 028
 
 v1.0 kiadas

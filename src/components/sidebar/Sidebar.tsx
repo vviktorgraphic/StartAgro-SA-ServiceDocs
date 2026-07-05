@@ -134,7 +134,7 @@ export default function Sidebar() {
 
             <TextField
                 size="small"
-                label="Gyári szám"
+                label="Alvázszám"
                 fullWidth
                 value={filters.serialNumber}
                 onChange={event =>
@@ -150,7 +150,7 @@ export default function Sidebar() {
                 <TextField
                     size="small"
                     label="Dátumtól"
-                    placeholder="ÉÉÉÉ.HH.NN"
+                    type="date"
                     fullWidth
                     value={filters.dateFrom}
                     onChange={event =>
@@ -159,12 +159,17 @@ export default function Sidebar() {
                             event.target.value
                         )
                     }
+                    slotProps={{
+                        inputLabel: {
+                            shrink: true
+                        }
+                    }}
                 />
 
                 <TextField
                     size="small"
                     label="Dátumig"
-                    placeholder="ÉÉÉÉ.HH.NN"
+                    type="date"
                     fullWidth
                     value={filters.dateTo}
                     onChange={event =>
@@ -173,6 +178,11 @@ export default function Sidebar() {
                             event.target.value
                         )
                     }
+                    slotProps={{
+                        inputLabel: {
+                            shrink: true
+                        }
+                    }}
                 />
 
             </Stack>

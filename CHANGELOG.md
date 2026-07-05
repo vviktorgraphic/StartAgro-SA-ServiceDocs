@@ -248,9 +248,21 @@ Ures talalati allapot es kijeloles kezeles
 
 ---
 
+## v0.21
+
+Filter refinements
+
+Alvazszam szuro cimke
+
+Nativ datumvalaszto mezok
+
+Meglevo memoria alapu szures megtartva
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a globalis kereses/szures a betoltott listan mukodik.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a globalis kereses/szures nativ datumvalasztoval mukodik.
 
 Kovetkezo cel:
 
