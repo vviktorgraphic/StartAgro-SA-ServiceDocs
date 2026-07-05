@@ -224,9 +224,21 @@ Szallitolevel, uzemora es egyeb megallapodas mezok
 
 ---
 
+## v0.19
+
+Portable storage review
+
+Jelenlegi startagro.db hely dokumentalva
+
+Mappa melletti hordozhato adatbazis strategia rogzitve
+
+UNC es halozati path kezeles atnezve
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a WorkOrder mezok PDF sorrendben jelennek meg.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a hordozhato adatbazis strategia dokumentalt.
 
 Kovetkezo cel:
 

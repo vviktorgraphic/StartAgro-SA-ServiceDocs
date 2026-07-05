@@ -182,7 +182,19 @@ Hianyzo WorkOrder mezok
 
 ---
 
-## Current Sprint 018
+## Done Sprint 018
+
+Portable storage review
+
+Jelenlegi adatbazis: sqlite:startagro.db
+
+Javasolt hordozhato strategia: valaszthato adatbazis hely, alapertelmezett a dokumentummappa melletti .startagro/startagro.db, fallback app data konyvtarba
+
+Nyitott dontes: halozati megosztas SQLite zarolas, tobb kliens egyideju indexelese, migracio a jelenlegi adatbazisbol
+
+---
+
+## Current Sprint 019
 
 SQLite visszaolvasas
 
@@ -194,7 +206,21 @@ React Context frissitese
 
 ---
 
-## Sprint 019
+## Sprint 020
+
+Portable storage implementation
+
+Konfiguralhato adatbazis hely
+
+Dokumentummappa melletti .startagro/startagro.db
+
+Migracio a jelenlegi startagro.db-bol
+
+Read-only vagy nem tamogatott halozati mappa fallback
+
+---
+
+## Sprint 021
 
 ImageRepository
 
@@ -202,7 +228,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 020
+## Sprint 022
 
 Gyors kereso
 
@@ -214,7 +240,7 @@ Munkalap
 
 ---
 
-## Sprint 021
+## Sprint 023
 
 PDF Preview fejlesztese
 
@@ -224,13 +250,13 @@ Zoom
 
 ---
 
-## Sprint 022
+## Sprint 024
 
 Beallitasok
 
 ---
 
-## Sprint 023
+## Sprint 025
 
 Export
 
@@ -242,12 +268,12 @@ CSV
 
 ---
 
-## Sprint 024
+## Sprint 026
 
 Performance optimalizalas
 
 ---
 
-## Sprint 025
+## Sprint 027
 
 v1.0 kiadas
