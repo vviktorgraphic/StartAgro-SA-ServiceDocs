@@ -64,6 +64,19 @@ Release Candidate ellenorzes:
    - PDF preview, foto thumbnail es lightbox mukodik
    - desktop shortcut ikon inditas utan is helyes marad
 
+Large dataset validation:
+
+- Dataset: 13,025 files total
+- PDF files: 3,191
+- JPG files: 9,811
+- First indexing completed successfully
+- 3,191 PDFs processed
+- Errors: 0
+- Second indexing completed quickly
+- Already indexed unchanged files were skipped correctly
+- UI remained responsive
+- Future milestone: 50,000 file validation
+
 Internal 0.1.0 release artifact:
 
 - Path: `install/StartAgro-ServiceDocs-Setup.exe`

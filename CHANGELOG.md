@@ -410,6 +410,20 @@ Varatlan fatalis hiba eseten az indexeles osszesitovel ter vissza
 
 ---
 
+## v0.29.1
+
+Sprint 23: Large dataset validation documented
+
+Nagy adathalmaz indexeles validalva: 13,025 fajl osszesen, ebbol 3,191 PDF es 9,811 JPG
+
+Elso indexeles sikeresen lefutott: 3,191 PDF feldolgozva, 0 hiba
+
+Masodik indexeles gyorsan lefutott, a mar indexelt valtozatlan fajlok helyesen kihagyva
+
+UI nagy adathalmaz indexelese kozben is reszponziv maradt
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.
