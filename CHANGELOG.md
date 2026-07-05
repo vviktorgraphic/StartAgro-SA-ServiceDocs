@@ -272,9 +272,21 @@ Windows Tauri build parancs dokumentalva
 
 ---
 
+## v0.23
+
+Release polish and app logo
+
+Hasznalatlan beallitas gomb eltavolitva a headerbol
+
+StartAgro logo hozzaadva a headerhez es Tauri ikonokhoz
+
+NSIS setup exe masolasa release mappaba
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a Windows release build elokeszites megtortent.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es az NSIS setup exe tiszta release mappaba masolhato.
 
 Kovetkezo cel:
 

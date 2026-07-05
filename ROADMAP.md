@@ -232,7 +232,19 @@ Tauri Windows build ellenorzes
 
 ---
 
-## Current Sprint 022
+## Done Sprint 022
+
+Release polish and app logo
+
+Hasznalatlan header beallitas gomb eltavolitva
+
+StartAgro logo headerben es Tauri ikonokban
+
+NSIS setup exe release mappaba masolasa
+
+---
+
+## Current Sprint 023
 
 SQLite visszaolvasas
 
@@ -244,7 +256,7 @@ React Context frissitese
 
 ---
 
-## Sprint 023
+## Sprint 024
 
 Portable storage implementation
 
@@ -258,7 +270,7 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 024
+## Sprint 025
 
 ImageRepository
 
@@ -266,7 +278,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 025
+## Sprint 026
 
 PDF Preview fejlesztese
 
@@ -276,13 +288,13 @@ Zoom
 
 ---
 
-## Sprint 026
+## Sprint 027
 
 Beallitasok
 
 ---
 
-## Sprint 027
+## Sprint 028
 
 Export
 
@@ -294,7 +306,7 @@ CSV
 
 ---
 
-## Sprint 028
+## Sprint 029
 
 Release hardening
 
@@ -308,12 +320,12 @@ Portable adatbazis strategia implementalasa
 
 ---
 
-## Sprint 029
+## Sprint 030
 
 Performance optimalizalas
 
 ---
 
-## Sprint 030
+## Sprint 031
 
 v1.0 kiadas

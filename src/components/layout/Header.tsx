@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
+import logoUrl from "../../../start_agro_logo_symbol.png";
 import { useAppContext } from "../../context/AppContext";
 import { dialogService } from "../../services/DialogService";
 import {
@@ -165,6 +166,18 @@ export default function Header() {
                 }}
             >
 
+                <Box
+                    component="img"
+                    src={logoUrl}
+                    alt="StartAgro"
+                    sx={{
+                        width: 32,
+                        height: 32,
+                        objectFit: "contain",
+                        flexShrink: 0
+                    }}
+                />
+
                 <Typography
                     variant="h6"
                     noWrap
@@ -222,10 +235,6 @@ export default function Header() {
                     {isIndexing
                         ? "Indexelés..."
                         : "Mappa indexelése"}
-                </Button>
-
-                <Button color="inherit">
-                    ⚙
                 </Button>
 
                 {isIndexing && (
