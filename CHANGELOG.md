@@ -366,6 +366,20 @@ Manualis release tesztlepesek es ismert hatralevo validacios pontok dokumentalva
 
 ---
 
+## 0.1.0 Internal Release
+
+Internal 0.1.0 release veglegesitve
+
+Verzio ellenorizve: package.json, package-lock.json, src-tauri/Cargo.toml es src-tauri/tauri.conf.json mind 0.1.0
+
+Build ellenorzes lefutott: npm.cmd run build, npm.cmd run tauri build, npm.cmd run release:copy
+
+Installer: install/StartAgro-ServiceDocs-Setup.exe
+
+SHA256: 50C9E8E2DDF9AF08D548338960EB2443BA3899B1C5AF8AA9396A3BE80A070892
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

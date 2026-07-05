@@ -64,6 +64,11 @@ Release Candidate ellenorzes:
    - PDF preview, foto thumbnail es lightbox mukodik
    - desktop shortcut ikon inditas utan is helyes marad
 
+Internal 0.1.0 release artifact:
+
+- Path: `install/StartAgro-ServiceDocs-Setup.exe`
+- SHA256: `50C9E8E2DDF9AF08D548338960EB2443BA3899B1C5AF8AA9396A3BE80A070892`
+
 ---
 
 ## Projekt filozófia

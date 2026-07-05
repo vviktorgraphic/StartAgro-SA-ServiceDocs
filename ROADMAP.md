@@ -301,6 +301,23 @@ Ismert hatralevo validacios pontok:
 
 ---
 
+## Done Sprint 021 Internal 0.1.0 Release
+
+Internal 0.1.0 release veglegesitve
+
+Final installer: install/StartAgro-ServiceDocs-Setup.exe
+
+SHA256: 50C9E8E2DDF9AF08D548338960EB2443BA3899B1C5AF8AA9396A3BE80A070892
+
+Hatralevo jovobeli release feladatok:
+
+- Server es halozati megosztas tesztelese
+- Portable database strategia
+- Nagy adathalmazon teljesitmenyteszt
+- Desktop shortcut ikon cache follow-up, ha valos telepitesen meg szukseges
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas
