@@ -344,6 +344,16 @@ Status bar megtartja a lathato dokumentumszamot es az utolso lathato munkalapsza
 
 ---
 
+## v0.26.2
+
+Windows desktop shortcut icon cache hotfix
+
+Desktop shortcut ikonja verziozott telepitett StartAgro-ServiceDocs-icon-v2.ico fajlra mutat
+
+Regi StartAgro-ServiceDocs.ico telepitett ikonfajl torolve a cache utkozes elkerulesehez
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

@@ -278,6 +278,8 @@ Desktop shortcut explicit telepitett StartAgro-ServiceDocs.ico ikonfajlt hasznal
 
 Windows desktop shortcut shell identitas cache javitas
 
+Desktop shortcut verziozott telepitett ikonfajlra allitva
+
 Status bar valos munkalap es indexelesi adatokkal
 
 Utolso index mezo eltavolitva, perzisztencia nelkul nem marad status bar adat
