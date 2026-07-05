@@ -139,10 +139,14 @@ export default function Header() {
 
         return [
             `${progress.processed}/${progress.totalCandidates}`,
+            progress.currentWorkOrderNumber
+                ?? getFileName(progress.currentPdfFile),
             `${progress.parsed} feldolgozva`,
             `${progress.skipped} kihagyva`,
             `${progress.errors} hiba`
-        ].join(" | ");
+        ]
+            .filter(Boolean)
+            .join(" | ");
 
     }
 
@@ -161,6 +165,13 @@ export default function Header() {
         }
 
         if (indexSummary) {
+            if (indexSummary.fatalError) {
+                return [
+                    "Indexelés megszakadt.",
+                    renderSummary(indexSummary)
+                ].join(" ");
+            }
+
             if (indexSummary.errors > 0) {
                 return [
                     `Indexelés kész, hibákkal: ${indexSummary.errors} fájl nem dolgozható fel.`,
@@ -303,5 +314,17 @@ export default function Header() {
         </AppBar>
 
     );
+
+}
+
+function getFileName(
+    path: string | undefined
+): string | undefined {
+
+    if (!path) {
+        return undefined;
+    }
+
+    return path.split(/[\\/]/).pop() ?? path;
 
 }

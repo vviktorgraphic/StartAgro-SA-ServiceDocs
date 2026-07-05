@@ -330,6 +330,18 @@ Linearis kepparositas nagy mappakhoz
 
 ---
 
+## Done Sprint 023 Large indexing freeze diagnostics
+
+IndexService batch meret 25 munkalapra csokkentve
+
+Minden munkalap utan UI yield, progress throttling 250ms frissitesi ablakkal
+
+Scan, batch, aktualis PDF, lassu parse, memoria es utolso mentett munkalap diagnosztika
+
+PDF olvasas egy megnyitassal, feldolgozas utani temporary adat felszabaditassal
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas

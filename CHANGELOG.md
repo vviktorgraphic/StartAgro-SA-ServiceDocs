@@ -394,6 +394,22 @@ Kepparositas linearis map-alapu keresessel gyorsitva nagy mappakhoz
 
 ---
 
+## v0.29
+
+Sprint 23: Large indexing freeze diagnostics and stabilization
+
+Index batch meret 25 munkalapra csokkentve, minden feldolgozott munkalap utan UI yield
+
+Indexelesi progress frissites 250ms-ra throttlingolva, batch hatarokon azonnali frissitessel
+
+Reszletes indexelesi diagnosztika hozzaadva: scan start/end, batch start/end, aktualis PDF, lassu parse, memoria figyelmeztetes, utolso mentett munkalap
+
+PDF olvasas egy pdf.js megnyitassal tortenik, oldal es text item adatok feldolgozas utan felszabaditva
+
+Varatlan fatalis hiba eseten az indexeles osszesitovel ter vissza
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

@@ -74,6 +74,75 @@ export class PdfService {
 
     }
 
+    public async readPagesAndTextItems(
+        pdfPath: string
+    ): Promise<{
+        pages: string[];
+        textItems: PdfTextItem[];
+    }> {
+
+        const pdf =
+            await this.open(pdfPath);
+
+        const pages: string[] = [];
+        const textItems: PdfTextItem[] = [];
+
+        try {
+
+            for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+
+                const page =
+                    await pdf.getPage(pageNumber);
+
+                const content =
+                    await page.getTextContent();
+
+                const pageText: string[] = [];
+
+                for (const item of content.items) {
+
+                    const textItem =
+                        item as TextItem;
+
+                    pageText.push(
+                        textItem.str
+                    );
+
+                    textItems.push({
+
+                        text: textItem.str,
+
+                        x: textItem.transform[4],
+
+                        y: textItem.transform[5],
+
+                        page: pageNumber
+
+                    });
+
+                }
+
+                pages.push(
+                    pageText.join("\n")
+                );
+
+                page.cleanup();
+
+            }
+
+        } finally {
+
+            await pdf.cleanup();
+
+        }
+
+        return {
+            pages,
+            textItems
+        };
+
+    }
+
     public async readTextItems(
         pdfPath: string
     ): Promise<PdfTextItem[]> {

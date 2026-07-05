@@ -5,6 +5,7 @@ import { WorkOrder } from "../models/WorkOrder";
 import { WorkOrderImport } from "../models/WorkOrderImport";
 import {
     PdfFile,
+    ScanResult,
     tauriService
 } from "../tauri/TauriService";
 import { matcherService } from "./MatcherService";
@@ -20,6 +21,10 @@ export interface IndexingSummary {
     errors: number;
     processed: number;
     totalCandidates: number;
+    currentWorkOrderNumber?: string;
+    currentPdfFile?: string;
+    lastSavedWorkOrderNumber?: string;
+    fatalError?: string;
 }
 
 export interface IndexingResult {
@@ -29,7 +34,10 @@ export interface IndexingResult {
 
 export type IndexingProgress = IndexingSummary;
 
-export const INDEX_BATCH_SIZE = 100;
+export const INDEX_BATCH_SIZE = 25;
+
+const INDEX_PROGRESS_INTERVAL_MS = 250;
+const SLOW_PARSE_WARNING_MS = 2000;
 
 export class IndexService {
 
@@ -38,49 +46,54 @@ export class IndexService {
         onProgress?: (progress: IndexingProgress) => void
     ): Promise<IndexingResult> {
 
-        const result =
-            await tauriService.scanDocuments(folder);
+        console.log(
+            `Index scan start: ${folder}`
+        );
+
+        let result: ScanResult;
+
+        try {
+
+            result =
+                await tauriService.scanDocuments(folder);
+
+        } catch (error) {
+
+            console.error(
+                "Index scan fatal error:",
+                error
+            );
+
+            const summary =
+                this.createEmptySummary(
+                    this.formatError(error)
+                );
+
+            onProgress?.(summary);
+
+            return {
+                workOrders: [],
+                summary
+            };
+
+        }
 
         console.log(
-            `PDF: ${result.pdf_count}, JPG: ${result.image_count}`
+            `Index scan end: PDF: ${result.pdf_count}, JPG: ${result.image_count}`
         );
 
         let parsedCount = 0;
         let skippedCount = 0;
+        let deletedCount = 0;
         let errorCount = 0;
         let processedCount = 0;
+        let currentWorkOrderNumber: string | undefined;
+        let currentPdfFile: string | undefined;
+        let lastSavedWorkOrderNumber: string | undefined;
+        let fatalError: string | undefined;
+        let lastProgressAt = 0;
 
-        const workOrders =
-            matcherService.match(
-                result.pdf_files,
-                result.image_files
-            );
-
-        console.log(
-            `Felismert munkalapok: ${workOrders.length}`
-        );
-
-        const imports =
-            await workOrderImportRepository.loadAll();
-
-        const importByPath =
-            this.createImportMap(
-                imports
-            );
-
-        const pdfFileByPath =
-            this.createPdfFileMap(
-                result.pdf_files
-            );
-
-        const deletedCount =
-            await this.deleteMissingRecords(
-                imports,
-                pdfFileByPath
-            );
-
-        const totalCandidates =
-            workOrders.length;
+        let workOrders: WorkOrder[] = [];
 
         const createSummary = (): IndexingSummary => ({
             scannedPdfs: result.pdf_count,
@@ -90,98 +103,150 @@ export class IndexService {
             deleted: deletedCount,
             errors: errorCount,
             processed: processedCount,
-            totalCandidates
+            totalCandidates: workOrders.length,
+            currentWorkOrderNumber,
+            currentPdfFile,
+            lastSavedWorkOrderNumber,
+            fatalError
         });
 
-        onProgress?.(
-            createSummary()
-        );
+        const emitProgress = (force = false) => {
 
-        for (let index = 0; index < workOrders.length; index++) {
-
-            const workOrder =
-                workOrders[index];
-
-            try {
-
-                const pdfFile =
-                    pdfFileByPath.get(
-                        this.normalizePath(
-                            workOrder.pdfFile
-                        )
-                    );
-
-                if (!pdfFile) {
-                    processedCount++;
-                    onProgress?.(
-                        createSummary()
-                    );
-
-                    if (this.isBatchEnd(index)) {
-                        await this.yieldToUi();
-                    }
-
-                    continue;
-                }
-
-                const workOrderImport =
-                    this.createWorkOrderImport(
-                        workOrder,
-                        pdfFile
-                    );
-
-                if (!this.shouldParse(
-                    workOrderImport,
-                    importByPath
-                )) {
-                    skippedCount++;
-                    processedCount++;
-
-                    await workOrderRepository.updateImageFiles(
-                        workOrder.workOrderNumber,
-                        workOrder.imageFiles
-                    );
-
-                    onProgress?.(
-                        createSummary()
-                    );
-
-                    if (this.isBatchEnd(index)) {
-                        await this.yieldToUi();
-                    }
-
-                    continue;
-                }
-
-                await this.parseAndSave(
-                    workOrder,
-                    workOrderImport
-                );
-
-                parsedCount++;
-                processedCount++;
-
-            } catch (error) {
-
-                errorCount++;
-                processedCount++;
-
-                console.error(
-                    `PDF feldolgozasi hiba: ${workOrder.pdfFile}`,
-                    error
-                );
-
+            if (!onProgress) {
+                return;
             }
 
-            onProgress?.(
+            const now =
+                Date.now();
+
+            if (!force && now - lastProgressAt < INDEX_PROGRESS_INTERVAL_MS) {
+                return;
+            }
+
+            lastProgressAt = now;
+
+            onProgress(
                 createSummary()
             );
 
-            if (this.isBatchEnd(index)) {
-                await this.yieldToUi();
+        };
+
+        try {
+
+            workOrders =
+                matcherService.match(
+                    result.pdf_files,
+                    result.image_files
+                );
+
+            console.log(
+                `Index matched work orders: ${workOrders.length}`
+            );
+
+            const imports =
+                await workOrderImportRepository.loadAll();
+
+            const importByPath =
+                this.createImportMap(
+                    imports
+                );
+
+            const pdfFileByPath =
+                this.createPdfFileMap(
+                    result.pdf_files
+                );
+
+            deletedCount =
+                await this.deleteMissingRecords(
+                    imports,
+                    pdfFileByPath
+                );
+
+            emitProgress(true);
+
+            for (let index = 0; index < workOrders.length; index++) {
+
+                const workOrder =
+                    workOrders[index];
+
+                currentWorkOrderNumber =
+                    workOrder.workOrderNumber;
+
+                currentPdfFile =
+                    workOrder.pdfFile;
+
+                if (this.isBatchStart(index)) {
+                    console.log(
+                        `Index batch start: ${this.getBatchNumber(index)} (${index + 1}/${workOrders.length})`
+                    );
+                    this.logMemoryWarning();
+                    emitProgress(true);
+                }
+
+                try {
+
+                    await this.processWorkOrder(
+                        workOrder,
+                        pdfFileByPath,
+                        importByPath,
+                        () => skippedCount++,
+                        () => parsedCount++,
+                        savedWorkOrderNumber => {
+                            lastSavedWorkOrderNumber =
+                                savedWorkOrderNumber;
+                        }
+                    );
+
+                } catch (error) {
+
+                    errorCount++;
+
+                    console.error(
+                        `PDF feldolgozasi hiba: ${workOrder.pdfFile}`,
+                        error
+                    );
+
+                } finally {
+
+                    processedCount++;
+
+                    emitProgress(
+                        this.isBatchEnd(index, workOrders.length)
+                    );
+
+                    if (this.isBatchEnd(index, workOrders.length)) {
+                        console.log(
+                            `Index batch end: ${this.getBatchNumber(index)} (${processedCount}/${workOrders.length})`
+                        );
+                        this.logMemoryWarning();
+                    }
+
+                    await this.yieldToUi();
+
+                }
+
             }
 
+        } catch (error) {
+
+            errorCount++;
+            fatalError =
+                this.formatError(error);
+
+            console.error(
+                "Fatal indexing error:",
+                error
+            );
+
         }
+
+        currentWorkOrderNumber =
+            undefined;
+
+        currentPdfFile =
+            undefined;
+
+        emitProgress(true);
 
         const summary =
             createSummary();
@@ -195,13 +260,105 @@ export class IndexService {
                 `deleted: ${summary.deleted}`,
                 `errors: ${summary.errors}`,
                 `processed: ${summary.processed}`,
-                `total candidates: ${summary.totalCandidates}`
+                `total candidates: ${summary.totalCandidates}`,
+                `last saved: ${summary.lastSavedWorkOrderNumber ?? "-"}`,
+                `fatal: ${summary.fatalError ?? "-"}`
             ].join(", ")
         );
 
         return {
             workOrders,
             summary
+        };
+
+    }
+
+    private async processWorkOrder(
+        workOrder: WorkOrder,
+        pdfFileByPath: Map<string, PdfFile>,
+        importByPath: Map<string, WorkOrderImport>,
+        countSkipped: () => void,
+        countParsed: () => void,
+        setLastSaved: (workOrderNumber: string) => void
+    ): Promise<void> {
+
+        const pdfFile =
+            pdfFileByPath.get(
+                this.normalizePath(
+                    workOrder.pdfFile
+                )
+            );
+
+        if (!pdfFile) {
+            return;
+        }
+
+        const workOrderImport =
+            this.createWorkOrderImport(
+                workOrder,
+                pdfFile
+            );
+
+        if (!this.shouldParse(
+            workOrderImport,
+            importByPath
+        )) {
+            countSkipped();
+
+            await workOrderRepository.updateImageFiles(
+                workOrder.workOrderNumber,
+                workOrder.imageFiles
+            );
+
+            return;
+        }
+
+        console.log(
+            `Index parsing: ${workOrder.workOrderNumber} | ${workOrder.pdfFile}`
+        );
+
+        const parseStart =
+            performance.now();
+
+        await this.parseAndSave(
+            workOrder,
+            workOrderImport
+        );
+
+        const parseDuration =
+            performance.now() - parseStart;
+
+        if (parseDuration > SLOW_PARSE_WARNING_MS) {
+            console.warn(
+                `Slow PDF parse: ${Math.round(parseDuration)}ms | ${workOrder.workOrderNumber} | ${workOrder.pdfFile}`
+            );
+        }
+
+        countParsed();
+        setLastSaved(
+            workOrder.workOrderNumber
+        );
+
+        console.log(
+            `Index last saved work order: ${workOrder.workOrderNumber}`
+        );
+
+    }
+
+    private createEmptySummary(
+        fatalError: string
+    ): IndexingSummary {
+
+        return {
+            scannedPdfs: 0,
+            scannedImages: 0,
+            parsed: 0,
+            skipped: 0,
+            deleted: 0,
+            errors: 1,
+            processed: 0,
+            totalCandidates: 0,
+            fatalError
         };
 
     }
@@ -314,40 +471,44 @@ export class IndexService {
         workOrderImport: WorkOrderImport
     ): Promise<void> {
 
-        const pages =
-            await pdfService.readPages(
+        const pdfData =
+            await pdfService.readPagesAndTextItems(
                 workOrder.pdfFile
             );
 
-        const textItems =
-            await pdfService.readTextItems(
-                workOrder.pdfFile
+        try {
+
+            const parsed =
+                pdfParser.parse(
+                    pdfData.pages,
+                    pdfData.textItems
+                );
+
+            Object.assign(
+                workOrder,
+                parsed
             );
 
-        const parsed =
-            pdfParser.parse(
-                pages,
-                textItems
+            const workOrderId =
+                await workOrderRepository.save(
+                    workOrder
+                );
+
+            await serviceVisitRepository.save(
+                workOrderId,
+                workOrder.serviceVisits
             );
 
-        Object.assign(
-            workOrder,
-            parsed
-        );
-
-        const workOrderId =
-            await workOrderRepository.save(
-                workOrder
+            await workOrderImportRepository.save(
+                workOrderImport
             );
 
-        await serviceVisitRepository.save(
-            workOrderId,
-            workOrder.serviceVisits
-        );
+        } finally {
 
-        await workOrderImportRepository.save(
-            workOrderImport
-        );
+            pdfData.pages.length = 0;
+            pdfData.textItems.length = 0;
+
+        }
 
     }
 
@@ -372,11 +533,68 @@ export class IndexService {
 
     }
 
-    private isBatchEnd(
+    private isBatchStart(
         index: number
     ): boolean {
 
-        return (index + 1) % INDEX_BATCH_SIZE === 0;
+        return index % INDEX_BATCH_SIZE === 0;
+
+    }
+
+    private isBatchEnd(
+        index: number,
+        total: number
+    ): boolean {
+
+        return (index + 1) % INDEX_BATCH_SIZE === 0
+            || index + 1 === total;
+
+    }
+
+    private getBatchNumber(
+        index: number
+    ): number {
+
+        return Math.floor(index / INDEX_BATCH_SIZE) + 1;
+
+    }
+
+    private logMemoryWarning(): void {
+
+        const memory =
+            (
+                performance as Performance & {
+                    memory?: {
+                        usedJSHeapSize: number;
+                        jsHeapSizeLimit: number;
+                    };
+                }
+            ).memory;
+
+        if (!memory || memory.jsHeapSizeLimit === 0) {
+            return;
+        }
+
+        const usedRatio =
+            memory.usedJSHeapSize / memory.jsHeapSizeLimit;
+
+        if (usedRatio < 0.8) {
+            return;
+        }
+
+        console.warn(
+            `Index memory warning: ${Math.round(usedRatio * 100)}% heap used`
+        );
+
+    }
+
+    private formatError(
+        error: unknown
+    ): string {
+
+        return error instanceof Error
+            ? error.message
+            : String(error);
 
     }
 
