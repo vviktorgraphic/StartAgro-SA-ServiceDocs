@@ -31,6 +31,12 @@ export interface WorkOrderRecord {
 
     completedWork?: string;
 
+    deliveryNoteNumber?: string;
+
+    operatingHours?: string;
+
+    otherAgreements?: string;
+
     billingAddress?: string;
 
     serviceLocation?: string;
@@ -82,6 +88,10 @@ class WorkOrderRepository {
 
                 completed_work,
 
+                delivery_note_number,
+                operating_hours,
+                other_agreements,
+
                 billing_address,
                 service_location,
                 material_total,
@@ -102,7 +112,8 @@ class WorkOrderRepository {
                 $12,
                 $13,
                 $14,
-                $15,$16,$17,$18,$19,$20,$21,$22,$23
+                $15,$16,$17,
+                $18,$19,$20,$21,$22,$23,$24,$25,$26
 
             )
 
@@ -128,6 +139,10 @@ class WorkOrderRepository {
                 reported_issue = excluded.reported_issue,
 
                 completed_work = excluded.completed_work,
+
+                delivery_note_number = excluded.delivery_note_number,
+                operating_hours = excluded.operating_hours,
+                other_agreements = excluded.other_agreements,
 
                 billing_address = excluded.billing_address,
                 service_location = excluded.service_location,
@@ -171,6 +186,12 @@ class WorkOrderRepository {
                 workOrder.reportedIssue ?? null,
 
                 workOrder.completedWork ?? null,
+
+                workOrder.deliveryNoteNumber ?? null,
+
+                workOrder.operatingHours ?? null,
+
+                workOrder.otherAgreements ?? null,
 
                 workOrder.billingAddress ?? null,
 
@@ -259,6 +280,12 @@ class WorkOrderRepository {
                 reported_issue AS reportedIssue,
 
                 completed_work AS completedWork,
+
+                delivery_note_number AS deliveryNoteNumber,
+
+                operating_hours AS operatingHours,
+
+                other_agreements AS otherAgreements,
 
                 billing_address AS billingAddress,
 

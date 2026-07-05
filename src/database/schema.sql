@@ -25,6 +25,10 @@ CREATE TABLE IF NOT EXISTS work_orders (
 
     completed_work TEXT,
 
+    delivery_note_number TEXT,
+    operating_hours TEXT,
+    other_agreements TEXT,
+
     billing_address TEXT,
     service_location TEXT,
     material_total TEXT,

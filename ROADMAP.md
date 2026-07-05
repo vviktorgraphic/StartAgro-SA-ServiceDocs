@@ -170,7 +170,19 @@ Preview mezok megjelenitese
 
 ---
 
-## Current Sprint 017
+## Done Sprint 017
+
+Sprint 11 parser hotfix
+
+Egyszeru textItem mezo kinyeres
+
+PDF mezosorrend Preview-ban
+
+Hianyzo WorkOrder mezok
+
+---
+
+## Current Sprint 018
 
 SQLite visszaolvasas
 
@@ -182,7 +194,7 @@ React Context frissitese
 
 ---
 
-## Sprint 018
+## Sprint 019
 
 ImageRepository
 
@@ -190,7 +202,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 019
+## Sprint 020
 
 Gyors kereso
 
@@ -202,7 +214,7 @@ Munkalap
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 PDF Preview fejlesztese
 
@@ -212,13 +224,13 @@ Zoom
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 Beallitasok
 
 ---
 
-## Sprint 022
+## Sprint 023
 
 Export
 
@@ -230,12 +242,12 @@ CSV
 
 ---
 
-## Sprint 023
+## Sprint 024
 
 Performance optimalizalas
 
 ---
 
-## Sprint 024
+## Sprint 025
 
 v1.0 kiadas

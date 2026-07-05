@@ -212,9 +212,21 @@ SQLite schema es repository bovites
 
 ---
 
+## v0.18
+
+Sprint 11 parser hotfix
+
+Egyszeru textItem alapu mezokinyeres
+
+PDF sorrend szerinti Preview mezok
+
+Szallitolevel, uzemora es egyeb megallapodas mezok
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a WorkOrder adatok bovultek uj parser mezokkel.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, es a WorkOrder mezok PDF sorrendben jelennek meg.
 
 Kovetkezo cel:
 

@@ -34,6 +34,12 @@ export interface WorkOrder {
 
     completedWork?: string;
 
+    deliveryNoteNumber?: string;
+
+    operatingHours?: string;
+
+    otherAgreements?: string;
+
     billingAddress?: string;
 
     serviceLocation?: string;

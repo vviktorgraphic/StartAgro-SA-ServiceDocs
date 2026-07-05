@@ -54,6 +54,12 @@ class LoadWorkOrdersService {
 
                 completedWork: record.completedWork,
 
+                deliveryNoteNumber: record.deliveryNoteNumber,
+
+                operatingHours: record.operatingHours,
+
+                otherAgreements: record.otherAgreements,
+
                 billingAddress: record.billingAddress,
 
                 serviceLocation: record.serviceLocation,

@@ -174,147 +174,89 @@ export default function PreviewPanel() {
                             </Typography>
 
                             <Typography>
-
                                 <strong>Partner:</strong>{" "}
                                 {selectedWorkOrder.partnerName ?? "-"}
-
                             </Typography>
 
                             <Typography>
-
                                 <strong>Adószám:</strong>{" "}
                                 {selectedWorkOrder.taxNumber ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Kapcsolattartó:</strong>{" "}
-                                {selectedWorkOrder.contactName ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Telefon:</strong>{" "}
-                                {selectedWorkOrder.phone ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>E-mail:</strong>{" "}
-                                {selectedWorkOrder.email ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Gép:</strong>{" "}
-                                {selectedWorkOrder.machineType ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Alvázszám:</strong>{" "}
-                                {selectedWorkOrder.serialNumber ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Munka típusa:</strong>{" "}
-                                {selectedWorkOrder.workType ?? "-"}
-
                             </Typography>
 
                             <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                                <strong>Számlázási cím:</strong>
+                                {"\n"}
+                                {selectedWorkOrder.billingAddress ?? "-"}
+                            </Typography>
 
+                            <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                                <strong>Szerviz helyszíne:</strong>
+                                {"\n"}
+                                {selectedWorkOrder.serviceLocation ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Kapcsolattartó:</strong>{" "}
+                                {selectedWorkOrder.contactName ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Telefon:</strong>{" "}
+                                {selectedWorkOrder.phone ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>E-mail:</strong>{" "}
+                                {selectedWorkOrder.email ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Szállítólevél száma:</strong>{" "}
+                                {selectedWorkOrder.deliveryNoteNumber ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Gép:</strong>{" "}
+                                {selectedWorkOrder.machineType ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Alvázszám:</strong>{" "}
+                                {selectedWorkOrder.serialNumber ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Üzemóra:</strong>{" "}
+                                {selectedWorkOrder.operatingHours ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Egyéb megállapodások:</strong>{" "}
+                                {selectedWorkOrder.otherAgreements ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Munka típusa:</strong>{" "}
+                                {selectedWorkOrder.workType ?? "-"}
+                            </Typography>
+
+                            <Typography sx={{ whiteSpace: "pre-wrap" }}>
                                 <strong>Bejelentett hiba:</strong>
                                 {"\n"}
                                 {selectedWorkOrder.reportedIssue ?? "-"}
-
                             </Typography>
 
                             <Typography sx={{ whiteSpace: "pre-wrap" }}>
-
                                 <strong>Elvégzett munka:</strong>
                                 {"\n"}
                                 {selectedWorkOrder.completedWork ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Számlázási cím:</strong>{" "}
-                                {selectedWorkOrder.billingAddress ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Szerviz helyszíne:</strong>{" "}
-                                {selectedWorkOrder.serviceLocation ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Rezsianyag összesen (Ft):</strong>{" "}
-                                {selectedWorkOrder.materialTotal ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Megtett km összesen:</strong>{" "}
-                                {selectedWorkOrder.totalKilometers ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Munkaidő összesen (óra):</strong>{" "}
-                                {selectedWorkOrder.totalWorkHours ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Mosás:</strong>{" "}
-                                {selectedWorkOrder.washing ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Munkalap lezárásának dátuma:</strong>{" "}
-                                {selectedWorkOrder.closedAt ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Átadó:</strong>{" "}
-                                {selectedWorkOrder.handedOverBy ?? "-"}
-
-                            </Typography>
-
-                            <Typography>
-
-                                <strong>Átvevő:</strong>{" "}
-                                {selectedWorkOrder.receivedBy ?? "-"}
-
                             </Typography>
 
                             <Typography
                                 variant="subtitle2"
                                 sx={{ mt: 2 }}
                             >
-
                                 Kiszállások
-
                             </Typography>
 
                             <ServiceVisitTable
@@ -322,6 +264,41 @@ export default function PreviewPanel() {
                                     selectedWorkOrder.serviceVisits
                                 }
                             />
+
+                            <Typography>
+                                <strong>Rezsianyag összesen (Ft):</strong>{" "}
+                                {selectedWorkOrder.materialTotal ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Megtett km összesen:</strong>{" "}
+                                {selectedWorkOrder.totalKilometers ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Munkaidő összesen (óra):</strong>{" "}
+                                {selectedWorkOrder.totalWorkHours ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Mosás:</strong>{" "}
+                                {selectedWorkOrder.washing ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Munkalap lezárásának dátuma:</strong>{" "}
+                                {selectedWorkOrder.closedAt ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Átadó:</strong>{" "}
+                                {selectedWorkOrder.handedOverBy ?? "-"}
+                            </Typography>
+
+                            <Typography>
+                                <strong>Átvevő:</strong>{" "}
+                                {selectedWorkOrder.receivedBy ?? "-"}
+                            </Typography>
 
                         </Box>
 

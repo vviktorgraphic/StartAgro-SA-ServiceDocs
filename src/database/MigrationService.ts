@@ -33,6 +33,9 @@ class MigrationService {
     private async addWorkOrderColumnMigrations(): Promise<void> {
 
         const columns = [
+            "delivery_note_number",
+            "operating_hours",
+            "other_agreements",
             "billing_address",
             "service_location",
             "material_total",

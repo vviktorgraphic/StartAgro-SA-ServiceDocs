@@ -25,6 +25,12 @@ export interface ParsedPdfData {
 
     completedWork?: string;
 
+    deliveryNoteNumber?: string;
+
+    operatingHours?: string;
+
+    otherAgreements?: string;
+
     billingAddress?: string;
 
     serviceLocation?: string;
@@ -57,60 +63,91 @@ export class PdfParser {
         const firstPage =
             pages[0] ?? "";
 
-        const allPages =
-            pages.join("\n");
-
         const serviceVisits =
             serviceVisitParser.parse(textItems);
 
         return {
 
             partnerName:
-                this.extractField(
-                    firstPage,
-                    ["Partner neve"]
+                this.extractBelow(
+                    textItems,
+                    "Partner neve"
                 ) ?? undefined,
 
             taxNumber:
-                this.extractField(
-                    firstPage,
-                    ["Adószám"]
+                this.extractBelow(
+                    textItems,
+                    "Adószám"
+                ) ?? undefined,
+
+            billingAddress:
+                this.extractBelow(
+                    textItems,
+                    "Számlázási cím",
+                    3,
+                    48
+                ) ?? undefined,
+
+            serviceLocation:
+                this.extractBelow(
+                    textItems,
+                    "Szerviz helyszíne",
+                    3,
+                    48
                 ) ?? undefined,
 
             contactName:
-                this.extractField(
-                    firstPage,
-                    ["Kapcsolattartó"]
-                ) ?? undefined,
-
-            email:
-                this.extractField(
-                    firstPage,
-                    ["Email"]
+                this.extractBelow(
+                    textItems,
+                    "Kapcsolattartó"
                 ) ?? undefined,
 
             phone:
-                this.extractField(
-                    firstPage,
-                    ["Telefon"]
+                this.extractBelow(
+                    textItems,
+                    "Telefon"
+                ) ?? undefined,
+
+            email:
+                this.extractBelow(
+                    textItems,
+                    "Email"
+                ) ?? undefined,
+
+            deliveryNoteNumber:
+                this.extractBelow(
+                    textItems,
+                    "Szállítólevél száma"
                 ) ?? undefined,
 
             machineType:
-                this.extractField(
-                    firstPage,
-                    ["Gép típusa"]
+                this.extractBelow(
+                    textItems,
+                    "Gép típusa"
                 ) ?? undefined,
 
             serialNumber:
-                this.extractField(
-                    firstPage,
-                    ["Alvázszám"]
+                this.extractBelow(
+                    textItems,
+                    "Alvázszám"
+                ) ?? undefined,
+
+            operatingHours:
+                this.extractBelow(
+                    textItems,
+                    "Üzemóra | Bála | Hektár"
+                ) ?? undefined,
+
+            otherAgreements:
+                this.extractBelow(
+                    textItems,
+                    "Egyéb megállapodások"
                 ) ?? undefined,
 
             workType:
-                this.extractField(
-                    firstPage,
-                    ["Munka típusa"]
+                this.extractBelow(
+                    textItems,
+                    "Munka típusa"
                 ) ?? undefined,
 
             reportedIssue:
@@ -127,67 +164,54 @@ export class PdfParser {
                     "Fotó"
                 ) ?? undefined,
 
-            billingAddress:
-                this.extractField(
-                    allPages,
-                    ["Számlázási cím", "Szamlazasi cim"]
-                ) ?? undefined,
-
-            serviceLocation:
-                this.extractField(
-                    allPages,
-                    ["Szerviz helyszíne", "Szerviz helyszine"]
-                ) ?? undefined,
-
             materialTotal:
-                this.extractField(
-                    allPages,
-                    ["Rezsianyag összesen (Ft)", "Rezsianyag osszesen (Ft)"]
+                this.extractBelow(
+                    textItems,
+                    "Rezsianyag összesen (Ft)",
+                    1,
+                    24
                 ) ?? undefined,
 
             totalKilometers:
-                this.extractField(
-                    allPages,
-                    ["Megtett km összesen", "Megtett km osszesen"]
+                this.extractBelow(
+                    textItems,
+                    "Megtett km összesen",
+                    1,
+                    24
                 ) ?? undefined,
 
             totalWorkHours:
-                this.extractField(
-                    allPages,
-                    ["Munkaidő összesen (óra)", "Munkaido osszesen (ora)"]
+                this.extractBelow(
+                    textItems,
+                    "Munkaidő összesen (óra)",
+                    1,
+                    24
                 ) ?? undefined,
 
             washing:
-                this.extractField(
-                    allPages,
-                    ["Mosás", "Mosas"]
+                this.extractBelow(
+                    textItems,
+                    "Mosás",
+                    1,
+                    24
                 ) ?? undefined,
 
             closedAt:
-                this.extractField(
-                    allPages,
-                    [
-                        "Munkalap lezárásának dátuma",
-                        "Munkalap lezarasanak datuma"
-                    ]
+                this.extractBelow(
+                    textItems,
+                    "Munkalap lezárásának dátuma"
                 ) ?? undefined,
 
             handedOverBy:
-                this.extractField(
-                    allPages,
-                    [
-                        "Átadó (szerviz technikus) neve",
-                        "Atado (szerviz technikus) neve"
-                    ]
+                this.extractBelow(
+                    textItems,
+                    "Átadó (szerviz technikus) neve"
                 ) ?? undefined,
 
             receivedBy:
-                this.extractField(
-                    allPages,
-                    [
-                        "Átvevő (gép tulajdonosa vagy megbízottja) neve",
-                        "Atvevo (gep tulajdonosa vagy megbizottja) neve"
-                    ]
+                this.extractBelow(
+                    textItems,
+                    "Átvevő (gép tulajdonosa vagy megbízottja) neve"
                 ) ?? undefined,
 
             serviceVisits
@@ -196,49 +220,36 @@ export class PdfParser {
 
     }
 
-    private extractField(
-        text: string,
-        labels: string[]
+    private extractBelow(
+        items: PdfTextItem[],
+        label: string,
+        maxLines = 1,
+        maxDistance = 24
     ): string | null {
 
-        for (const label of labels) {
+        const labelItem =
+            items.find(item => item.text.trim() === label);
 
-            const value =
-                fieldExtractor.extract(
-                    text,
-                    label
-                );
-
-            if (value) {
-                return value;
-            }
-
+        if (!labelItem) {
+            return null;
         }
 
-        const lines =
-            text
-                .replace(/\r/g, "")
-                .split("\n")
-                .map(line => line.trim());
+        const values =
+            items
+                .filter(item =>
+                    item.page === labelItem.page &&
+                    Math.abs(item.x - labelItem.x) < 4 &&
+                    item.y < labelItem.y &&
+                    labelItem.y - item.y <= maxDistance &&
+                    item.text.trim().length > 0
+                )
+                .sort((a, b) => b.y - a.y)
+                .slice(0, maxLines)
+                .map(item => item.text.trim());
 
-        for (const label of labels) {
-
-            const line =
-                lines.find(item => item.startsWith(label));
-
-            const value =
-                line
-                    ?.slice(label.length)
-                    .replace(/^[:\-\s]+/, "")
-                    .trim();
-
-            if (value) {
-                return value;
-            }
-
-        }
-
-        return null;
+        return values.length > 0
+            ? values.join("\n")
+            : null;
 
     }
 
