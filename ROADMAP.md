@@ -270,6 +270,8 @@ Windows installer ikon explicit NSIS konfiguracio
 
 Start menu es desktop shortcut az ikonozott telepitett exe-re mutat
 
+Desktop shortcut explicit telepitett StartAgro-ServiceDocs.ico ikonfajlt hasznal
+
 ---
 
 ## Current Sprint 025

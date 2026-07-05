@@ -314,6 +314,16 @@ Start menu es desktop shortcut tovabbra is az ikonozott telepitett exe-re mutat
 
 ---
 
+## v0.25.2
+
+Desktop shortcut icon hotfix
+
+NSIS desktop shortcut explicit StartAgro-ServiceDocs.ico ikonfajlt kap
+
+Shortcut ikon forrasa: start_agro_docs_icon.png alapjan generalt src-tauri/icons/icon.ico
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.
