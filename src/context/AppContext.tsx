@@ -7,6 +7,7 @@ import {
     ReactNode
 } from "react";
 
+import { getServiceTeamName } from "../constants/serviceTeams";
 import { WorkOrder } from "../models/WorkOrder";
 
 export interface WorkOrderFilters {
@@ -230,6 +231,8 @@ function matchesGlobalSearch(
 
     return [
         workOrder.workOrderNumber,
+        workOrder.prefix,
+        getServiceTeamName(workOrder.prefix),
         workOrder.partnerName,
         workOrder.taxNumber,
         workOrder.contactName,

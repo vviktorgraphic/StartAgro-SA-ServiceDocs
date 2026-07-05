@@ -12,22 +12,7 @@ import {
     useAppContext,
     WorkOrderFilters
 } from "../../context/AppContext";
-
-const serviceTeams = [
-    ["AD", "Admin"],
-    ["SA", "Start Agro Kft"],
-    ["HT", "Help-Trak Kft"],
-    ["HA", "Haty Szerviz Kft"],
-    ["LA", "Lengyel Attila"],
-    ["TP", "Turcsányi Péter"],
-    ["MJ", "Mester János"],
-    ["PJ", "Pászti János"],
-    ["SP", "Surányi Péter"],
-    ["PB", "Pigler Béla"],
-    ["KT", "Kis Tibor"],
-    ["UP", "Urbán Péter"],
-    ["GT", "Gellén Zoltán"]
-] as const;
+import { serviceTeams } from "../../constants/serviceTeams";
 
 export default function Sidebar() {
 

@@ -254,7 +254,17 @@ Szervizcsapat prefix-nev lista bovites
 
 ---
 
-## Current Sprint 024
+## Done Sprint 024
+
+Search team support and final app icon
+
+Globalis kereso Szervizcsapat nev es prefix szerint
+
+Vegleges Tauri ikon start_agro_docs_icon.png forrasbol
+
+---
+
+## Current Sprint 025
 
 SQLite visszaolvasas
 
@@ -266,7 +276,7 @@ React Context frissitese
 
 ---
 
-## Sprint 025
+## Sprint 026
 
 Portable storage implementation
 
@@ -280,7 +290,7 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 026
+## Sprint 027
 
 ImageRepository
 
@@ -288,7 +298,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 027
+## Sprint 028
 
 PDF Preview fejlesztese
 
@@ -298,13 +308,13 @@ Zoom
 
 ---
 
-## Sprint 028
+## Sprint 029
 
 Beallitasok
 
 ---
 
-## Sprint 029
+## Sprint 030
 
 Export
 
@@ -316,7 +326,7 @@ CSV
 
 ---
 
-## Sprint 030
+## Sprint 031
 
 Release hardening
 
@@ -330,12 +340,12 @@ Portable adatbazis strategia implementalasa
 
 ---
 
-## Sprint 031
+## Sprint 032
 
 Performance optimalizalas
 
 ---
 
-## Sprint 032
+## Sprint 033
 
 v1.0 kiadas

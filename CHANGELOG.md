@@ -294,9 +294,19 @@ Szervizcsapat szuro teljes prefix-nev listaval boviteve
 
 ---
 
+## v0.25
+
+Search team support and final app icon
+
+Globalis kereso Szervizcsapat nev es prefix alapjan is keres
+
+Vegleges app es installer ikon frissitve start_agro_docs_icon.png forrasbol
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es az NSIS setup exe tiszta install mappaba masolhato.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.
 
 Kovetkezo cel:
 
