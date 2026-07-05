@@ -334,6 +334,16 @@ Status bar lathato munkalap darabszamot, utolso lathato munkalapszamot es utolso
 
 ---
 
+## v0.26.1
+
+Status bar hotfix
+
+Utolso index mezo eltavolitva, mert csak munkamenet allapot volt es ujrainditas utan elveszett
+
+Status bar megtartja a lathato dokumentumszamot es az utolso lathato munkalapszamot
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

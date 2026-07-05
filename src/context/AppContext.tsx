@@ -55,11 +55,6 @@ interface AppContextType {
         filters: WorkOrderFilters
     ) => void;
 
-    lastSuccessfulIndexAt: Date | null;
-    setLastSuccessfulIndexAt: (
-        value: Date | null
-    ) => void;
-
     clearFilters: () => void;
 
 }
@@ -110,9 +105,6 @@ export function AppProvider({
 
     const [filters, setFilters] =
         useState<WorkOrderFilters>(emptyFilters);
-
-    const [lastSuccessfulIndexAt, setLastSuccessfulIndexAt] =
-        useState<Date | null>(null);
 
     useEffect(() => {
 
@@ -189,8 +181,6 @@ export function AppProvider({
 
                 filters,
                 setFilters,
-                lastSuccessfulIndexAt,
-                setLastSuccessfulIndexAt,
                 clearFilters
             }}
         >

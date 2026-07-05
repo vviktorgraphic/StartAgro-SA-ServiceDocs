@@ -280,6 +280,8 @@ Windows desktop shortcut shell identitas cache javitas
 
 Status bar valos munkalap es indexelesi adatokkal
 
+Utolso index mezo eltavolitva, perzisztencia nelkul nem marad status bar adat
+
 ---
 
 ## Current Sprint 025

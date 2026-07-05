@@ -8,18 +8,12 @@ import { useAppContext } from "../../context/AppContext";
 export default function StatusBar() {
 
     const {
-        filteredWorkOrders,
-        lastSuccessfulIndexAt
+        filteredWorkOrders
     } = useAppContext();
 
     const lastWorkOrder =
         filteredWorkOrders.length > 0
             ? filteredWorkOrders[filteredWorkOrders.length - 1].workOrderNumber
-            : "-";
-
-    const lastIndex =
-        lastSuccessfulIndexAt
-            ? lastSuccessfulIndexAt.toLocaleString("hu-HU")
             : "-";
 
     return (
@@ -52,17 +46,6 @@ export default function StatusBar() {
             >
 
                 Utolsó munkalap: {lastWorkOrder}
-
-            </Typography>
-
-            <Typography
-                variant="body2"
-                sx={{
-                    ml: 3
-                }}
-            >
-
-                Utolsó index: {lastIndex}
 
             </Typography>
 
