@@ -23,7 +23,8 @@ export default function Header() {
         documentsFolder,
         setDocumentsFolder,
         setWorkOrders,
-        setSelectedWorkOrder
+        setSelectedWorkOrder,
+        setLastSuccessfulIndexAt
     } = useAppContext();
 
     const [isIndexing, setIsIndexing] =
@@ -92,6 +93,7 @@ export default function Header() {
             await refreshWorkOrders();
 
             setIndexSummary(result.summary);
+            setLastSuccessfulIndexAt(new Date());
 
         } catch (err) {
 

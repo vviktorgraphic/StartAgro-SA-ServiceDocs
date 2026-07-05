@@ -3,7 +3,24 @@ import {
     Typography
 } from "@mui/material";
 
+import { useAppContext } from "../../context/AppContext";
+
 export default function StatusBar() {
+
+    const {
+        filteredWorkOrders,
+        lastSuccessfulIndexAt
+    } = useAppContext();
+
+    const lastWorkOrder =
+        filteredWorkOrders.length > 0
+            ? filteredWorkOrders[filteredWorkOrders.length - 1].workOrderNumber
+            : "-";
+
+    const lastIndex =
+        lastSuccessfulIndexAt
+            ? lastSuccessfulIndexAt.toLocaleString("hu-HU")
+            : "-";
 
     return (
 
@@ -23,7 +40,7 @@ export default function StatusBar() {
                 variant="body2"
             >
 
-                0 dokumentum
+                {filteredWorkOrders.length} dokumentum
 
             </Typography>
 
@@ -34,7 +51,7 @@ export default function StatusBar() {
                 }}
             >
 
-                Utolsó munkalap: -
+                Utolsó munkalap: {lastWorkOrder}
 
             </Typography>
 
@@ -45,7 +62,7 @@ export default function StatusBar() {
                 }}
             >
 
-                Utolsó index: -
+                Utolsó index: {lastIndex}
 
             </Typography>
 

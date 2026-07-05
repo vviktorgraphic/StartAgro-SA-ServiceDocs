@@ -324,6 +324,16 @@ Shortcut ikon forrasa: start_agro_docs_icon.png alapjan generalt src-tauri/icons
 
 ---
 
+## v0.26
+
+Sprint 19: Final Windows identity and status bar data
+
+Desktop shortcut ujra letrehozva explicit ikonfajllal AppUserModelID nelkul, hogy inditas utan ne valtson vissza regi shell ikon cache-re
+
+Status bar lathato munkalap darabszamot, utolso lathato munkalapszamot es utolso sikeres indexelesi idopontot mutat
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

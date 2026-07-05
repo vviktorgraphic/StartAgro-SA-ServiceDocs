@@ -274,6 +274,14 @@ Desktop shortcut explicit telepitett StartAgro-ServiceDocs.ico ikonfajlt hasznal
 
 ---
 
+## Done Sprint 019 Hotfix
+
+Windows desktop shortcut shell identitas cache javitas
+
+Status bar valos munkalap es indexelesi adatokkal
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas
