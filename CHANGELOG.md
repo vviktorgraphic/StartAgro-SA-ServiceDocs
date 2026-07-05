@@ -304,6 +304,16 @@ Vegleges app es installer ikon frissitve start_agro_docs_icon.png forrasbol
 
 ---
 
+## v0.25.1
+
+Windows shortcut icon hotfix
+
+NSIS installer es uninstaller ikon explicit src-tauri/icons/icon.ico beallitasbol
+
+Start menu es desktop shortcut tovabbra is az ikonozott telepitett exe-re mutat
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

@@ -264,6 +264,14 @@ Vegleges Tauri ikon start_agro_docs_icon.png forrasbol
 
 ---
 
+## Done Release Candidate Hotfix
+
+Windows installer ikon explicit NSIS konfiguracio
+
+Start menu es desktop shortcut az ikonozott telepitett exe-re mutat
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas
