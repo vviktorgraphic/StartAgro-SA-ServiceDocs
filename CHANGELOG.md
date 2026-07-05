@@ -284,9 +284,19 @@ NSIS setup exe masolasa release mappaba
 
 ---
 
+## v0.24
+
+Install output folder and service team mapping
+
+Installer masolasi cel atnevezve install mappaba
+
+Szervizcsapat szuro teljes prefix-nev listaval boviteve
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es az NSIS setup exe tiszta release mappaba masolhato.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es az NSIS setup exe tiszta install mappaba masolhato.
 
 Kovetkezo cel:
 

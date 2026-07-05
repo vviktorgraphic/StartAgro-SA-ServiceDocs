@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "release:copy": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"New-Item -ItemType Directory -Force release | Out-Null; Copy-Item -LiteralPath 'src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.1.0_x64-setup.exe' -Destination 'release/StartAgro-ServiceDocs-Setup.exe' -Force\"",
+    "release:copy": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"New-Item -ItemType Directory -Force install | Out-Null; Copy-Item -LiteralPath 'src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.1.0_x64-setup.exe' -Destination 'install/StartAgro-ServiceDocs-Setup.exe' -Force\"",
     "release:build": "npm run tauri build && npm run release:copy"
   },
   "dependencies": {

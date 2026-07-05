@@ -13,6 +13,22 @@ import {
     WorkOrderFilters
 } from "../../context/AppContext";
 
+const serviceTeams = [
+    ["AD", "Admin"],
+    ["SA", "Start Agro Kft"],
+    ["HT", "Help-Trak Kft"],
+    ["HA", "Haty Szerviz Kft"],
+    ["LA", "Lengyel Attila"],
+    ["TP", "Turcsányi Péter"],
+    ["MJ", "Mester János"],
+    ["PJ", "Pászti János"],
+    ["SP", "Surányi Péter"],
+    ["PB", "Pigler Béla"],
+    ["KT", "Kis Tibor"],
+    ["UP", "Urbán Péter"],
+    ["GT", "Gellén Zoltán"]
+] as const;
+
 export default function Sidebar() {
 
     const {
@@ -69,14 +85,16 @@ export default function Sidebar() {
                 <MenuItem value="">
                     Minden csapat
                 </MenuItem>
+                {serviceTeams.map(([prefix, name]) => (
 
-                <MenuItem value="HT">
-                    Help-Trak Kft.
-                </MenuItem>
+                    <MenuItem
+                        key={prefix}
+                        value={prefix}
+                    >
+                        {name}
+                    </MenuItem>
 
-                <MenuItem value="TP">
-                    Turcsányi Péter
-                </MenuItem>
+                ))}
             </TextField>
 
             <TextField

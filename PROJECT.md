@@ -37,7 +37,7 @@ Windows Tauri release build:
 
 `npm.cmd run tauri build`
 
-NSIS setup masolasa tiszta release mappaba:
+NSIS setup masolasa tiszta install mappaba:
 
 `npm.cmd run release:copy`
 
@@ -45,9 +45,9 @@ Teljes Windows release build es masolas:
 
 `npm.cmd run release:build`
 
-Elsoleges release artifact:
+Elsoleges install artifact:
 
-`release/StartAgro-ServiceDocs-Setup.exe`
+`install/StartAgro-ServiceDocs-Setup.exe`
 
 ---
 

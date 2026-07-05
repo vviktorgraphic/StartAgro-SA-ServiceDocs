@@ -244,7 +244,17 @@ NSIS setup exe release mappaba masolasa
 
 ---
 
-## Current Sprint 023
+## Done Sprint 023
+
+Install output folder and service team mapping
+
+NSIS setup exe install mappaba masolasa
+
+Szervizcsapat prefix-nev lista bovites
+
+---
+
+## Current Sprint 024
 
 SQLite visszaolvasas
 
@@ -256,7 +266,7 @@ React Context frissitese
 
 ---
 
-## Sprint 024
+## Sprint 025
 
 Portable storage implementation
 
@@ -270,7 +280,7 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 025
+## Sprint 026
 
 ImageRepository
 
@@ -278,7 +288,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 026
+## Sprint 027
 
 PDF Preview fejlesztese
 
@@ -288,13 +298,13 @@ Zoom
 
 ---
 
-## Sprint 027
+## Sprint 028
 
 Beallitasok
 
 ---
 
-## Sprint 028
+## Sprint 029
 
 Export
 
@@ -306,7 +316,7 @@ CSV
 
 ---
 
-## Sprint 029
+## Sprint 030
 
 Release hardening
 
@@ -320,12 +330,12 @@ Portable adatbazis strategia implementalasa
 
 ---
 
-## Sprint 030
+## Sprint 031
 
 Performance optimalizalas
 
 ---
 
-## Sprint 031
+## Sprint 032
 
 v1.0 kiadas
