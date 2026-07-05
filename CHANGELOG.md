@@ -354,6 +354,18 @@ Regi StartAgro-ServiceDocs.ico telepitett ikonfajl torolve a cache utkozes elker
 
 ---
 
+## v0.27
+
+Sprint 20: Release Candidate validation
+
+0.1.0 internal release candidate build ellenorizve: frontend build, Tauri NSIS build es release copy lefutott
+
+Install artifact ellenorizve: install/StartAgro-ServiceDocs-Setup.exe
+
+Manualis release tesztlepesek es ismert hatralevo validacios pontok dokumentalva
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.

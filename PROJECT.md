@@ -49,6 +49,21 @@ Elsoleges install artifact:
 
 `install/StartAgro-ServiceDocs-Setup.exe`
 
+Release Candidate ellenorzes:
+
+1. `npm.cmd run build`
+2. `npm.cmd run tauri build`
+3. `npm.cmd run release:copy`
+4. Ellenorizd, hogy letezik: `install/StartAgro-ServiceDocs-Setup.exe`
+5. Tiszta telepites utan manualis ellenorzes:
+   - alkalmazas indul
+   - mappa tallozas mukodik
+   - indexeles lefut
+   - SQLite-bol visszatoltes mukodik
+   - kereses es szurok mukodnek
+   - PDF preview, foto thumbnail es lightbox mukodik
+   - desktop shortcut ikon inditas utan is helyes marad
+
 ---
 
 ## Projekt filozófia

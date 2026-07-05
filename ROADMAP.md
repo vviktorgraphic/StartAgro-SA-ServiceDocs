@@ -286,6 +286,21 @@ Utolso index mezo eltavolitva, perzisztencia nelkul nem marad status bar adat
 
 ---
 
+## Done Sprint 020 Release Candidate Validation
+
+0.1.0 internal release candidate build ellenorizve
+
+Install artifact: install/StartAgro-ServiceDocs-Setup.exe
+
+Ismert hatralevo validacios pontok:
+
+- Windows desktop shortcut ikon cache viselkedes valos telepites utan
+- Portable database strategia kesobbi implementalasa
+- Server es halozati megosztas tesztelese
+- Nagy adathalmazon teljesitmenyteszt
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas
