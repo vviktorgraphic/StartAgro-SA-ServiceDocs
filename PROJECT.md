@@ -27,6 +27,18 @@ Az alkalmazás:
 
 ---
 
+## Build / Release
+
+Frontend production build:
+
+`npm.cmd run build`
+
+Windows Tauri release build:
+
+`npm.cmd run tauri build`
+
+---
+
 ## Projekt filozófia
 
 Offline desktop alkalmazás.

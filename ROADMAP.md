@@ -220,7 +220,19 @@ Memoria alapu szures megtartasa
 
 ---
 
-## Current Sprint 021
+## Done Sprint 021
+
+Production build and release preparation
+
+Brand primary color: #b40c0e
+
+Release nev es ablak cim
+
+Tauri Windows build ellenorzes
+
+---
+
+## Current Sprint 022
 
 SQLite visszaolvasas
 
@@ -232,7 +244,7 @@ React Context frissitese
 
 ---
 
-## Sprint 022
+## Sprint 023
 
 Portable storage implementation
 
@@ -246,7 +258,7 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 023
+## Sprint 024
 
 ImageRepository
 
@@ -254,7 +266,7 @@ Fotok adatbazisban
 
 ---
 
-## Sprint 024
+## Sprint 025
 
 PDF Preview fejlesztese
 
@@ -264,13 +276,13 @@ Zoom
 
 ---
 
-## Sprint 025
+## Sprint 026
 
 Beallitasok
 
 ---
 
-## Sprint 026
+## Sprint 027
 
 Export
 
@@ -282,12 +294,26 @@ CSV
 
 ---
 
-## Sprint 027
+## Sprint 028
+
+Release hardening
+
+Vegleges verzioszam
+
+Installer tipus dontes
+
+Kod alairas dontes
+
+Portable adatbazis strategia implementalasa
+
+---
+
+## Sprint 029
 
 Performance optimalizalas
 
 ---
 
-## Sprint 028
+## Sprint 030
 
 v1.0 kiadas

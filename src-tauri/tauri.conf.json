@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "startagro-servicedocs",
+  "productName": "StartAgro ServiceDocs",
   "version": "0.1.0",
   "identifier": "hu.startagro.servicedocs",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "startagro-servicedocs",
+        "title": "StartAgro ServiceDocs",
         "width": 800,
         "height": 600
       }

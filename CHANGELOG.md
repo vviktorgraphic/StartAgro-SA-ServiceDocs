@@ -260,9 +260,21 @@ Meglevo memoria alapu szures megtartva
 
 ---
 
+## v0.22
+
+Production build and release preparation
+
+Brand primary color frissitve: #b40c0e
+
+Release nev es ablak cim frissitve
+
+Windows Tauri build parancs dokumentalva
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a globalis kereses/szures nativ datumvalasztoval mukodik.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a Windows release build elokeszites megtortent.
 
 Kovetkezo cel:
 
