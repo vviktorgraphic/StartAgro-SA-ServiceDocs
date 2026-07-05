@@ -12,6 +12,7 @@ import logoUrl from "../../../start_agro_logo_symbol.png";
 import { useAppContext } from "../../context/AppContext";
 import { dialogService } from "../../services/DialogService";
 import {
+    IndexingProgress,
     IndexingSummary,
     indexService
 } from "../../services/IndexService";
@@ -31,6 +32,9 @@ export default function Header() {
 
     const [indexSummary, setIndexSummary] =
         useState<IndexingSummary | null>(null);
+
+    const [indexProgress, setIndexProgress] =
+        useState<IndexingProgress | null>(null);
 
     const [indexError, setIndexError] =
         useState<string | null>(null);
@@ -82,16 +86,21 @@ export default function Header() {
 
         setIsIndexing(true);
         setIndexSummary(null);
+        setIndexProgress(null);
         setIndexError(null);
 
         try {
 
             const result =
-                await indexService.run(documentsFolder);
+                await indexService.run(
+                    documentsFolder,
+                    setIndexProgress
+                );
 
             await refreshWorkOrders();
 
             setIndexSummary(result.summary);
+            setIndexProgress(null);
 
         } catch (err) {
 
@@ -120,7 +129,19 @@ export default function Header() {
             `${summary.parsed} feldolgozva`,
             `${summary.skipped} kihagyva`,
             `${summary.deleted} törölve`,
-            `${summary.errors} hiba`
+            `${summary.errors} hiba`,
+            `${summary.processed}/${summary.totalCandidates}`
+        ].join(" | ");
+
+    }
+
+    function renderProgress(progress: IndexingProgress) {
+
+        return [
+            `${progress.processed}/${progress.totalCandidates}`,
+            `${progress.parsed} feldolgozva`,
+            `${progress.skipped} kihagyva`,
+            `${progress.errors} hiba`
         ].join(" | ");
 
     }
@@ -128,6 +149,10 @@ export default function Header() {
     function renderIndexStatus() {
 
         if (isIndexing) {
+            if (indexProgress) {
+                return renderProgress(indexProgress);
+            }
+
             return "Indexelés folyamatban...";
         }
 
@@ -136,6 +161,13 @@ export default function Header() {
         }
 
         if (indexSummary) {
+            if (indexSummary.errors > 0) {
+                return [
+                    `Indexelés kész, hibákkal: ${indexSummary.errors} fájl nem dolgozható fel.`,
+                    renderSummary(indexSummary)
+                ].join(" ");
+            }
+
             return renderSummary(indexSummary);
         }
 
@@ -145,6 +177,15 @@ export default function Header() {
 
     const indexStatus =
         renderIndexStatus();
+
+    const progressValue =
+        indexProgress && indexProgress.totalCandidates > 0
+            ? Math.round(
+                indexProgress.processed
+                / indexProgress.totalCandidates
+                * 100
+            )
+            : 0;
 
     return (
 
@@ -241,6 +282,12 @@ export default function Header() {
 
                     <LinearProgress
                         color="inherit"
+                        variant={
+                            indexProgress && indexProgress.totalCandidates > 0
+                                ? "determinate"
+                                : "indeterminate"
+                        }
+                        value={progressValue}
                         sx={{
                             position: "absolute",
                             left: 0,

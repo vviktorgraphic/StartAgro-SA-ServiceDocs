@@ -10,47 +10,116 @@ export class MatcherService {
     ): WorkOrder[] {
 
         const workOrders: WorkOrder[] = [];
+        const imageFilesByWorkOrderNumber =
+            this.createImageFileMap(
+                imageFiles
+            );
 
         for (const pdf of pdfFiles) {
 
-            const pdfFileName =
-                pdf.path.split(/[\\/]/).pop() ?? pdf.path;
+            try {
 
-            const parsed =
-                nameParser.parse(pdfFileName);
+                const pdfFileName =
+                    this.getFileName(
+                        pdf.path
+                    );
 
-            if (!parsed) {
-                continue;
-            }
+                const parsed =
+                    nameParser.parse(pdfFileName);
 
-            const images = imageFiles.filter(image => {
+                if (!parsed) {
+                    continue;
+                }
 
-                const imageFileName =
-                    image.split(/[\\/]/).pop() ?? image;
+                const images =
+                    imageFilesByWorkOrderNumber.get(
+                        parsed.workOrderNumber
+                    ) ?? [];
 
-                return imageFileName.startsWith(
-                    parsed.workOrderNumber
+                workOrders.push({
+
+                    workOrderNumber: parsed.workOrderNumber,
+
+                    prefix: parsed.prefix,
+
+                    pdfFile: pdf.path,
+
+                    imageFiles: images,
+
+                    serviceVisits: []
+
+                });
+
+            } catch (error) {
+
+                console.error(
+                    `Munkalap parositasi hiba: ${pdf.path}`,
+                    error
                 );
 
-            });
-
-            workOrders.push({
-
-                workOrderNumber: parsed.workOrderNumber,
-
-                prefix: parsed.prefix,
-
-                pdfFile: pdf.path,
-
-                imageFiles: images,
-
-                serviceVisits: []
-
-            });
+            }
 
         }
 
         return workOrders;
+
+    }
+
+    private createImageFileMap(
+        imageFiles: string[]
+    ): Map<string, string[]> {
+
+        const imageFilesByWorkOrderNumber =
+            new Map<string, string[]>();
+
+        for (const image of imageFiles) {
+
+            try {
+
+                const imageFileName =
+                    this.getFileName(
+                        image
+                    );
+
+                const parsed =
+                    nameParser.parse(imageFileName);
+
+                if (!parsed) {
+                    continue;
+                }
+
+                const images =
+                    imageFilesByWorkOrderNumber.get(
+                        parsed.workOrderNumber
+                    ) ?? [];
+
+                images.push(image);
+
+                imageFilesByWorkOrderNumber.set(
+                    parsed.workOrderNumber,
+                    images
+                );
+
+            } catch (error) {
+
+                console.error(
+                    `Kep parositasi hiba: ${image}`,
+                    error
+                );
+
+            }
+
+        }
+
+        return imageFilesByWorkOrderNumber;
+
+    }
+
+    private getFileName(
+        path: string
+    ): string {
+
+        return path.split(/[\\/]/).pop() ?? path;
 
     }
 

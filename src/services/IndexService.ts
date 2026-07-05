@@ -18,6 +18,8 @@ export interface IndexingSummary {
     skipped: number;
     deleted: number;
     errors: number;
+    processed: number;
+    totalCandidates: number;
 }
 
 export interface IndexingResult {
@@ -25,10 +27,15 @@ export interface IndexingResult {
     summary: IndexingSummary;
 }
 
+export type IndexingProgress = IndexingSummary;
+
+export const INDEX_BATCH_SIZE = 100;
+
 export class IndexService {
 
     public async run(
-        folder: string
+        folder: string,
+        onProgress?: (progress: IndexingProgress) => void
     ): Promise<IndexingResult> {
 
         const result =
@@ -41,6 +48,7 @@ export class IndexService {
         let parsedCount = 0;
         let skippedCount = 0;
         let errorCount = 0;
+        let processedCount = 0;
 
         const workOrders =
             matcherService.match(
@@ -71,7 +79,28 @@ export class IndexService {
                 pdfFileByPath
             );
 
-        for (const workOrder of workOrders) {
+        const totalCandidates =
+            workOrders.length;
+
+        const createSummary = (): IndexingSummary => ({
+            scannedPdfs: result.pdf_count,
+            scannedImages: result.image_count,
+            parsed: parsedCount,
+            skipped: skippedCount,
+            deleted: deletedCount,
+            errors: errorCount,
+            processed: processedCount,
+            totalCandidates
+        });
+
+        onProgress?.(
+            createSummary()
+        );
+
+        for (let index = 0; index < workOrders.length; index++) {
+
+            const workOrder =
+                workOrders[index];
 
             try {
 
@@ -83,6 +112,15 @@ export class IndexService {
                     );
 
                 if (!pdfFile) {
+                    processedCount++;
+                    onProgress?.(
+                        createSummary()
+                    );
+
+                    if (this.isBatchEnd(index)) {
+                        await this.yieldToUi();
+                    }
+
                     continue;
                 }
 
@@ -97,11 +135,20 @@ export class IndexService {
                     importByPath
                 )) {
                     skippedCount++;
+                    processedCount++;
 
                     await workOrderRepository.updateImageFiles(
                         workOrder.workOrderNumber,
                         workOrder.imageFiles
                     );
+
+                    onProgress?.(
+                        createSummary()
+                    );
+
+                    if (this.isBatchEnd(index)) {
+                        await this.yieldToUi();
+                    }
 
                     continue;
                 }
@@ -112,10 +159,12 @@ export class IndexService {
                 );
 
                 parsedCount++;
+                processedCount++;
 
             } catch (error) {
 
                 errorCount++;
+                processedCount++;
 
                 console.error(
                     `PDF feldolgozasi hiba: ${workOrder.pdfFile}`,
@@ -124,16 +173,18 @@ export class IndexService {
 
             }
 
+            onProgress?.(
+                createSummary()
+            );
+
+            if (this.isBatchEnd(index)) {
+                await this.yieldToUi();
+            }
+
         }
 
-        const summary: IndexingSummary = {
-            scannedPdfs: result.pdf_count,
-            scannedImages: result.image_count,
-            parsed: parsedCount,
-            skipped: skippedCount,
-            deleted: deletedCount,
-            errors: errorCount
-        };
+        const summary =
+            createSummary();
 
         console.log(
             [
@@ -142,7 +193,9 @@ export class IndexService {
                 `parsed: ${summary.parsed}`,
                 `skipped: ${summary.skipped}`,
                 `deleted: ${summary.deleted}`,
-                `errors: ${summary.errors}`
+                `errors: ${summary.errors}`,
+                `processed: ${summary.processed}`,
+                `total candidates: ${summary.totalCandidates}`
             ].join(", ")
         );
 
@@ -305,6 +358,25 @@ export class IndexService {
         return path
             .replace(/\\/g, "/")
             .toLowerCase();
+
+    }
+
+    private async yieldToUi(): Promise<void> {
+
+        await new Promise<void>(resolve =>
+            window.setTimeout(
+                resolve,
+                0
+            )
+        );
+
+    }
+
+    private isBatchEnd(
+        index: number
+    ): boolean {
+
+        return (index + 1) % INDEX_BATCH_SIZE === 0;
 
     }
 

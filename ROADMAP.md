@@ -318,6 +318,18 @@ Hatralevo jovobeli release feladatok:
 
 ---
 
+## Done Sprint 022 Batch and resumable indexing
+
+IndexService batch feldolgozas 100 munkalapos merettel
+
+Fajlonkenti PDF hiba kezeles, folytathato indexelessel
+
+Indexeles kozbeni processed / total candidates, parsed, skipped es errors progress
+
+Linearis kepparositas nagy mappakhoz
+
+---
+
 ## Current Sprint 025
 
 SQLite visszaolvasas

@@ -380,6 +380,20 @@ SHA256: 50C9E8E2DDF9AF08D548338960EB2443BA3899B1C5AF8AA9396A3BE80A070892
 
 ---
 
+## v0.28
+
+Sprint 22: Batch and resumable indexing for large folders
+
+IndexService 100 munkalapos batch merettel dolgozik, batchenkent visszaadja a vezerlest az UI-nak
+
+PDF feldolgozasi hibak fajlonkent kezelve, egy hibas PDF nem allitja meg a teljes indexelest
+
+Indexeles kozbeni progress lathato: processed / total candidates, parsed, skipped, errors
+
+Kepparositas linearis map-alapu keresessel gyorsitva nagy mappakhoz
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.
