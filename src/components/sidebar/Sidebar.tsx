@@ -8,7 +8,30 @@ import {
     Typography
 } from "@mui/material";
 
+import {
+    useAppContext,
+    WorkOrderFilters
+} from "../../context/AppContext";
+
 export default function Sidebar() {
+
+    const {
+        filters,
+        setFilters,
+        clearFilters
+    } = useAppContext();
+
+    function updateFilter(
+        key: keyof WorkOrderFilters,
+        value: string
+    ) {
+
+        setFilters({
+            ...filters,
+            [key]: value
+        });
+
+    }
 
     return (
 
@@ -24,9 +47,7 @@ export default function Sidebar() {
             }}
         >
 
-            <Typography
-                variant="h6"
-            >
+            <Typography variant="h6">
                 Szűrők
             </Typography>
 
@@ -37,7 +58,13 @@ export default function Sidebar() {
                 size="small"
                 label="Szervizcsapat"
                 fullWidth
-                defaultValue=""
+                value={filters.serviceTeam}
+                onChange={event =>
+                    updateFilter(
+                        "serviceTeam",
+                        event.target.value
+                    )
+                }
             >
                 <MenuItem value="">
                     Minden csapat
@@ -57,30 +84,65 @@ export default function Sidebar() {
                 label="Munkalap"
                 placeholder="Pl.: HT-0008218"
                 fullWidth
+                value={filters.workOrderNumber}
+                onChange={event =>
+                    updateFilter(
+                        "workOrderNumber",
+                        event.target.value
+                    )
+                }
             />
 
             <TextField
                 size="small"
                 label="Partner"
                 fullWidth
+                value={filters.partnerName}
+                onChange={event =>
+                    updateFilter(
+                        "partnerName",
+                        event.target.value
+                    )
+                }
             />
 
             <TextField
                 size="small"
                 label="Technikus"
                 fullWidth
+                value={filters.technician}
+                onChange={event =>
+                    updateFilter(
+                        "technician",
+                        event.target.value
+                    )
+                }
             />
 
             <TextField
                 size="small"
                 label="Géptípus"
                 fullWidth
+                value={filters.machineType}
+                onChange={event =>
+                    updateFilter(
+                        "machineType",
+                        event.target.value
+                    )
+                }
             />
 
             <TextField
                 size="small"
                 label="Gyári szám"
                 fullWidth
+                value={filters.serialNumber}
+                onChange={event =>
+                    updateFilter(
+                        "serialNumber",
+                        event.target.value
+                    )
+                }
             />
 
             <Stack spacing={2}>
@@ -90,6 +152,13 @@ export default function Sidebar() {
                     label="Dátumtól"
                     placeholder="ÉÉÉÉ.HH.NN"
                     fullWidth
+                    value={filters.dateFrom}
+                    onChange={event =>
+                        updateFilter(
+                            "dateFrom",
+                            event.target.value
+                        )
+                    }
                 />
 
                 <TextField
@@ -97,6 +166,13 @@ export default function Sidebar() {
                     label="Dátumig"
                     placeholder="ÉÉÉÉ.HH.NN"
                     fullWidth
+                    value={filters.dateTo}
+                    onChange={event =>
+                        updateFilter(
+                            "dateTo",
+                            event.target.value
+                        )
+                    }
                 />
 
             </Stack>
@@ -104,6 +180,7 @@ export default function Sidebar() {
             <Button
                 variant="outlined"
                 fullWidth
+                onClick={clearFilters}
             >
                 Szűrők törlése
             </Button>

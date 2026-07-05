@@ -194,7 +194,21 @@ Nyitott dontes: halozati megosztas SQLite zarolas, tobb kliens egyideju indexele
 
 ---
 
-## Current Sprint 019
+## Done Sprint 019
+
+Global search and filters
+
+Header kereso bekotese
+
+Sidebar szurok bekotese
+
+Memoriaban szurt munkalap lista
+
+Ures talalati allapot
+
+---
+
+## Current Sprint 020
 
 SQLite visszaolvasas
 
@@ -206,7 +220,7 @@ React Context frissitese
 
 ---
 
-## Sprint 020
+## Sprint 021
 
 Portable storage implementation
 
@@ -220,23 +234,11 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 021
+## Sprint 022
 
 ImageRepository
 
 Fotok adatbazisban
-
----
-
-## Sprint 022
-
-Gyors kereso
-
-Partner
-
-Technikus
-
-Munkalap
 
 ---
 

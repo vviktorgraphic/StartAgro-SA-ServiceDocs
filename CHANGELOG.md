@@ -236,9 +236,21 @@ UNC es halozati path kezeles atnezve
 
 ---
 
+## v0.20
+
+Global search and filters
+
+Header kereso bekotve a betoltott munkalap listara
+
+Sidebar szurok bekotve
+
+Ures talalati allapot es kijeloles kezeles
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a hordozhato adatbazis strategia dokumentalt.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, es a globalis kereses/szures a betoltott listan mukodik.
 
 Kovetkezo cel:
 

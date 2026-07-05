@@ -13,9 +13,13 @@ export default function WorkOrderList() {
 
     const {
         workOrders,
+        filteredWorkOrders,
         selectedWorkOrder,
         setSelectedWorkOrder
     } = useAppContext();
+
+    const hasActiveFilter =
+        filteredWorkOrders.length !== workOrders.length;
 
     return (
 
@@ -32,9 +36,22 @@ export default function WorkOrderList() {
 
                 <Typography variant="h6">
 
-                    Munkalapok ({workOrders.length})
+                    Munkalapok ({filteredWorkOrders.length})
 
                 </Typography>
+
+                {hasActiveFilter && (
+
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                    >
+
+                        Összesen: {workOrders.length}
+
+                    </Typography>
+
+                )}
 
             </Box>
 
@@ -49,7 +66,23 @@ export default function WorkOrderList() {
                 }}
             >
 
-                {workOrders.map(workOrder => (
+                {filteredWorkOrders.length === 0 ? (
+
+                    <Box
+                        sx={{
+                            p: 2
+                        }}
+                    >
+
+                        <Typography color="text.secondary">
+
+                            Nincs találat.
+
+                        </Typography>
+
+                    </Box>
+
+                ) : filteredWorkOrders.map(workOrder => (
 
                     <ListItemButton
 

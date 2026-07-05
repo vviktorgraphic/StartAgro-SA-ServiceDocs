@@ -1,3 +1,4 @@
+import ClearIcon from "@mui/icons-material/Clear";
 import SearchIcon from "@mui/icons-material/Search";
 import {
     Box,
@@ -6,7 +7,14 @@ import {
     TextField
 } from "@mui/material";
 
+import { useAppContext } from "../../context/AppContext";
+
 export default function SearchBar() {
+
+    const {
+        searchQuery,
+        setSearchQuery
+    } = useAppContext();
 
     return (
 
@@ -25,6 +33,10 @@ export default function SearchBar() {
                 size="small"
                 placeholder="Keresés partnerre, munkalapszámra, géptípusra..."
                 variant="outlined"
+                value={searchQuery}
+                onChange={event =>
+                    setSearchQuery(event.target.value)
+                }
                 slotProps={{
                     input: {
                         startAdornment: (
@@ -32,13 +44,19 @@ export default function SearchBar() {
                                 <SearchIcon />
                             </InputAdornment>
                         ),
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton edge="end">
-                                    <SearchIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        )
+                        endAdornment: searchQuery
+                            ? (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        edge="end"
+                                        onClick={() => setSearchQuery("")}
+                                        aria-label="Keresés törlése"
+                                    >
+                                        <ClearIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                            : null
                     }
                 }}
             />
