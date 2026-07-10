@@ -480,6 +480,18 @@ Fajl nelkul a felulet a Tallozas gomb hasznalatara vonatkozo utmutatast jelenit 
 
 ---
 
+## XLSX multi-worksheet sprint
+
+Az XLSX munkafuzet minden munkalapja egyetlen fajlolvasassal, eredeti sorrendben feldolgozasra es memoriaban tarolasra kerul
+
+A tabla eszkoztar munkalapvalasztot es fajlnevet jelenit meg, az elso munkalap automatikusan aktiv
+
+Munkalapvaltaskor a kereses, szurok, rendezes, oszloplathatosag es lapozasi pozicio alaphelyzetbe all
+
+Az ures munkalapok kulon, nev szerinti ures allapotot jelenitenek meg
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.

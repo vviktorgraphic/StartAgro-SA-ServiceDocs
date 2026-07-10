@@ -35,8 +35,6 @@ export interface XlsxTableRow {
 
 export interface XlsxTableData {
 
-    sourceName: string;
-
     worksheetName: string;
 
     headerRowNumber: number;
@@ -44,5 +42,13 @@ export interface XlsxTableData {
     columns: XlsxTableColumn[];
 
     rows: XlsxTableRow[];
+
+}
+
+export interface XlsxWorkbookData {
+
+    sourceName: string;
+
+    worksheets: XlsxTableData[];
 
 }

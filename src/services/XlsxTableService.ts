@@ -5,7 +5,8 @@ import {
     XlsxColumnType,
     XlsxTableColumn,
     XlsxTableData,
-    XlsxTableRow
+    XlsxTableRow,
+    XlsxWorkbookData
 } from "../models/XlsxTable";
 
 type WorksheetCell = XLSX.CellObject & {
@@ -18,7 +19,7 @@ class XlsxTableService {
     public parse(
         data: ArrayBuffer,
         sourceName: string
-    ): XlsxTableData {
+    ): XlsxWorkbookData {
 
         const workbook =
             XLSX.read(
@@ -29,19 +30,32 @@ class XlsxTableService {
                 }
             );
 
-        const worksheetName =
-            workbook.SheetNames[0];
-
-        if (!worksheetName) {
+        if (workbook.SheetNames.length === 0) {
             throw new Error("A munkafüzet nem tartalmaz munkalapot.");
         }
+
+        return {
+            sourceName,
+            worksheets: workbook.SheetNames.map(worksheetName =>
+                this.parseWorksheet(
+                    workbook,
+                    worksheetName
+                )
+            )
+        };
+
+    }
+
+    private parseWorksheet(
+        workbook: XLSX.WorkBook,
+        worksheetName: string
+    ): XlsxTableData {
 
         const worksheet =
             workbook.Sheets[worksheetName];
 
         if (!worksheet || !worksheet["!ref"]) {
             return {
-                sourceName,
                 worksheetName,
                 headerRowNumber: 0,
                 columns: [],
@@ -60,7 +74,6 @@ class XlsxTableService {
 
         if (headerRow === null) {
             return {
-                sourceName,
                 worksheetName,
                 headerRowNumber: 0,
                 columns: [],
@@ -84,7 +97,6 @@ class XlsxTableService {
             );
 
         return {
-            sourceName,
             worksheetName,
             headerRowNumber: headerRow + 1,
             columns: this.withColumnTypes(

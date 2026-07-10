@@ -25,12 +25,13 @@ import {
     GridColDef,
     GridColumnVisibilityModel,
     GridLocaleText,
+    GridPaginationModel,
     GridSortModel
 } from "@mui/x-data-grid";
 import { huHU } from "@mui/x-data-grid/locales";
 import { useMemo, useState } from "react";
 
-import { XlsxTableColumn, XlsxTableData, XlsxTableRow } from "../../models/XlsxTable";
+import { XlsxTableColumn, XlsxTableRow, XlsxWorkbookData } from "../../models/XlsxTable";
 import { dialogService } from "../../services/DialogService";
 import { xlsxTableService } from "../../services/XlsxTableService";
 import { tauriService } from "../../tauri/TauriService";
@@ -87,8 +88,11 @@ const dataGridLocaleText = {
 
 export default function WorkOrderTableView() {
 
-    const [tableData, setTableData] =
-        useState<XlsxTableData | null>(null);
+    const [workbookData, setWorkbookData] =
+        useState<XlsxWorkbookData | null>(null);
+
+    const [activeWorksheetIndex, setActiveWorksheetIndex] =
+        useState(0);
 
     const [isLoading, setIsLoading] =
         useState(false);
@@ -114,6 +118,15 @@ export default function WorkOrderTableView() {
     const [columnVisibilityModel, setColumnVisibilityModel] =
         useState<GridColumnVisibilityModel>({});
 
+    const [paginationModel, setPaginationModel] =
+        useState<GridPaginationModel>({
+            page: 0,
+            pageSize: 100
+        });
+
+    const tableData =
+        workbookData?.worksheets[activeWorksheetIndex] ?? null;
+
     async function handleBrowse() {
 
         const path =
@@ -131,7 +144,7 @@ export default function WorkOrderTableView() {
             const bytes =
                 await tauriService.readXlsxBytes(path);
 
-            setParsedTable(
+            setParsedWorkbook(
                 xlsxTableService.parse(
                     bytes.buffer.slice(
                         bytes.byteOffset,
@@ -145,7 +158,8 @@ export default function WorkOrderTableView() {
 
             console.error(err);
             setError("A kiválasztott XLSX fájl nem olvasható vagy érvénytelen.");
-            setTableData(null);
+            setWorkbookData(null);
+            setActiveWorksheetIndex(0);
 
         } finally {
 
@@ -155,13 +169,32 @@ export default function WorkOrderTableView() {
 
     }
 
-    function setParsedTable(data: XlsxTableData) {
+    function setParsedWorkbook(data: XlsxWorkbookData) {
 
-        setTableData(data);
+        setWorkbookData(data);
+        setActiveWorksheetIndex(0);
+        resetTableState();
+
+    }
+
+    function handleWorksheetChange(index: number) {
+
+        setActiveWorksheetIndex(index);
+        closeColumnFilter();
+        resetTableState();
+
+    }
+
+    function resetTableState() {
+
         setGlobalSearch("");
         setFilters({});
         setSortModel([]);
         setColumnVisibilityModel({});
+        setPaginationModel(current => ({
+            ...current,
+            page: 0
+        }));
 
     }
 
@@ -328,6 +361,57 @@ export default function WorkOrderTableView() {
                 >
                     Munkalapok táblázat
                 </Typography>
+
+                {workbookData && (
+
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        noWrap
+                        title={workbookData.sourceName}
+                        sx={{
+                            maxWidth: 220,
+                            minWidth: 0
+                        }}
+                    >
+                        {workbookData.sourceName}
+                    </Typography>
+
+                )}
+
+                {workbookData && (
+
+                    <FormControl
+                        size="small"
+                        sx={{
+                            flex: "0 1 240px",
+                            minWidth: 160,
+                            maxWidth: 320
+                        }}
+                    >
+                        <InputLabel>Munkalap</InputLabel>
+                        <Select
+                            label="Munkalap"
+                            value={activeWorksheetIndex}
+                            disabled={workbookData.worksheets.length === 1}
+                            onChange={event =>
+                                handleWorksheetChange(
+                                    Number(event.target.value)
+                                )
+                            }
+                        >
+                            {workbookData.worksheets.map((worksheet, index) => (
+                                <MenuItem
+                                    key={worksheet.worksheetName}
+                                    value={index}
+                                >
+                                    {worksheet.worksheetName}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+
+                )}
 
                 <TextField
                     size="small"
@@ -610,7 +694,7 @@ export default function WorkOrderTableView() {
             return (
                 <Box sx={{ p: 2 }}>
                     <Alert severity="warning">
-                        Az első munkalap üres.
+                        A(z) „{tableData.worksheetName}” munkalap üres.
                     </Alert>
                 </Box>
             );
@@ -619,6 +703,7 @@ export default function WorkOrderTableView() {
         return (
 
             <DataGrid
+                key={`${workbookData?.sourceName}:${tableData.worksheetName}`}
                 rows={gridRows}
                 columns={gridColumns}
                 getRowId={row => row.id}
@@ -628,14 +713,8 @@ export default function WorkOrderTableView() {
                 onSortModelChange={setSortModel}
                 columnVisibilityModel={columnVisibilityModel}
                 onColumnVisibilityModelChange={setColumnVisibilityModel}
-                initialState={{
-                    pagination: {
-                        paginationModel: {
-                            page: 0,
-                            pageSize: 100
-                        }
-                    }
-                }}
+                paginationModel={paginationModel}
+                onPaginationModelChange={setPaginationModel}
                 pageSizeOptions={[25, 50, 100]}
                 localeText={dataGridLocaleText}
                 showToolbar

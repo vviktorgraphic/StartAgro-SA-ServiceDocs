@@ -428,6 +428,20 @@ Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run rele
 
 ---
 
+## Done XLSX multi-worksheet sprint
+
+Minden XLSX munkalap egyszeri fajlolvasassal, eredeti munkafuzet sorrendben feldolgozva
+
+Munkafuzet es munkalap adatmodell, memoriaban tarolt munkalaptablakkal
+
+Munkalapvalaszto, automatikus elso munkalap es munkalapvaltaskori tablaallapot visszaallitas
+
+Ures es egyetlen munkalapot tartalmazo munkafuzetek kezelese
+
+Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy lefutott
+
+---
+
 ## Current Sprint 026
 
 Portable storage implementation
