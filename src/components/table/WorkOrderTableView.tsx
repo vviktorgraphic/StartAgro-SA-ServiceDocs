@@ -212,12 +212,6 @@ export default function WorkOrderTableView() {
             ]
         );
 
-    const gridRows =
-        useMemo(
-            () => filteredRows,
-            [filteredRows]
-        );
-
     const gridColumns =
         useMemo(
             () => buildGridColumns(
@@ -704,7 +698,7 @@ export default function WorkOrderTableView() {
 
             <DataGrid
                 key={`${workbookData?.sourceName}:${tableData.worksheetName}`}
-                rows={gridRows}
+                rows={filteredRows}
                 columns={gridColumns}
                 getRowId={row => row.id}
                 density="compact"
@@ -820,6 +814,13 @@ function filterRows(
 
     const normalizedSearch =
         globalSearch.trim().toLocaleLowerCase("hu-HU");
+
+    if (
+        !normalizedSearch
+        && Object.keys(filters).length === 0
+    ) {
+        return rows;
+    }
 
     return rows.filter(row => {
 
