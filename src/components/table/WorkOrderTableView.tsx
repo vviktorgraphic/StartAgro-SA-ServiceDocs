@@ -325,10 +325,15 @@ export default function WorkOrderTableView() {
 
         <Box
             sx={{
+                width: "100%",
+                maxWidth: "100%",
                 height: "100%",
+                minWidth: 0,
                 minHeight: 0,
                 display: "grid",
-                gridTemplateRows: "64px 1fr",
+                gridTemplateRows: "auto minmax(0, 1fr)",
+                boxSizing: "border-box",
+                overflow: "hidden",
                 bgcolor: "background.default"
             }}
         >
@@ -336,6 +341,11 @@ export default function WorkOrderTableView() {
             <Toolbar
                 sx={{
                     gap: 1.5,
+                    width: "100%",
+                    maxWidth: "100%",
+                    minWidth: 0,
+                    boxSizing: "border-box",
+                    flexWrap: "wrap",
                     borderBottom: 1,
                     borderColor: "divider",
                     bgcolor: "background.paper"
@@ -347,7 +357,7 @@ export default function WorkOrderTableView() {
                     noWrap
                     sx={{
                         fontWeight: 600,
-                        minWidth: 220
+                        minWidth: 0
                     }}
                 >
                     Munkalapok táblázat
@@ -359,7 +369,10 @@ export default function WorkOrderTableView() {
                     value={globalSearch}
                     onChange={event => setGlobalSearch(event.target.value)}
                     sx={{
-                        width: 320
+                        flex: "1 1 240px",
+                        width: 320,
+                        maxWidth: 420,
+                        minWidth: 0
                     }}
                 />
 
@@ -372,7 +385,7 @@ export default function WorkOrderTableView() {
                     Szűrők törlése
                 </Button>
 
-                <Box sx={{ flexGrow: 1 }} />
+                <Box sx={{ flex: "1 1 0", minWidth: 0 }} />
 
                 {tableData && (
 
@@ -399,16 +412,25 @@ export default function WorkOrderTableView() {
 
             <Box
                 sx={{
+                    width: "100%",
+                    maxWidth: "100%",
+                    minWidth: 0,
                     minHeight: 0,
-                    p: 2
+                    p: 2,
+                    boxSizing: "border-box",
+                    overflow: "hidden"
                 }}
             >
 
                 <Paper
                     square
                     sx={{
+                        width: "100%",
+                        maxWidth: "100%",
                         height: "100%",
+                        minWidth: 0,
                         minHeight: 0,
+                        boxSizing: "border-box",
                         overflow: "hidden"
                     }}
                 >
@@ -640,9 +662,23 @@ export default function WorkOrderTableView() {
                 onSortModelChange={setSortModel}
                 columnVisibilityModel={columnVisibilityModel}
                 onColumnVisibilityModelChange={setColumnVisibilityModel}
+                initialState={{
+                    pagination: {
+                        paginationModel: {
+                            page: 0,
+                            pageSize: 100
+                        }
+                    }
+                }}
+                pageSizeOptions={[25, 50, 100]}
                 showToolbar
                 sx={{
+                    width: "100%",
+                    maxWidth: "100%",
                     height: "100%",
+                    minWidth: 0,
+                    minHeight: 0,
+                    boxSizing: "border-box",
                     border: 0,
                     "& .MuiDataGrid-cell": {
                         alignItems: "center"

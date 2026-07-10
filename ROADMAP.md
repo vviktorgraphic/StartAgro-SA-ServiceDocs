@@ -384,6 +384,20 @@ Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
 
 ---
 
+## Done Sprint 025 Hotfix
+
+XLSX tabla jobb oldali levagasanak javitasa a teljes szulo elrendezesi lanc zsugorithato meretezesevel
+
+Reszponziv, tobb sorba torheto tabla eszkoztar, mindig elerheto Tallozas gombbal
+
+Szeles tablazat vizszintes gorgetese a DataGrid-en belul, ablak szintu vizszintes tulcsordulas nelkul
+
+Teljes DataGrid lablac es lapozas 25, 50 es 100 soros lapmerettel
+
+Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
+
+---
+
 ## Current Sprint 026
 
 Portable storage implementation

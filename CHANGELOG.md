@@ -442,6 +442,20 @@ XLSX fajl tallozasa es helyi beolvasasa Tauri parancson keresztul
 
 ---
 
+## v0.30.1
+
+Sprint 25 hotfix: XLSX tabla elrendezes es navigacio
+
+Az alkalmazas, a modulnezet es a DataGrid szelessege a lathato ablakhoz korlatozva, a tulcsordulas a tabla belso gorgetosavjan marad
+
+A tabla es minden relevans szuloelem zsugorodhato grid/flex meretezest kapott, igy a jobb oldal, a teljes lablac es a Tallozas gomb elerheto
+
+A felso eszkoztar szukebb ablakban tobb sorba torhet, a kereso es a cimke nem kenyszerit tulzott minimum szelesseget
+
+A lapmeret valasztek 25, 50 es 100 sor, az alapertelmezett lapmeret 100 sor; minden importalt sor lapozassal elerheto
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.

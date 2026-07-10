@@ -49,7 +49,13 @@ export default function MainNavigation({
         <Box
             component="nav"
             sx={{
+                width: "100%",
+                maxWidth: "100%",
                 height: "100%",
+                minWidth: 0,
+                minHeight: 0,
+                boxSizing: "border-box",
+                overflow: "hidden",
                 borderRight: 1,
                 borderColor: "divider",
                 bgcolor: "background.paper"

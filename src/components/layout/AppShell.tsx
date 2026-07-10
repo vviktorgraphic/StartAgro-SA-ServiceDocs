@@ -16,7 +16,12 @@ export default function AppShell() {
                 display: "grid",
                 gridTemplateColumns: "280px 420px 1fr",
                 gridTemplateRows: "64px 56px minmax(0, 1fr) 36px",
+                width: "100%",
+                maxWidth: "100%",
                 height: "100%",
+                minWidth: 0,
+                minHeight: 0,
+                boxSizing: "border-box",
                 overflow: "hidden",
                 bgcolor: "background.default"
             }}
@@ -25,6 +30,9 @@ export default function AppShell() {
             <Box
                 sx={{
                     gridColumn: "1 / 4",
+                    minWidth: 0,
+                    boxSizing: "border-box",
+                    overflow: "hidden",
                     position: "sticky",
                     top: 0,
                     zIndex: theme => theme.zIndex.drawer + 2
@@ -37,6 +45,9 @@ export default function AppShell() {
                 sx={{
                     gridColumn: "1 / 4",
                     gridRow: "2",
+                    minWidth: 0,
+                    boxSizing: "border-box",
+                    overflow: "hidden",
                     position: "sticky",
                     top: 64,
                     zIndex: theme => theme.zIndex.drawer + 1,
@@ -52,7 +63,9 @@ export default function AppShell() {
                 square
                 sx={{
                     gridRow: "3",
+                    minWidth: 0,
                     minHeight: 0,
+                    boxSizing: "border-box",
                     overflow: "hidden",
                     borderRight: 1,
                     borderColor: "divider"
@@ -65,7 +78,9 @@ export default function AppShell() {
                 square
                 sx={{
                     gridRow: "3",
+                    minWidth: 0,
                     minHeight: 0,
+                    boxSizing: "border-box",
                     overflow: "hidden",
                     borderRight: 1,
                     borderColor: "divider"
@@ -79,7 +94,9 @@ export default function AppShell() {
                 square
                 sx={{
                     gridRow: "3",
+                    minWidth: 0,
                     minHeight: 0,
+                    boxSizing: "border-box",
                     overflow: "hidden"
                 }}
             >
@@ -89,7 +106,10 @@ export default function AppShell() {
             <Box
                 sx={{
                     gridColumn: "1 / 4",
-                    gridRow: "4"
+                    gridRow: "4",
+                    minWidth: 0,
+                    boxSizing: "border-box",
+                    overflow: "hidden"
                 }}
             >
                 <StatusBar />

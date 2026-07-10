@@ -68,7 +68,12 @@ export default function App() {
             sx={{
                 display: "grid",
                 gridTemplateColumns: "220px minmax(0, 1fr)",
+                width: "100%",
+                maxWidth: "100%",
                 height: "100vh",
+                minWidth: 0,
+                minHeight: 0,
+                boxSizing: "border-box",
                 overflow: "hidden",
                 bgcolor: "background.default"
             }}
@@ -81,8 +86,11 @@ export default function App() {
 
             <Box
                 sx={{
+                    width: "100%",
+                    maxWidth: "100%",
                     minWidth: 0,
                     minHeight: 0,
+                    boxSizing: "border-box",
                     overflow: "hidden"
                 }}
             >
