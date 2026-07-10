@@ -600,7 +600,7 @@ export default function WorkOrderTableView() {
             return (
                 <Box sx={{ p: 2 }}>
                     <Alert severity="info">
-                        A Tallózás gombbal válassza ki, a megnyitni kívánt táblázatot!
+                        A Tallózás gombbal válassza ki a megnyitni kívánt táblázatot!
                     </Alert>
                 </Box>
             );
