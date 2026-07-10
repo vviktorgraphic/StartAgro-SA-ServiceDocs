@@ -50,6 +50,21 @@ class TauriService {
 
     }
 
+    public async readXlsxBytes(
+        path: string
+    ): Promise<Uint8Array> {
+
+        const bytes = await invoke<number[]>(
+            "read_xlsx_bytes",
+            {
+                path
+            }
+        );
+
+        return new Uint8Array(bytes);
+
+    }
+
 }
 
 export const tauriService = new TauriService();

@@ -13,6 +13,14 @@ fn read_pdf_bytes(path: String) -> Result<Vec<u8>, String> {
 
 }
 
+#[tauri::command]
+fn read_xlsx_bytes(path: String) -> Result<Vec<u8>, String> {
+
+    fs::read(path)
+        .map_err(|e| e.to_string())
+
+}
+
 #[derive(serde::Serialize)]
 struct PdfFile {
 
@@ -138,7 +146,9 @@ pub fn run() {
 
             scan_documents,
 
-            read_pdf_bytes
+            read_pdf_bytes,
+
+            read_xlsx_bytes
 
         ])
         .run(tauri::generate_context!())

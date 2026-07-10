@@ -14,6 +14,26 @@ class DialogService {
 
     }
 
+    public async selectXlsxFile(): Promise<string | null> {
+
+        const result = await open({
+            directory: false,
+            multiple: false,
+            title: "XLSX fájl kiválasztása",
+            filters: [
+                {
+                    name: "Excel munkafüzet",
+                    extensions: [
+                        "xlsx"
+                    ]
+                }
+            ]
+        });
+
+        return typeof result === "string" ? result : null;
+
+    }
+
 }
 
 export const dialogService = new DialogService();

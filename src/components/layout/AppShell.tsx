@@ -16,7 +16,7 @@ export default function AppShell() {
                 display: "grid",
                 gridTemplateColumns: "280px 420px 1fr",
                 gridTemplateRows: "64px 56px minmax(0, 1fr) 36px",
-                height: "100vh",
+                height: "100%",
                 overflow: "hidden",
                 bgcolor: "background.default"
             }}

@@ -360,19 +360,31 @@ Hatralevo teljesitmeny milestone: 50,000 fajlos validacio
 
 ---
 
-## Current Sprint 025
+## Done Sprint 025
 
-SQLite visszaolvasas
+XLSX munkalap tabla modul
 
-WorkOrderRepository.loadAll()
+Fo navigacio ket modullal
 
-ServiceVisit betoltese
+Munkalap gyorskereso nezet a meglevo AppShell funkcionalitassal
 
-React Context frissitese
+Munkalapok tablazat read-only XLSX nezet
+
+datatable/test_tablazat.xlsx alapertelmezett betoltese
+
+Elso munkalap elso nem ures sora fejlecsorkent kezelve
+
+Dinamikus oszlopok es MUI DataGrid tabla
+
+Globalis kereses, oszlopszures, rendezés, lathato ertek valasztas, ures/nem ures szures
+
+XLSX fajl tallozas helyi beolvasassal
+
+Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
 
 ---
 
-## Sprint 026
+## Current Sprint 026
 
 Portable storage implementation
 
@@ -445,3 +457,11 @@ Performance optimalizalas
 ## Sprint 033
 
 v1.0 kiadas
+
+---
+
+## Sprint 034
+
+Future backlog
+
+SQLite visszaolvasas follow-up, ha kesobb meg szukseges

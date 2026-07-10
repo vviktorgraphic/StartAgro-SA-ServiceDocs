@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 
 import AppShell from "./components/layout/AppShell";
+import MainNavigation, { MainView } from "./components/layout/MainNavigation";
+import WorkOrderTableView from "./components/table/WorkOrderTableView";
 import { useAppContext } from "./context/AppContext";
 import { loadWorkOrdersService } from "./services/LoadWorkOrdersService";
 import { startupService } from "./services/StartupService";
 
 export default function App() {
+
+    const [activeView, setActiveView] =
+        useState<MainView>("quickSearch");
 
     const {
 
@@ -56,6 +62,37 @@ export default function App() {
 
     ]);
 
-    return <AppShell />;
+    return (
+
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "220px minmax(0, 1fr)",
+                height: "100vh",
+                overflow: "hidden",
+                bgcolor: "background.default"
+            }}
+        >
+
+            <MainNavigation
+                activeView={activeView}
+                onViewChange={setActiveView}
+            />
+
+            <Box
+                sx={{
+                    minWidth: 0,
+                    minHeight: 0,
+                    overflow: "hidden"
+                }}
+            >
+                {activeView === "quickSearch"
+                    ? <AppShell />
+                    : <WorkOrderTableView />}
+            </Box>
+
+        </Box>
+
+    );
 
 }

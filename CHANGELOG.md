@@ -424,10 +424,28 @@ UI nagy adathalmaz indexelese kozben is reszponziv maradt
 
 ---
 
+## v0.30
+
+Sprint 25: XLSX munkalap tabla modul
+
+Fo navigacio hozzaadva ket modullal: Munkalap gyorskereso es Munkalapok tablazat
+
+A meglevo gyorskereso AppShell valtozatlan funkcionalitassal kulon nezetbe kerult
+
+Uj read-only XLSX tabla nezet keszult a datatable/test_tablazat.xlsx alapertelmezett fajllal
+
+Az elso munkalap elso nem ures sora fejlecsorkent, az utana kovetkezo nem ures sorok rekordkent jelennek meg
+
+Dinamikus oszlopkezeles, globalis kereses, oszlopszures, rendezés, sor darabszam, oszlop atmeretezes es oszlop mutatas/elrejtes hozzaadva
+
+XLSX fajl tallozasa es helyi beolvasasa Tauri parancson keresztul
+
+---
+
 ## Jelenlegi allapot
 
-Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, es az NSIS setup exe tiszta install mappaba masolhato.
+Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.
 
 Kovetkezo cel:
 
-SQLite visszaolvasas fejlesztese.
+Portable storage implementation.
