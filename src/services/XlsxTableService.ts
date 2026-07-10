@@ -26,7 +26,10 @@ class XlsxTableService {
                 data,
                 {
                     type: "array",
-                    cellDates: true
+                    cellDates: true,
+                    cellFormula: true,
+                    cellNF: true,
+                    cellText: true
                 }
             );
 
@@ -288,9 +291,18 @@ class XlsxTableService {
             return "";
         }
 
-        return XLSX.utils
-            .format_cell(cell)
-            .trim();
+        if (typeof cell.w === "string") {
+            return cell.w.trim();
+        }
+
+        if (cell.v === undefined || cell.v === null) {
+            return "";
+        }
+
+        const formattedValue =
+            XLSX.utils.format_cell(cell);
+
+        return (formattedValue || String(cell.v)).trim();
 
     }
 

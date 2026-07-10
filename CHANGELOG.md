@@ -490,6 +490,8 @@ Munkalapvaltaskor a kereses, szurok, rendezes, oszloplathatosag es lapozasi pozi
 
 Az ures munkalapok kulon, nev szerinti ures allapotot jelenitenek meg
 
+A formulacellak a munkafuzetben mentett gyorsitotarazott, formatalt eredmenyt jelenitik meg; hianyzo eredmenynel biztonsagosan ures ertek marad
+
 ---
 
 ## Jelenlegi allapot

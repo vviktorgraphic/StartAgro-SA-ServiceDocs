@@ -438,6 +438,8 @@ Munkalapvalaszto, automatikus elso munkalap es munkalapvaltaskori tablaallapot v
 
 Ures es egyetlen munkalapot tartalmazo munkafuzetek kezelese
 
+Azonos es masik munkalapra hivatkozo formulak mentett, formatalt Excel eredmenyenek megorzese ujraszamitas nelkul
+
 Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy lefutott
 
 ---
