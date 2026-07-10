@@ -14,7 +14,7 @@ export default function AppShell() {
         <Box
             sx={{
                 display: "grid",
-                gridTemplateColumns: "280px 420px 1fr",
+                gridTemplateColumns: "280px 370px 1fr",
                 gridTemplateRows: "64px 56px minmax(0, 1fr) 36px",
                 width: "100%",
                 maxWidth: "100%",

@@ -398,6 +398,16 @@ Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
 
 ---
 
+## Done UI Polish Sprint
+
+Munkalap gyorskereso navigacios elem atnevezese Munkalap keresore
+
+Modulok oszlop 270 px-re novelese es Munkalapok oszlop 370 px-re csokkentese, valtozatlan Elonezet szelesseggel
+
+Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
+
+---
+
 ## Current Sprint 026
 
 Portable storage implementation

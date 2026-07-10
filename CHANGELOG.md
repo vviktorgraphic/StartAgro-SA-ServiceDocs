@@ -456,6 +456,14 @@ A lapmeret valasztek 25, 50 es 100 sor, az alapertelmezett lapmeret 100 sor; min
 
 ---
 
+## UI Polish Sprint
+
+A fo navigacio Munkalap gyorskereso eleme Munkalap keresore atnevezve
+
+A Modulok oszlop 220 px-rol 270 px-re novelve, a Munkalapok oszlop 420 px-rol 370 px-re csokkentve, az Elonezet fennmarado szelessege valtozatlan
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.

@@ -29,7 +29,7 @@ const navigationItems: Array<{
 }> = [
     {
         view: "quickSearch",
-        label: "Munkalap gyorskereső",
+        label: "Munkalap kereső",
         icon: <SearchIcon />
     },
     {
