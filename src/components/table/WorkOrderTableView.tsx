@@ -28,7 +28,7 @@ import {
     GridSortModel
 } from "@mui/x-data-grid";
 import { huHU } from "@mui/x-data-grid/locales";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { XlsxTableColumn, XlsxTableData, XlsxTableRow } from "../../models/XlsxTable";
 import { dialogService } from "../../services/DialogService";
@@ -58,12 +58,6 @@ interface ColumnFilter {
     selectedValues: string[];
 
 }
-
-const defaultTableUrl =
-    new URL(
-        "../../../datatable/test_tablazat.xlsx",
-        import.meta.url
-    ).href;
 
 const defaultFilter: ColumnFilter = {
     operator: "contains",
@@ -119,56 +113,6 @@ export default function WorkOrderTableView() {
 
     const [columnVisibilityModel, setColumnVisibilityModel] =
         useState<GridColumnVisibilityModel>({});
-
-    useEffect(() => {
-
-        loadDefaultFile();
-
-    }, []);
-
-    async function loadDefaultFile() {
-
-        setIsLoading(true);
-        setError(null);
-
-        try {
-
-            const requestedResponse =
-                await fetch("/datatable/test_tablazat.xlsx");
-
-            const response =
-                requestedResponse.ok
-                    ? requestedResponse
-                    : await fetch(defaultTableUrl);
-
-            if (!response.ok) {
-                setTableData(null);
-                return;
-            }
-
-            const data =
-                await response.arrayBuffer();
-
-            setParsedTable(
-                xlsxTableService.parse(
-                    data,
-                    "datatable/test_tablazat.xlsx"
-                )
-            );
-
-        } catch (err) {
-
-            console.error(err);
-            setError("Az alapértelmezett XLSX fájl betöltése nem sikerült.");
-            setTableData(null);
-
-        } finally {
-
-            setIsLoading(false);
-
-        }
-
-    }
 
     async function handleBrowse() {
 
@@ -656,7 +600,7 @@ export default function WorkOrderTableView() {
             return (
                 <Box sx={{ p: 2 }}>
                     <Alert severity="info">
-                        Nincs betöltött XLSX fájl.
+                        A Tallózás gombbal válassza ki, a megnyitni kívánt táblázatot!
                     </Alert>
                 </Box>
             );

@@ -472,6 +472,14 @@ A hivatalos lokalizaciobol hianyzo lapozasi tartomany szovege minimalis magyar k
 
 ---
 
+## XLSX empty-state hotfix
+
+Az XLSX tabla modul nem probal alapertelmezett fajlt automatikusan betolteni
+
+Fajl nelkul a felulet a Tallozas gomb hasznalatara vonatkozo utmutatast jelenit meg, a valos olvasasi hibak kezelese valtozatlan
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.

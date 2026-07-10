@@ -418,6 +418,16 @@ Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
 
 ---
 
+## Done XLSX empty-state hotfix
+
+Alapertelmezett XLSX automatikus betoltes es tesztfajl fallback eltavolitva
+
+Ures tablaallapotban Tallozas gomb hasznalatara vonatkozo magyar utmutatas
+
+Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy lefutott
+
+---
+
 ## Current Sprint 026
 
 Portable storage implementation
