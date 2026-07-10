@@ -440,6 +440,8 @@ Ures es egyetlen munkalapot tartalmazo munkafuzetek kezelese
 
 Azonos es masik munkalapra hivatkozo formulak mentett, formatalt Excel eredmenyenek megorzese ujraszamitas nelkul
 
+Stabil sorazonositok es egyszer feloldott cellaertekek megorzese szures, rendezes es lapozas kozben
+
 Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy lefutott
 
 ---

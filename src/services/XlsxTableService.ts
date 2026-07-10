@@ -212,7 +212,6 @@ class XlsxTableService {
 
                 cells[column.field] = {
                     displayValue,
-                    rawValue: worksheetCell?.v ?? null,
                     isDate: this.isDateCell(worksheetCell)
                 };
 

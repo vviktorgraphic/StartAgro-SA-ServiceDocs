@@ -492,6 +492,8 @@ Az ures munkalapok kulon, nev szerinti ures allapotot jelenitenek meg
 
 A formulacellak a munkafuzetben mentett gyorsitotarazott, formatalt eredmenyt jelenitik meg; hianyzo eredmenynel biztonsagosan ures ertek marad
 
+A DataGrid sorcellak csak az egyszer feloldott megjelenitesi erteket es datumtipus metaadatot taroljak, a formula es nyers cellaertek nem kerul a renderelesi modellbe
+
 ---
 
 ## Jelenlegi allapot

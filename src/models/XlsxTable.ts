@@ -2,8 +2,6 @@ export interface XlsxCellValue {
 
     displayValue: string;
 
-    rawValue: unknown;
-
     isDate: boolean;
 
 }
