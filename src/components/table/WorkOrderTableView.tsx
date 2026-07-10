@@ -24,8 +24,10 @@ import {
     DataGrid,
     GridColDef,
     GridColumnVisibilityModel,
+    GridLocaleText,
     GridSortModel
 } from "@mui/x-data-grid";
+import { huHU } from "@mui/x-data-grid/locales";
 import { useEffect, useMemo, useState } from "react";
 
 import { XlsxTableColumn, XlsxTableData, XlsxTableRow } from "../../models/XlsxTable";
@@ -68,6 +70,26 @@ const defaultFilter: ColumnFilter = {
     value: "",
     selectedValues: []
 };
+
+const dataGridLocaleText = {
+    ...huHU.components.MuiDataGrid.defaultProps.localeText,
+    paginationDisplayedRows: ({
+        from,
+        to,
+        count,
+        estimated
+    }) => {
+        if (count !== -1) {
+            return `${from}–${to} / ${count}`;
+        }
+
+        if (estimated && estimated > to) {
+            return `${from}–${to} / körülbelül ${estimated}`;
+        }
+
+        return `${from}–${to} / több mint ${to}`;
+    }
+} satisfies Partial<GridLocaleText>;
 
 export default function WorkOrderTableView() {
 
@@ -671,6 +693,7 @@ export default function WorkOrderTableView() {
                     }
                 }}
                 pageSizeOptions={[25, 50, 100]}
+                localeText={dataGridLocaleText}
                 showToolbar
                 sx={{
                     width: "100%",

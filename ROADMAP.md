@@ -408,6 +408,16 @@ Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
 
 ---
 
+## Done Sprint 026 XLSX Hungarian localization
+
+Hivatalos MUI X DataGrid magyar lokalizacio az XLSX munkalap tabla teljes beepitett feluleten
+
+Magyar lapozasi tartomany szoveg a hivatalos lokalizaciobol hianyzo formatterhez
+
+Build ellenorzes: npm.cmd run build es npm.cmd run tauri build lefutott
+
+---
+
 ## Current Sprint 026
 
 Portable storage implementation

@@ -464,6 +464,14 @@ A Modulok oszlop 220 px-rol 270 px-re novelve, a Munkalapok oszlop 420 px-rol 37
 
 ---
 
+## Sprint 26
+
+Az XLSX munkalap tabla MUI DataGrid felulete a hivatalos magyar lokalizaciot hasznalja
+
+A hivatalos lokalizaciobol hianyzo lapozasi tartomany szovege minimalis magyar kiegeszitest kapott
+
+---
+
 ## Jelenlegi allapot
 
 Tallozas nem indit indexelest, az indexeles kompakt header visszajelzest ad, a WorkOrder mezok PDF sorrendben jelennek meg, a globalis kereso Szervizcsapat szerint is keres, az XLSX munkalap tabla read-only nezetben megnyithato, es az NSIS setup exe tiszta install mappaba masolhato.
