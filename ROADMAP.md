@@ -442,11 +442,15 @@ Azonos es masik munkalapra hivatkozo formulak mentett, formatalt Excel eredmenye
 
 Stabil sorazonositok es egyszer feloldott cellaertekek megorzese szures, rendezes es lapozas kozben
 
+FKERES/VLOOKUP cache-elt eredmenyek stabil megjelenitese lapozas utan, workbook ujraparse es formula-ujraertekeles nelkul
+
 Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy lefutott
 
 ---
 
-## Current Sprint 026
+## Nyitott feladatok – kozeljovo
+
+### Sprint 026 – Portable storage implementation
 
 Portable storage implementation
 
@@ -460,17 +464,13 @@ Read-only vagy nem tamogatott halozati mappa fallback
 
 ---
 
-## Sprint 027
-
-ImageRepository
+### Sprint 027 – ImageRepository
 
 Fotok adatbazisban
 
 ---
 
-## Sprint 028
-
-PDF Preview fejlesztese
+### Sprint 028 – PDF Preview fejlesztese
 
 Oldal navigacio
 
@@ -478,13 +478,13 @@ Zoom
 
 ---
 
-## Sprint 029
+### Sprint 029 – Beallitasok
 
 Beallitasok
 
 ---
 
-## Sprint 030
+### Sprint 030 – Export
 
 Export
 
@@ -496,7 +496,9 @@ CSV
 
 ---
 
-## Sprint 031
+## Nyitott feladatok – kesobb
+
+### Sprint 031 – Release hardening
 
 Release hardening
 
@@ -506,24 +508,24 @@ Installer tipus dontes
 
 Kod alairas dontes
 
-Portable adatbazis strategia implementalasa
+### Sprint 032 – Performance optimalizalas
 
----
+### Sprint 033 – v1.0 kiadas
 
-## Sprint 032
-
-Performance optimalizalas
-
----
-
-## Sprint 033
-
-v1.0 kiadas
-
----
-
-## Sprint 034
+### Sprint 034 – Future backlog
 
 Future backlog
 
 SQLite visszaolvasas follow-up, ha kesobb meg szukseges
+
+50,000 fajlos teljesitmenyvalidacio
+
+Automatizalt tesztek kesobbi bevezetese, ha indokolt
+
+---
+
+## Blokkolt / kornyezetre var
+
+- Szerver- es halozati megosztas validalasa valos kornyezetben
+- SQLite locking es tobb kliens egyideju hasznalatanak tesztelese
+- Read-only vagy nem tamogatott halozati mappa fallback dontes valos megosztason

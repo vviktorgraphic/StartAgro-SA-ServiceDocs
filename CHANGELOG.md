@@ -1,5 +1,17 @@
 # Changelog
 
+## Fejlesztesi atadas es XLSX modul osszegzes
+
+- Ketmodulos alkalmazasnavigacio: **Munkalap kereső** es **Munkalapok táblázat**
+- A korabbi „Munkalap gyorskereso” modul **Munkalap kereső** nevet kapott
+- Read-only XLSX tabla modul globalis es oszlopszurokkel, rendezessel, lapozassal es virtualizalt MUI DataGriddel
+- Magyar MUI DataGrid lokalizacio es magyar lapozasi tartomany
+- Reszponziv, szeles tablakat belso vizszintes gorgetessel kezelo elrendezes
+- XLSX betoltes kizarolag a **Tallózás** gombbal, automatikus alapertelmezett fajl nelkul
+- A workbook minden worksheetje egyetlen parse soran, eredeti sorrendben memoriaba kerul
+- Azonos es mas worksheetre hivatkozo formulak mentett/cache-elt eredmenye ujraszamitas nelkul jelenik meg
+- FKERES/VLOOKUP eredmenyek stabilak maradnak lapozas, szures es rendezes kozben; a korabbi lapozas utani `#N/A` regresszio javitva
+
 ## v0.1
 
 Projekt letrehozasa

@@ -1,157 +1,73 @@
-# StartAgro – Service Documents
+# StartAgro Service Documents
 
-## Cél
+Windows Tauri desktop alkalmazás a Start Agro szervizdokumentumainak helyi feldolgozására. A részletes fejlesztési kontextus, architektúra és átadási prompt: [DEVELOPMENT_HANDOFF.md](DEVELOPMENT_HANDOFF.md).
 
-A Start Agro Kft. szerviz munkalapjainak digitális feldolgozása.
+## Modulok
 
-Az alkalmazás:
+- **Munkalap kereső:** PDF és JPG fájlok párosítása, incremental indexelés, WorkOrder és ServiceVisit parse, SQLite tárolás, keresés, szűrés, adat-előnézet és fotó-lightbox.
+- **Munkalapok táblázat:** Tallózással megnyitott XLSX munkafüzetek read-only, több munkalapos MUI DataGrid nézete. A workbook egyszer parse-olódik; a formulák mentett/cache-elt eredménye jelenik meg újraszámítás nélkül.
 
-- PDF munkalapokat indexel
-- JPG fotókat párosít
-- SQLite adatbázisba ment
-- kereshető adatbázist épít
-- megjeleníti a munkalapokat
-- PDF előnézetet biztosít
+## Fejlesztés és futtatás
 
----
+Előfeltétel: Node.js/npm, Rust/Cargo, Tauri Windows build eszközök.
 
-## Technológia
+```powershell
+npm.cmd install
+npm.cmd run tauri dev
+```
 
-- Tauri 2
-- React
-- TypeScript
-- Vite
-- Material UI
-- SQLite (@tauri-apps/plugin-sql)
-- pdf.js
+Csak a frontend fejlesztői szerveréhez:
 
----
+```powershell
+npm.cmd run dev
+```
 
-## Build / Release
+Production frontend ellenőrzés:
 
-Frontend production build:
+```powershell
+npm.cmd run build
+```
 
-`npm.cmd run build`
+A `package.json` jelenleg nem tartalmaz automatizált `test` scriptet; az ellenőrzés builddel és célzott manuális teszttel történik.
 
-Windows Tauri release build:
+## Windows release
 
-`npm.cmd run tauri build`
+```powershell
+npm.cmd run tauri build
+npm.cmd run release:copy
+```
 
-NSIS setup masolasa tiszta install mappaba:
+Egyben:
 
-`npm.cmd run release:copy`
+```powershell
+npm.cmd run release:build
+```
 
-Teljes Windows release build es masolas:
+Artifactok:
 
-`npm.cmd run release:build`
+- natív executable: `src-tauri/target/release/startagro-servicedocs.exe`
+- NSIS bundle: `src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.1.0_x64-setup.exe`
+- kiadásra másolt installer: `install/StartAgro-ServiceDocs-Setup.exe`
 
-Elsoleges install artifact:
+Az `install/`, `dist/` és `src-tauri/target/` generált, ignored könyvtár.
 
-`install/StartAgro-ServiceDocs-Setup.exe`
+## Könyvtárak
 
-Release Candidate ellenorzes:
+- `src/`: React/TypeScript UI, service-ek, modellek és SQLite repositoryk
+- `src/components/layout/`: alkalmazáselrendezés és navigáció
+- `src/components/table/`: XLSX DataGrid modul
+- `src/services/`: indexelés, PDF/XLSX parse és matching
+- `src/database/`: SQLite inicializálás, migráció és repositoryk
+- `src-tauri/`: Rust scanner, Tauri konfiguráció és Windows bundle
+- `docs/`: történeti specifikációk; az aktuális root dokumentumok az irányadók
+- `datatable/`, `testdata/`: helyi tesztadatot is tartalmazhatnak; commit előtt ellenőrizendők
 
-1. `npm.cmd run build`
-2. `npm.cmd run tauri build`
-3. `npm.cmd run release:copy`
-4. Ellenorizd, hogy letezik: `install/StartAgro-ServiceDocs-Setup.exe`
-5. Tiszta telepites utan manualis ellenorzes:
-   - alkalmazas indul
-   - mappa tallozas mukodik
-   - indexeles lefut
-   - SQLite-bol visszatoltes mukodik
-   - kereses es szurok mukodnek
-   - PDF preview, foto thumbnail es lightbox mukodik
-   - desktop shortcut ikon inditas utan is helyes marad
+## Validált adathalmaz
 
-Large dataset validation:
+- 13 025 fájl: 3 191 PDF és 9 811 JPG
+- első indexelés: 3 191 PDF feldolgozva, 0 hiba
+- második indexelés: a változatlan PDF-ek gyorsan kimaradtak
+- a UI reszponzív maradt
+- következő teljesítménycél: 50 000 fájlos validáció
 
-- Dataset: 13,025 files total
-- PDF files: 3,191
-- JPG files: 9,811
-- First indexing completed successfully
-- 3,191 PDFs processed
-- Errors: 0
-- Second indexing completed quickly
-- Already indexed unchanged files were skipped correctly
-- UI remained responsive
-- Future milestone: 50,000 file validation
-
-Internal 0.1.0 release artifact:
-
-- Path: `install/StartAgro-ServiceDocs-Setup.exe`
-- SHA256: `50C9E8E2DDF9AF08D548338960EB2443BA3899B1C5AF8AA9396A3BE80A070892`
-
----
-
-## Projekt filozófia
-
-Offline desktop alkalmazás.
-
-Minden adat helyben tárolódik.
-
-Nincs backend.
-
-Nincs felhő.
-
-Gyors működés.
-
-Egyszerű karbantarthatóság.
-
----
-
-## Architektúra
-
-PDF
-
-↓
-
-Parser
-
-↓
-
-Model
-
-↓
-
-Repository
-
-↓
-
-SQLite
-
-↓
-
-React Context
-
-↓
-
-UI
-
----
-
-## Fő modulok
-
-- PDF Engine
-- Parser Engine
-- SQLite Repository
-- Search Engine
-- Preview Engine
-
----
-
-## Jelenlegi állapot
-
-PDF indexelés működik
-
-PDF parser működik
-
-SQLite mentés működik
-
-Repository működik
-
-ServiceVisit parser működik
-
-A következő feladat:
-
-SQLite visszaolvasás
+Aktuális verzió: `0.1.0`; tag: `v0.1.0`. A GitHub `main` ág az egyetlen igazságforrás.

@@ -4,7 +4,10 @@
 
 ## Project Goal
 
-Desktop application for indexing, parsing and searching agricultural service PDF documents.
+Windows desktop application with two main modules:
+
+- Munkalap kereső: PDF/JPG indexing, parsing, SQLite persistence, search and preview
+- Munkalapok táblázat: read-only XLSX workbook viewing and filtering
 
 Tech stack:
 
@@ -13,7 +16,9 @@ Tech stack:
 - Rust
 - SQLite
 
-The application must remain fast with 50,000+ PDF documents.
+The PDF indexing workflow must remain fast and responsive with 50,000+ files.
+
+Changes in one module must not alter the other module unless the task explicitly requires it.
 
 ---
 
@@ -61,6 +66,15 @@ Prefer readability over clever code.
 
 Reuse existing patterns.
 
+For XLSX workbooks:
+
+- read and parse each selected workbook only once
+- keep all parsed worksheets in memory and switch without rereading the file
+- preserve MUI DataGrid row virtualization for large tables
+- use saved/cached workbook formula results for display
+- pagination, sorting and filtering must operate on parsed row values only
+- do not add a full Excel formula engine without explicit approval
+
 ---
 
 # Repository Rules
@@ -93,11 +107,11 @@ Never store import metadata inside WorkOrder.
 Every sprint must end with:
 
 - build
-- test
+- manual test appropriate to the change
 - CHANGELOG update
 - ROADMAP update
-- git commit
-- git push
+- one logical git commit
+- push to origin/main
 
 ---
 
