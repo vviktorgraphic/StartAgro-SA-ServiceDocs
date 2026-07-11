@@ -29,7 +29,7 @@ import {
     GridSortModel
 } from "@mui/x-data-grid";
 import { huHU } from "@mui/x-data-grid/locales";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { XlsxTableColumn, XlsxTableRow, XlsxWorkbookData } from "../../models/XlsxTable";
 import { dialogService } from "../../services/DialogService";
@@ -66,6 +66,9 @@ const defaultFilter: ColumnFilter = {
     selectedValues: []
 };
 
+const lastWorkbookPathStorageKey =
+    "startagro.lastXlsxWorkbookPath";
+
 const dataGridLocaleText = {
     ...huHU.components.MuiDataGrid.defaultProps.localeText,
     paginationDisplayedRows: ({
@@ -87,6 +90,15 @@ const dataGridLocaleText = {
 } satisfies Partial<GridLocaleText>;
 
 export default function WorkOrderTableView() {
+
+    const hasStartedAutomaticLoad =
+        useRef(false);
+
+    const isMounted =
+        useRef(true);
+
+    const loadRequestId =
+        useRef(0);
 
     const [workbookData, setWorkbookData] =
         useState<XlsxWorkbookData | null>(null);
@@ -127,6 +139,27 @@ export default function WorkOrderTableView() {
     const tableData =
         workbookData?.worksheets[activeWorksheetIndex] ?? null;
 
+    useEffect(() => {
+
+        isMounted.current = true;
+
+        if (!hasStartedAutomaticLoad.current) {
+            hasStartedAutomaticLoad.current = true;
+
+            const savedPath =
+                localStorage.getItem(lastWorkbookPathStorageKey);
+
+            if (savedPath) {
+                void loadWorkbook(savedPath, true);
+            }
+        }
+
+        return () => {
+            isMounted.current = false;
+        };
+
+    }, []);
+
     async function handleBrowse() {
 
         const path =
@@ -136,6 +169,18 @@ export default function WorkOrderTableView() {
             return;
         }
 
+        await loadWorkbook(path, false);
+
+    }
+
+    async function loadWorkbook(
+        path: string,
+        isAutomatic: boolean
+    ) {
+
+        const requestId =
+            ++loadRequestId.current;
+
         setIsLoading(true);
         setError(null);
 
@@ -144,26 +189,59 @@ export default function WorkOrderTableView() {
             const bytes =
                 await tauriService.readXlsxBytes(path);
 
-            setParsedWorkbook(
+            const parsedWorkbook =
                 xlsxTableService.parse(
                     bytes.buffer.slice(
                         bytes.byteOffset,
                         bytes.byteOffset + bytes.byteLength
                     ),
                     getFileName(path)
-                )
-            );
+                );
+
+            if (
+                !isMounted.current
+                || requestId !== loadRequestId.current
+            ) {
+                return;
+            }
+
+            setParsedWorkbook(parsedWorkbook);
+
+            if (!isAutomatic) {
+                localStorage.setItem(
+                    lastWorkbookPathStorageKey,
+                    path
+                );
+            }
 
         } catch (err) {
 
             console.error(err);
-            setError("A kiválasztott XLSX fájl nem olvasható vagy érvénytelen.");
+
+            if (
+                !isMounted.current
+                || requestId !== loadRequestId.current
+            ) {
+                return;
+            }
+
+            if (isAutomatic) {
+                localStorage.removeItem(lastWorkbookPathStorageKey);
+            } else {
+                setError("A kiválasztott XLSX fájl nem olvasható vagy érvénytelen.");
+            }
+
             setWorkbookData(null);
             setActiveWorksheetIndex(0);
 
         } finally {
 
-            setIsLoading(false);
+            if (
+                isMounted.current
+                && requestId === loadRequestId.current
+            ) {
+                setIsLoading(false);
+            }
 
         }
 

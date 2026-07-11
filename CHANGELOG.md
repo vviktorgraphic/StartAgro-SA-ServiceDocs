@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.2.0 – Last XLSX workbook restore
+
+- Az alkalmazas csak sikeres fajlolvasas es workbook-parse utan jegyzi meg a Tallozassal megnyitott XLSX teljes utvonalat.
+- Az XLSX nezet a kovetkezo inditaskor ugyanazon kozos betoltesi utvonalon automatikusan visszatolti az utoljara megnyitott munkafuzetet.
+- Hianyzo, olvashatatlan vagy hibas mentett fajlnal az alkalmazas ures XLSX allapotban marad, a hibas utvonalat torli, es a Tallozas tovabbra is hasznalhato.
+- A read-only, tobb munkalapos, egyszer parse-olt es virtualizalt DataGrid mukodes, valamint a cache-elt formula- es FKERES/VLOOKUP-eredmenyek megjelenitese valtozatlan.
+- StartAgro Service Documents v0.2.0 release.
+- Installer: `install/StartAgro-ServiceDocs-Setup.exe` (4 974 082 byte)
+- Installer SHA256: `CD78693DA7B042B2D8813E771A565805F271AF9FC43619A52AC3E77C9AF3E033`
+
 ## Fejlesztesi atadas es XLSX modul osszegzes
 
 - Ketmodulos alkalmazasnavigacio: **Munkalap kereső** es **Munkalapok táblázat**

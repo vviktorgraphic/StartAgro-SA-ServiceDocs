@@ -5,7 +5,7 @@ Windows Tauri desktop alkalmazás a Start Agro szervizdokumentumainak helyi feld
 ## Modulok
 
 - **Munkalap kereső:** PDF és JPG fájlok párosítása, incremental indexelés, WorkOrder és ServiceVisit parse, SQLite tárolás, keresés, szűrés, adat-előnézet és fotó-lightbox.
-- **Munkalapok táblázat:** Tallózással megnyitott XLSX munkafüzetek read-only, több munkalapos MUI DataGrid nézete. A workbook egyszer parse-olódik; a formulák mentett/cache-elt eredménye jelenik meg újraszámítás nélkül.
+- **Munkalapok táblázat:** Tallózással megnyitott XLSX munkafüzetek read-only, több munkalapos MUI DataGrid nézete. Az utoljára sikeresen megnyitott fájl a következő indításkor automatikusan visszatöltődik. A workbook egyszer parse-olódik; a formulák mentett/cache-elt eredménye jelenik meg újraszámítás nélkül.
 
 ## Fejlesztés és futtatás
 
@@ -46,7 +46,7 @@ npm.cmd run release:build
 Artifactok:
 
 - natív executable: `src-tauri/target/release/startagro-servicedocs.exe`
-- NSIS bundle: `src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.1.0_x64-setup.exe`
+- NSIS bundle: `src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.2.0_x64-setup.exe`
 - kiadásra másolt installer: `install/StartAgro-ServiceDocs-Setup.exe`
 
 Az `install/`, `dist/` és `src-tauri/target/` generált, ignored könyvtár.
@@ -70,4 +70,4 @@ Az `install/`, `dist/` és `src-tauri/target/` generált, ignored könyvtár.
 - a UI reszponzív maradt
 - következő teljesítménycél: 50 000 fájlos validáció
 
-Aktuális verzió: `0.1.0`; tag: `v0.1.0`. A GitHub `main` ág az egyetlen igazságforrás.
+Aktuális verzió: `0.2.0`; tag: `v0.2.0`. A GitHub `main` ág az egyetlen igazságforrás.

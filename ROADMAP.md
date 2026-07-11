@@ -448,21 +448,23 @@ Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run rele
 
 ---
 
-## Nyitott feladatok – kozeljovo
+## Done XLSX last workbook and v0.2.0 release sprint
 
-### Sprint 026 – Portable storage implementation
+Az utoljara sikeresen megnyitott XLSX teljes utvonalanak kliensoldali megjegyzese
 
-Portable storage implementation
+Automatikus indulaskori visszatoltes a kozos fajlolvasasi es workbook-parse utvonalon
 
-Konfiguralhato adatbazis hely
+Hianyzó, olvashatatlan vagy hibas mentett fajl biztonsagos torlese es ures allapot fallback
 
-Dokumentummappa melletti .startagro/startagro.db
+React StrictMode, unmount es manualis betoltesi versenyhelyzet vedelme
 
-Migracio a jelenlegi startagro.db-bol
+StartAgro Service Documents v0.2.0 release
 
-Read-only vagy nem tamogatott halozati mappa fallback
+Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run release:copy sikeres
 
 ---
+
+## Nyitott feladatok – kozeljovo
 
 ### Sprint 027 – ImageRepository
 
@@ -497,6 +499,14 @@ CSV
 ---
 
 ## Nyitott feladatok – kesobb
+
+### Portable storage – uzleti igeny megerositesere var
+
+Jelenleg nincs megerositett uzleti igeny; implementacio csak kesobbi jovahagyas utan
+
+Konfiguralhato adatbazis hely, migracio es read-only/halozati fallback tervenek megtartasa
+
+---
 
 ### Sprint 031 – Release hardening
 
