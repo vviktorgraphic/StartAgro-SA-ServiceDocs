@@ -7,7 +7,7 @@ A StartAgro Service Documents egy offline működésű Windows asztali alkalmaz�
 Az alkalmazás két fő modulja:
 
 1. **Munkalap kereső** – PDF munkalapok és JPG képek indexelése, adatbázisba mentése, keresése, szűrése és megjelenítése.
-2. **Munkalapok táblázat** – helyi XLSX munkafüzetek read-only, több munkalapos, virtualizált táblázatos megjelenítése.
+2. **Munkalapok táblázat** – helyi XLSX munkafüzetek read-only, több munkalapos, virtualizált táblázatos megjelenítése, session-only memória-overlay szerkesztéssel.
 
 Mindkét modul meglévő működését változatlanul kell megőrizni, kivéve, ha egy feladat kifejezetten az adott viselkedés módosítását kéri.
 
@@ -208,7 +208,8 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
 - Az eredeti oszlopsorrend megmarad.
 - A használt tartományon belüli üres cellák üres megjelenítési értékkel megmaradnak a nem üres rekordokban; teljesen üres adatsorok nem kerülnek be.
 - Az üres fejléc neve `Oszlop N`; duplikált fejlécek biztonságosan sorszámozódnak (`Név`, `Név 2`, ...).
-- A modul read-only; nincs cella- vagy formulamódosítás.
+- Az eredeti XLSX fajl read-only. A felhasznalo a DataGrid cellait kijelolve kulon,
+  session-only memoria-overlay-ben adhat meg erteket vagy sajat kepletet.
 - A MUI X DataGrid hivatalos `huHU` lokalizációját használja. A hivatalos locale-ból hiányzó pagination range formatter kapott minimális magyar kiegészítést.
 - Globális keresés és oszloponkénti szűrés működik.
 - Szűrők: tartalmazza, pontos egyezés, ezzel kezdődik; számoknál nagyobb/kisebb és egyenlő változatok; dátumnál egyezik/előtte/utána; üres/nem üres.
@@ -234,6 +235,41 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
 - Nincs beépített teljes Excel formula engine, HyperFormula vagy frontend FKERES-implementáció.
 - Ha a formula cache hiányzik, a cella biztonságosan üres marad.
 - Ha a cache elavult, a munkafüzetet import előtt Excelben újra kell számolni és el kell menteni.
+
+### Spreadsheet Formula Layer MVP
+
+- Modell: `src/models/SpreadsheetFormula.ts`; service:
+  `src/services/SpreadsheetFormulaService.ts`; UI-integracio:
+  `src/components/table/WorkOrderTableView.tsx`.
+- Az overlay kulcsa munkalapnev + Excel-cellacim. Uj workbook betoltesekor uj
+  service-peldany keszul, ezert az elozo overlay megszunik; worksheet-valtaskor
+  ugyanakkor a tobbi munkalap session-override-jai megmaradnak.
+- A `XlsxTableService` tovabbra is pontosan egyszer parse-olja a workbookot. A
+  sormodell cellankent megtartja a cellacimet, a formula barhoz szukseges eredeti
+  inputot es a szamitashoz hasznalhato cache-erteket; az XLSX fajlba nincs visszairas.
+- A formula bar Enterrel commitol, Escape-pel visszaallitja a meg nem commitolt
+  inputot, az **Eredeti ertek** gomb pedig torli az adott override-ot.
+- Tamogatott sajat kepletek: `SUM`, `MIN`, `MAX`, `ROUND`, `COUNT`, `+ - * /`,
+  zarojelek, azonos munkalapos relativ/abszolut cellahivatkozas es legfeljebb
+  10 000 cellas veges tartomany. Maximum dependency/parser melyseg: 100.
+- Nincs `eval`, `Function` konstruktor, HyperFormula production runtime vagy
+  tetszoleges JavaScript-vegrehajtas. `VLOOKUP`/FKERES, `IF`, worksheet-/workbook-
+  kozi referencia, teljes oszlop, named range es array formula nem tamogatott.
+- Hibas vagy nem tamogatott overlay-formula rovid hibaval a formula barban marad,
+  de nem irja felul az eredeti cache-elt cellaerteket.
+- A reverse dependency graph a modositott cellatol elerheto overlay-kepleteket
+  szamolja ujra. Lapozas, rendezes, szures es worksheet-valtas nem indit formula-
+  ujraszamitast.
+- A megjelenitett sormodell csak a sikeres override-ertekeket vetiti az eredeti
+  sorokra. Kereses, oszlopszures, lathatoertek-lista es rendezes ezen dolgozik;
+  a DataGrid virtualization es pagination bekapcsolva marad.
+- Automatikus teszt: `npm.cmd run test:spreadsheet-formulas`. Lefedi az ertek- es
+  szoveg-override-ot, whitelistes formulakat, precedenciat, zarojelet, abszolut
+  referenciat, dependency ujraszamitast, ciklust, hibakat, resetet, worksheet-
+  szeparaciot es 100 002 cellas cache-regressziot.
+- Manualis ellenorzesnel nagy workbookkal ellenorizendo a formula bar, a ket
+  munkalap, Enter/Escape/reset, dependency frissules, kereses/szures/rendezes/
+  lapozas, automatikus fajlvisszatoltes, valtozatlan fajl hash/mtime es a PDF modul.
 
 ### Izolalt HyperFormula PoC
 
@@ -355,7 +391,9 @@ Az NSIS hook verziózott `StartAgro-ServiceDocs-icon-v2.ico` fájlt telepít és
 - Az 50 000 fájlos teljesítményteszt jövőbeli munka.
 - Windows desktop shortcut ikoncache probléma még előfordulhat.
 - A `package.json` nem tartalmaz `test` scriptet; a projekt jelenleg valós fájlokkal, manuálisan és builddel validál.
-- Excel-formula újraszámítás nincs; a mentett workbook cache használatos.
+- A workbookban meglevo XLSX-formulak ujraszamitasa nincs; a mentett cache hasznalatos.
+- A Spreadsheet Formula Layer overlay session-only; nincs perzisztencia,
+  undo/redo, uj sor/oszlop, worksheet-kozi formula vagy overlay export.
 - A Rust scanner jelenleg csak a kiválasztott mappa közvetlen fájljait vizsgálja, almappákat nem.
 - A régebbi `docs/` roadmap/specification fájlok történeti dokumentumok és több ponton elavultak; az aktuális root dokumentumok és a forráskód az irányadók.
 
@@ -395,6 +433,8 @@ Stabil és működő állapotnak tekinthető:
 - Read-only XLSX Tallózás és automatikus utolsófájl-visszatöltés, magyar DataGrid, több worksheet, egyszeri workbook parse, munkalapválasztás és state reset.
 - XLSX globális/oszlopszűrés, rendezés, oszlopkezelés, scroll, pagination és virtualization.
 - XLSX mentett formulaeredmények egyszeri feloldása és stabil sorértékek lapozás közben.
+- Session-only Spreadsheet Formula Layer, formula bar, biztonsagos sajat evaluator
+  es dependency-alapu overlay-ujraszamitas az eredeti XLSX modositasa nelkul.
 - 13 025 fájlos valós indexelési validáció.
 
 ## Recommended next steps

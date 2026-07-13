@@ -5,7 +5,7 @@ Windows Tauri desktop alkalmazás a Start Agro szervizdokumentumainak helyi feld
 ## Modulok
 
 - **Munkalap kereső:** PDF és JPG fájlok párosítása, incremental indexelés, WorkOrder és ServiceVisit parse, SQLite tárolás, keresés, szűrés, adat-előnézet és fotó-lightbox.
-- **Munkalapok táblázat:** Tallózással megnyitott XLSX munkafüzetek read-only, több munkalapos MUI DataGrid nézete. Az utoljára sikeresen megnyitott fájl a következő indításkor automatikusan visszatöltődik. A workbook egyszer parse-olódik; a formulák mentett/cache-elt eredménye jelenik meg újraszámítás nélkül.
+- **Munkalapok táblázat:** Tallózással megnyitott XLSX munkafüzetek read-only, több munkalapos MUI DataGrid nézete, session-only cella- és formula-overlay-jel. Az eredeti fájl változatlan marad; a meglévő XLSX formulák mentett/cache-elt eredménye jelenik meg, miközben az alkalmazáson belüli overlay-képletek külön, memóriában számolódnak. Az utoljára sikeresen megnyitott fájl a következő indításkor automatikusan visszatöltődik.
 
 ## Fejlesztés és futtatás
 

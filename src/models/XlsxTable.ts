@@ -1,8 +1,14 @@
 export interface XlsxCellValue {
 
+    cellAddress: string;
+
     displayValue: string;
 
     isDate: boolean;
+
+    originalInput: string;
+
+    originalValue: string | number | boolean | null;
 
 }
 

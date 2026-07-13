@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "poc:formula-compatibility": "node src/poc/formula/FormulaCompatibilityPoc.mjs",
     "poc:formulas": "node src/poc/formula/FormulaEnginePoc.mjs",
+    "test:spreadsheet-formulas": "node --experimental-strip-types src/services/SpreadsheetFormulaService.test.mjs",
     "preview": "vite preview",
     "tauri": "tauri",
     "release:copy": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"New-Item -ItemType Directory -Force install | Out-Null; Copy-Item -LiteralPath 'src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.2.0_x64-setup.exe' -Destination 'install/StartAgro-ServiceDocs-Setup.exe' -Force\"",

@@ -1,6 +1,7 @@
 import ClearAllIcon from "@mui/icons-material/ClearAll";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import {
     Alert,
     Box,
@@ -33,6 +34,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { XlsxTableColumn, XlsxTableRow, XlsxWorkbookData } from "../../models/XlsxTable";
 import { dialogService } from "../../services/DialogService";
+import { SpreadsheetFormulaService } from "../../services/SpreadsheetFormulaService";
 import { xlsxTableService } from "../../services/XlsxTableService";
 import { tauriService } from "../../tauri/TauriService";
 
@@ -57,6 +59,18 @@ interface ColumnFilter {
     value: string;
 
     selectedValues: string[];
+
+}
+
+interface ActiveSpreadsheetCell {
+
+    worksheetName: string;
+
+    cellAddress: string;
+
+    field: string;
+
+    rowId: number;
 
 }
 
@@ -100,6 +114,9 @@ export default function WorkOrderTableView() {
     const loadRequestId =
         useRef(0);
 
+    const spreadsheetFormulaService =
+        useRef<SpreadsheetFormulaService | null>(null);
+
     const [workbookData, setWorkbookData] =
         useState<XlsxWorkbookData | null>(null);
 
@@ -135,6 +152,15 @@ export default function WorkOrderTableView() {
             page: 0,
             pageSize: 100
         });
+
+    const [activeCell, setActiveCell] =
+        useState<ActiveSpreadsheetCell | null>(null);
+
+    const [formulaInput, setFormulaInput] =
+        useState("");
+
+    const [overlayRevision, setOverlayRevision] =
+        useState(0);
 
     const tableData =
         workbookData?.worksheets[activeWorksheetIndex] ?? null;
@@ -233,6 +259,8 @@ export default function WorkOrderTableView() {
 
             setWorkbookData(null);
             setActiveWorksheetIndex(0);
+            spreadsheetFormulaService.current = null;
+            clearActiveCell();
 
         } finally {
 
@@ -249,8 +277,13 @@ export default function WorkOrderTableView() {
 
     function setParsedWorkbook(data: XlsxWorkbookData) {
 
+        spreadsheetFormulaService.current =
+            createSpreadsheetFormulaService(data);
+
         setWorkbookData(data);
         setActiveWorksheetIndex(0);
+        setOverlayRevision(0);
+        clearActiveCell();
         resetTableState();
 
     }
@@ -258,6 +291,7 @@ export default function WorkOrderTableView() {
     function handleWorksheetChange(index: number) {
 
         setActiveWorksheetIndex(index);
+        clearActiveCell();
         closeColumnFilter();
         resetTableState();
 
@@ -276,15 +310,28 @@ export default function WorkOrderTableView() {
 
     }
 
+    const displayedRows =
+        useMemo(
+            () => applySpreadsheetOverrides(
+                tableData?.rows ?? [],
+                tableData?.worksheetName ?? "",
+                spreadsheetFormulaService.current
+            ),
+            [
+                tableData,
+                overlayRevision
+            ]
+        );
+
     const filteredRows =
         useMemo(
             () => filterRows(
-                tableData?.rows ?? [],
+                displayedRows,
                 globalSearch,
                 filters
             ),
             [
-                tableData,
+                displayedRows,
                 globalSearch,
                 filters
             ]
@@ -295,11 +342,13 @@ export default function WorkOrderTableView() {
             () => buildGridColumns(
                 tableData?.columns ?? [],
                 filters,
-                openColumnFilter
+                openColumnFilter,
+                activeCell
             ),
             [
                 tableData,
-                filters
+                filters,
+                activeCell
             ]
         );
 
@@ -316,13 +365,13 @@ export default function WorkOrderTableView() {
     const visibleValues =
         useMemo(
             () => getVisibleValues(
-                tableData?.rows ?? [],
+                displayedRows,
                 globalSearch,
                 filters,
                 activeFilterField
             ),
             [
-                tableData,
+                displayedRows,
                 globalSearch,
                 filters,
                 activeFilterField
@@ -388,9 +437,118 @@ export default function WorkOrderTableView() {
 
     }
 
+    function handleCellClick(
+        row: XlsxTableRow,
+        field: string
+    ) {
+
+        const cell = row.cells[field];
+
+        if (!cell || !tableData) {
+            return;
+        }
+
+        const selection: ActiveSpreadsheetCell = {
+            worksheetName: tableData.worksheetName,
+            cellAddress: cell.cellAddress,
+            field,
+            rowId: row.id
+        };
+
+        setActiveCell(selection);
+        setFormulaInput(
+            spreadsheetFormulaService.current?.getOverride(
+                selection.worksheetName,
+                selection.cellAddress
+            )?.input
+            ?? cell.originalInput
+        );
+
+    }
+
+    function commitFormulaInput() {
+
+        if (!activeCell || !spreadsheetFormulaService.current || !tableData) {
+            return;
+        }
+
+        const originalCell =
+            findCell(tableData.rows, activeCell);
+
+        if (formulaInput === originalCell?.originalInput) {
+            spreadsheetFormulaService.current.resetCell(
+                activeCell.worksheetName,
+                activeCell.cellAddress
+            );
+        } else {
+            spreadsheetFormulaService.current.setCellInput(
+                activeCell.worksheetName,
+                activeCell.cellAddress,
+                formulaInput
+            );
+        }
+
+        setOverlayRevision(current => current + 1);
+
+    }
+
+    function cancelFormulaInput() {
+
+        if (!activeCell || !tableData) {
+            return;
+        }
+
+        const originalCell =
+            findCell(tableData.rows, activeCell);
+
+        setFormulaInput(
+            spreadsheetFormulaService.current?.getOverride(
+                activeCell.worksheetName,
+                activeCell.cellAddress
+            )?.input
+            ?? originalCell?.originalInput
+            ?? ""
+        );
+
+    }
+
+    function resetActiveCell() {
+
+        if (!activeCell || !spreadsheetFormulaService.current || !tableData) {
+            return;
+        }
+
+        spreadsheetFormulaService.current.resetCell(
+            activeCell.worksheetName,
+            activeCell.cellAddress
+        );
+
+        const originalCell =
+            findCell(tableData.rows, activeCell);
+
+        setFormulaInput(originalCell?.originalInput ?? "");
+        setOverlayRevision(current => current + 1);
+
+    }
+
+    function clearActiveCell() {
+
+        setActiveCell(null);
+        setFormulaInput("");
+
+    }
+
     const hasFilters =
         globalSearch.length > 0
         || Object.keys(filters).length > 0;
+
+    const activeOverride =
+        activeCell
+            ? spreadsheetFormulaService.current?.getOverride(
+                activeCell.worksheetName,
+                activeCell.cellAddress
+            )
+            : undefined;
 
     return (
 
@@ -402,7 +560,7 @@ export default function WorkOrderTableView() {
                 minWidth: 0,
                 minHeight: 0,
                 display: "grid",
-                gridTemplateRows: "auto minmax(0, 1fr)",
+                gridTemplateRows: "auto auto minmax(0, 1fr)",
                 boxSizing: "border-box",
                 overflow: "hidden",
                 bgcolor: "background.default"
@@ -531,6 +689,71 @@ export default function WorkOrderTableView() {
                 </Button>
 
             </Toolbar>
+
+            <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1}
+                sx={{
+                    px: 2,
+                    py: 1,
+                    minWidth: 0,
+                    alignItems: { xs: "stretch", sm: "center" },
+                    borderBottom: 1,
+                    borderColor: "divider",
+                    bgcolor: "background.paper"
+                }}
+            >
+
+                <Typography
+                    variant="body2"
+                    sx={{
+                        minWidth: 92,
+                        fontWeight: 600
+                    }}
+                >
+                    Cella: {activeCell?.cellAddress ?? "–"}
+                </Typography>
+
+                <TextField
+                    size="small"
+                    fullWidth
+                    placeholder="Jelöljön ki egy cellát"
+                    value={formulaInput}
+                    disabled={!activeCell}
+                    error={Boolean(activeOverride?.error)}
+                    helperText={activeOverride?.error ?? " "}
+                    onChange={event => setFormulaInput(event.target.value)}
+                    onKeyDown={event => {
+                        if (event.key === "Enter") {
+                            event.preventDefault();
+                            commitFormulaInput();
+                        } else if (event.key === "Escape") {
+                            event.preventDefault();
+                            cancelFormulaInput();
+                        }
+                    }}
+                    slotProps={{
+                        formHelperText: {
+                            sx: {
+                                minHeight: 18,
+                                my: 0,
+                                lineHeight: "18px"
+                            }
+                        }
+                    }}
+                />
+
+                <Button
+                    variant="outlined"
+                    startIcon={<RestartAltIcon />}
+                    disabled={!activeOverride}
+                    onClick={resetActiveCell}
+                    sx={{ whiteSpace: "nowrap" }}
+                >
+                    Eredeti érték
+                </Button>
+
+            </Stack>
 
             <Box
                 sx={{
@@ -781,6 +1004,9 @@ export default function WorkOrderTableView() {
                 getRowId={row => row.id}
                 density="compact"
                 disableRowSelectionOnClick
+                onCellClick={params =>
+                    handleCellClick(params.row, params.field)
+                }
                 sortModel={sortModel}
                 onSortModelChange={setSortModel}
                 columnVisibilityModel={columnVisibilityModel}
@@ -800,6 +1026,12 @@ export default function WorkOrderTableView() {
                     border: 0,
                     "& .MuiDataGrid-cell": {
                         alignItems: "center"
+                    },
+                    "& .spreadsheet-active-cell": {
+                        outline: "2px solid",
+                        outlineColor: "primary.main",
+                        outlineOffset: -2,
+                        bgcolor: "action.selected"
                     }
                 }}
             />
@@ -816,7 +1048,8 @@ function buildGridColumns(
     openColumnFilter: (
         field: string,
         anchor: HTMLElement
-    ) => void
+    ) => void,
+    activeCell: ActiveSpreadsheetCell | null
 ): GridColDef<XlsxTableRow>[] {
 
     return columns.map(column => ({
@@ -829,6 +1062,11 @@ function buildGridColumns(
         resizable: true,
         valueGetter: (_value, row) =>
             row.cells[column.field]?.displayValue ?? "",
+        cellClassName: params =>
+            activeCell?.rowId === params.row.id
+            && activeCell.field === column.field
+                ? "spreadsheet-active-cell"
+                : "",
         sortComparator: (a, b) =>
             compareValues(
                 String(a ?? ""),
@@ -881,6 +1119,122 @@ function buildGridColumns(
             </Stack>
         )
     }));
+
+}
+
+function createSpreadsheetFormulaService(
+    workbook: XlsxWorkbookData
+): SpreadsheetFormulaService {
+
+    return new SpreadsheetFormulaService(
+        iterateSpreadsheetOriginalCells(workbook)
+    );
+
+}
+
+function* iterateSpreadsheetOriginalCells(
+    workbook: XlsxWorkbookData
+) {
+
+    for (const worksheet of workbook.worksheets) {
+        for (const row of worksheet.rows) {
+            for (const cell of Object.values(row.cells)) {
+                yield {
+                    worksheetName: worksheet.worksheetName,
+                    cellAddress: cell.cellAddress,
+                    value: cell.originalValue
+                };
+            }
+        }
+    }
+
+}
+
+function applySpreadsheetOverrides(
+    rows: XlsxTableRow[],
+    worksheetName: string,
+    service: SpreadsheetFormulaService | null
+): XlsxTableRow[] {
+
+    const overrides =
+        service?.getOverridesForWorksheet(worksheetName) ?? [];
+
+    const displayedOverrides =
+        new Map(
+            overrides
+                .filter(override =>
+                    !override.error
+                    && override.calculatedValue !== undefined
+                )
+                .map(override => [
+                    override.cellAddress,
+                    formatSpreadsheetValue(override.calculatedValue)
+                ])
+        );
+
+    if (displayedOverrides.size === 0) {
+        return rows;
+    }
+
+    return rows.map(row => {
+        let changed = false;
+
+        const cells =
+            Object.fromEntries(
+                Object.entries(row.cells).map(([field, cell]) => {
+                    const displayValue =
+                        displayedOverrides.get(cell.cellAddress);
+
+                    if (displayValue === undefined) {
+                        return [field, cell];
+                    }
+
+                    changed = true;
+
+                    return [
+                        field,
+                        {
+                            ...cell,
+                            displayValue
+                        }
+                    ];
+                })
+            );
+
+        if (!changed) {
+            return row;
+        }
+
+        return {
+            ...row,
+            cells,
+            searchText: Object.values(cells)
+                .map(cell => cell.displayValue)
+                .filter(value => value.length > 0)
+                .map(value => value.toLocaleLowerCase("hu-HU"))
+                .join(" ")
+        };
+    });
+
+}
+
+function formatSpreadsheetValue(
+    value: unknown
+): string {
+
+    return value === null || value === undefined
+        ? ""
+        : String(value);
+
+}
+
+function findCell(
+    rows: XlsxTableRow[],
+    activeCell: ActiveSpreadsheetCell
+) {
+
+    return rows.find(row => row.id === activeCell.rowId)
+        ?.cells[activeCell.field];
 
 }
 

@@ -1,5 +1,25 @@
 # Changelog
 
+## Spreadsheet Formula Layer MVP
+
+- Session-only, memoriaalapu cella-overlay kerult a read-only XLSX nezet fole;
+  az eredeti workbook fajlhoz nincs iras, mentes vagy export.
+- A kompakt formula bar kijelzi az aktiv Excel-cellacimet, az eredeti erteket
+  vagy formulat, illetve az alkalmazason belul megadott overlay-inputot.
+- Enter jovahagyja, Escape megszakitja a szerkesztest; az **Eredeti ertek** gomb
+  torli az adott override-ot es ujraszamolja annak fuggosegeit.
+- Tamogatott overlay-kepletek: `SUM`, `MIN`, `MAX`, `ROUND`, `COUNT`, `+ - * /`,
+  zarojelek, azonos munkalapos relativ/abszolut cellak es veges tartomanyok.
+- Az explicit tokenizer/parser nem hasznal `eval` vagy `Function` konstruktort;
+  ciklus-, melyseg- es referenciakorlattal izolalja a hibas kepleteket.
+- A dependency graph csak a modositott overlay-cella erintett fuggosegeit
+  szamolja ujra. A DataGrid tovabbra is virtualizalt, a kereses, szures es
+  rendezes pedig a megjelenitett overlay/cache ertekeken dolgozik.
+- A workbookban mar letezo formulak nem szamolodnak ujra: tovabbra is a mentett
+  XLSX cache-ertek jelenik meg, 100 000+ cellas workbooknal is.
+- Az overlay munkalaponkent elkulonul, csak az aktualis alkalmazas-munkamenetben
+  el, es uj workbook betoltesekor megszunik. Production release nem keszult.
+
 ## Formula compatibility and fallback validation
 
 - Az izolalt HyperFormula PoC workbookonkenti formula inventoryval, hat

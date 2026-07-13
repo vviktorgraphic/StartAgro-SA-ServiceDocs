@@ -196,11 +196,14 @@ class XlsxTableService {
 
             columns.forEach((column, index) => {
 
-                const worksheetCell =
-                    worksheet[XLSX.utils.encode_cell({
+                const address =
+                    XLSX.utils.encode_cell({
                         r: row,
                         c: range.s.c + index
-                    })] as WorksheetCell | undefined;
+                    });
+
+                const worksheetCell =
+                    worksheet[address] as WorksheetCell | undefined;
 
                 const displayValue =
                     this.getDisplayValue(worksheetCell);
@@ -211,8 +214,14 @@ class XlsxTableService {
                 }
 
                 cells[column.field] = {
+                    cellAddress: address,
                     displayValue,
-                    isDate: this.isDateCell(worksheetCell)
+                    isDate: this.isDateCell(worksheetCell),
+                    originalInput: this.getOriginalInput(
+                        worksheetCell,
+                        displayValue
+                    ),
+                    originalValue: this.getOriginalValue(worksheetCell)
                 };
 
             });
@@ -302,6 +311,44 @@ class XlsxTableService {
             XLSX.utils.format_cell(cell);
 
         return (formattedValue || String(cell.v)).trim();
+
+    }
+
+    private getOriginalInput(
+        cell: WorksheetCell | undefined,
+        displayValue: string
+    ): string {
+
+        return typeof cell?.f === "string"
+            ? `=${cell.f}`
+            : displayValue;
+
+    }
+
+    private getOriginalValue(
+        cell: WorksheetCell | undefined
+    ): string | number | boolean | null {
+
+        if (!cell || cell.v === undefined || cell.v === null) {
+            return null;
+        }
+
+        if (
+            typeof cell.v === "number"
+            && cell.t !== "e"
+            && Number.isFinite(cell.v)
+        ) {
+            return cell.v;
+        }
+
+        if (
+            typeof cell.v === "string"
+            || typeof cell.v === "boolean"
+        ) {
+            return cell.v;
+        }
+
+        return this.getDisplayValue(cell);
 
     }
 

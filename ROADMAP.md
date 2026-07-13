@@ -510,6 +510,47 @@ Build ellenorzes: `npm.cmd run poc:formulas`,
 
 ---
 
+## Done Spreadsheet Formula Layer MVP
+
+Session-only, memoriaalapu cella- es formula-overlay az eredeti XLSX fajl
+modositasa nelkul
+
+Kompakt formula bar cellakijelolessel, Enter/Escape kezelssel es cellaszintu
+eredeti-ertek visszaallitassal
+
+Sajat explicit tokenizer/parser: SUM, MIN, MAX, ROUND, COUNT, alap aritmetika,
+zarojelek, azonos munkalapos relativ/abszolut cellak es veges tartomanyok
+
+Overlay dependency graph, erintett kepletek automatikus ujraszamitasa, ciklus-,
+melyseg- es referenciavedelem
+
+Virtualizalt DataGrid, valamint a megjelenitett overlay/cache ertekeken mukodo
+kereses, szures, rendezes es lapozas
+
+100 000+ cellas cache-alapu workbook regresszioteszt; a meglevo XLSX formulak
+valtozatlanul mentett cache-bol jelennek meg
+
+Celzott automatikus overlay-, formula-, dependency-, reset-, munkalap- es nagy
+workbook teszt; production release es verzioemeles nelkul
+
+---
+
+## Nyitott Spreadsheet Formula Layer feladatok
+
+Overlay perzisztencia kulon alkalmazasadatkent
+
+Uj sorok es oszlopok
+
+Tobb worksheet kozotti formulak
+
+Tovabbi fuggvenyek
+
+Overlay export kulon fajlba
+
+Undo/redo
+
+---
+
 ## Nyitott formula engine production dontes
 
 A production integracio nincs eldontve es nincs implementalva
