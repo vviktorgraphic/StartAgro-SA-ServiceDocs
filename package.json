@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "poc:formula-compatibility": "node src/poc/formula/FormulaCompatibilityPoc.mjs",
     "poc:formulas": "node src/poc/formula/FormulaEnginePoc.mjs",
     "preview": "vite preview",
     "tauri": "tauri",

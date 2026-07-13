@@ -265,6 +265,39 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
   workbook meret-/formula-/ido-hatarok. A production XLSX modul valtozatlanul a
   mentett cache-erteket jeleniti meg.
 
+### Formula compatibility and fallback validation
+
+- Futtatas: `npm.cmd run poc:formula-compatibility`. A korabbi
+  `npm.cmd run poc:formulas` valtozatlanul mukodik.
+- Script: `src/poc/formula/FormulaCompatibilityPoc.mjs`; ignored gepi riport:
+  `src/poc/formula/output/formula-validation-report.json`; commitolt kezi
+  osszefoglalo: `src/poc/formula/COMPATIBILITY_REPORT.md`.
+- Ot workbook kerult be read-only modon: harom teljesen mesterseges es ket helyi,
+  anonimizalt minta. Merettartomany 9.6-516.9 KiB, hasznalt cellatartomany
+  26-170,687, kepletdarabszam 2-3,262 workbookonkent. Helyi fajlnev, utvonal,
+  kepletszoveg vagy uzleti cellaertek nem kerult a reportokba.
+- Osszesen 3,292 keplet: 24 MATCH, 2 MISMATCH, 3,263 ENGINE_ERROR,
+  1 NO_CACHED_VALUE, 1 UNSUPPORTED, 1 IGNORED. Az osszes kepletre vetitett exact
+  cache-egyezes 0.73%, a nem hibas engine-eredmeny aranya 0.76%. Az alacsony
+  aranyt egy anonimizalt workbook 3,260 `EXACT_FALSE` VLOOKUP kepletenek
+  szintaxis-inkompatibilitasa okozta; csak a MATCH/MISMATCH cellak kozt 92.31%
+  volt az egyezes, ami onmagaban felrevezeto.
+- VLOOKUP `0`, `1`, kihagyott negyedik argumentum, masik lapos abszolut tartomany
+  es nem talalhato ertek helyesen validalt. A valtozatlan `FALSE` es `TRUE` alakok
+  `NAME` engine-hibat adtak; automatikus atiras nem tortent.
+- Jelenlegi ajanlas: a production cache-first viselkedes maradjon. Egy jovobeli,
+  jovahagyott integracio celja explicit hybrid lehet tamogatott szintaxis
+  whitelisttel, cellankenti forrasjelolessel es lathato mismatch warninggal.
+- A legnagyobb mintan a parse 213.1 ms, engine build 2,823.9 ms, kiolvasas
+  35.6 ms, teljes ido 3,075.8 ms, kozelito RSS delta 109.3 MiB volt.
+- Javasolt kezdeti warning: 100,000 hasznalt cella, 1,000 formula, 1 s teljes ido
+  vagy kb. 100 MiB RSS delta. Javasolt cache-only preflight: 200,000 cella vagy
+  5,000 formula; futasi fallback: 3 s engine build vagy 5 s teljes ido.
+- Kovetkezo dontesi kapu: GPLv3/proprietary licenc uzleti-jogi jovahagyasa,
+  fuggveny- es szintaxis-whitelist, UI hibajelzes, fallback valasztas,
+  performance limitek es reprezentativ valos workbookokon elfogadott
+  kompatibilitasi kuszob. A jelenlegi production integracios dontes: NO-GO.
+
 ## SQLite and storage
 
 ### Jelenlegi állapot

@@ -27,6 +27,7 @@ Forrasok:
 
 ```powershell
 npm.cmd run poc:formulas
+npm.cmd run poc:formula-compatibility
 ```
 
 A script a kis, mesterseges fixture minden kepletes cellajat osszehasonlitja,
@@ -34,6 +35,30 @@ majd egy tobb ezer soros, ket munkalapos szintetikus workbookon teljesitmenyt
 mer. Egy workbookot egyszer parse-ol, es workbookonkent egy HyperFormula engine-t
 epit. Az eredmenyeket ezutan egyszer olvassa ki; nincs UI-, lapozasi-, rendezesi
 vagy szuresi kapcsolata.
+
+A `poc:formula-compatibility` parancs harom mesterseges workbookot es, ha a
+`datatable/` konyvtarban elerhetok, legfeljebb ket helyi XLSX-et vizsgal. A helyi
+fajlokat csak olvassa, es a jelentésben `local-01/02` azonosito, anonimizalt
+munkalapnev es cellacim jelenik meg. Fajlnev, utvonal, kepletszoveg, cache-elt
+ertek es uzleti cellatartalom nem kerul a reportba.
+
+A konzolkimenet workbookonkenti formula inventoryt, statuszokat es
+teljesitmenymerest ad. A gepileg olvashato, ignored JSON helye:
+`src/poc/formula/output/formula-validation-report.json`. A commitolhato, kezzel
+ellenorzott osszefoglalas: `src/poc/formula/COMPATIBILITY_REPORT.md`.
+
+Statuszok:
+
+- `MATCH`: cache es engine eredmeny egyezik;
+- `MISMATCH`: mindket ertek elerheto, de elter;
+- `ENGINE_ERROR`: a motor hibaval fejezte be a cellat;
+- `NO_CACHED_VALUE`: a motor szamolt, de nincs osszehasonlithato cache;
+- `UNSUPPORTED`: a motor nem ismeri a fuggvenyt;
+- `IGNORED`: peldaul nem betoltott kulso workbook-hivatkozas.
+
+A numerikus tolerancia `1e-9 * max(1, |cached|, |calculated|)`. A JSON minden
+workbookra kiszamolja az engine-first, cache-first es explicit-hybrid szabaly
+forrasmegoszlasat, de egyik strategiat sem vezeti be a production alkalmazasba.
 
 ## Kompatibilitasi megjegyzes
 

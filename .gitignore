@@ -19,6 +19,7 @@ testdata
 *.db-wal
 *.local
 openai-api-key.txt
+src/poc/formula/output/
 
 # Editor directories and files
 .vscode/*

@@ -1,5 +1,33 @@
 # Changelog
 
+## Formula compatibility and fallback validation
+
+- Az izolalt HyperFormula PoC workbookonkenti formula inventoryval, hat
+  cellastatusszal, `1e-9` numerikus toleranciaval, Excel-hibakod kezelesevel es
+  ignored JSON riporttal bovult.
+- Harom mesterseges es ket read-only, anonimizalt helyi workbook vizsgalata 3,292
+  kepletet fedett le. A riport nem tartalmaz helyi fajlnevet, utvonalat,
+  kepletszoveget, cache-elt/szamitott uzleti erteket vagy cellatartalmat.
+- A 14 inventory kategoria lefedi a SUM, VLOOKUP, IF, COUNT/COUNTA,
+  SUMIF/COUNTIF, ROUND, MIN/MAX, DATE, szoveg-osszegfuzesi es referencia eseteket,
+  valamint a hibas, ismeretlen es kulso workbook kepleteket.
+- Osszesitett eredmeny: 24 MATCH, 2 MISMATCH, 3,263 ENGINE_ERROR,
+  1 NO_CACHED_VALUE, 1 UNSUPPORTED es 1 IGNORED. Az engine 25 kepletnel adott
+  nem hibas eredmenyt; az alacsony aranyt egy 3,260 `EXACT_FALSE` VLOOKUP-os
+  anonimizalt workbook logikai literal kompatibilitasi hibaja okozta.
+- VLOOKUP: a `0`, `1`, kihagyott negyedik argumentum, masik munkalapos abszolut
+  tartomany es nem talalhato ertek validalt; a valtozatlan `FALSE` es `TRUE`
+  alak `NAME` engine-hibat adott. Automatikus formula-atiras nem tortent.
+- Engine-first, cache-first es explicit-hybrid dontesi szimulacio keszult. A
+  jelenlegi production cache-first mukodes megtartasa ajanlott; jovobeli
+  integraciohoz csak explicit hybrid, whitelist, forrasjeloles es lathato
+  mismatch-figyelmeztetes javasolt.
+- A legnagyobb, 516.9 KiB-os, 170,687 hasznalt cellas es 3,262 kepletes minta
+  teljes ideje kb. 3.08 s, HyperFormula build ideje 2.82 s, kozelito RSS novekedese
+  109.3 MiB volt. Javasolt kezdeti warning es cache-only limitek dokumentalva.
+- HyperFormula 3.3.0, `GPL-3.0-only`; production licenc nincs jovahagyva. A
+  production XLSX, DataGrid, PDF es SQLite mukodes valtozatlan.
+
 ## Formula engine proof of concept
 
 - Production kodtol izolalt, kulon `npm.cmd run poc:formulas` paranccsal futtathato

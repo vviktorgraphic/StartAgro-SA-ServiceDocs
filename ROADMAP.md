@@ -484,6 +484,32 @@ Build ellenorzes: `npm.cmd run poc:formulas`, `npm.cmd run build` es
 
 ---
 
+## Done Formula compatibility and fallback validation
+
+Harom mesterseges es ket read-only anonimizalt helyi workbook formula inventoryja
+
+SUM, VLOOKUP, IF, COUNT/COUNTA, SUMIF/COUNTIF, ROUND, MIN/MAX, szoveg, datum,
+azonos/masik munkalapos, relativ/abszolut es nagy tartomanyu hivatkozas validalasa
+
+MATCH, MISMATCH, ENGINE_ERROR, NO_CACHED_VALUE, UNSUPPORTED es IGNORED
+cellastatusz, dokumentalt numerikus toleranciaval
+
+Valtozatlan VLOOKUP `0`, `FALSE`, `1`, `TRUE`, kihagyott argumentum, exact,
+approximate, abszolut masik munkalapos es nem talalhato esetek osszehasonlitasa
+
+Engine-first, cache-first es explicit-hybrid fallback dontesi szimulacio
+
+Ignored, gepileg olvashato JSON es commitolhato, anonimizalt compatibility report
+
+Workbookonkenti ido-, meret-, cella-, formula- es kozelito RSS meres, javasolt
+warning es cache-only production limitekkel
+
+Build ellenorzes: `npm.cmd run poc:formulas`,
+`npm.cmd run poc:formula-compatibility`, `npm.cmd run build` es
+`npm.cmd run tauri build`
+
+---
+
 ## Nyitott formula engine production dontes
 
 A production integracio nincs eldontve es nincs implementalva
@@ -494,9 +520,13 @@ GPLv3 vagy proprietary licenc uzleti/jogi jovahagyasa
 
 Tamogatott Excel fuggveny- es szintaxislista
 
-Explicit, lathato cache fallback strategia hibas vagy nem tamogatott kepletre
+Valasztott fallback strategia es minden cellahoz lathato ertekforras
+
+UI hibajelzes engine-hiba, unsupported es cache/engine mismatch eseten
 
 Elfogadhato workbook meret-, cella-, formula- es betoltesi teljesitmenyhatarok
+
+Valos workbookokkal elfogadott kompatibilitasi kuszob
 
 ---
 
