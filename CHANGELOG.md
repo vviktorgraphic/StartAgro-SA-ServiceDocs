@@ -1,5 +1,34 @@
 # Changelog
 
+## Excel-style row and column headers and overlay lookup formulas
+
+- A Munkalapok tablazat bal oldali, fix es read-only sorazonositoja az eredeti
+  worksheet Excel-sorszamat mutatja; rendezes, szures es lapozas nem irja at.
+- Az uzleti fejlecek felett megjelennek az eredeti Excel-oszlopkodok (`A`–`Z`,
+  `AA`, `AB`, ...), az egyes worksheetek sajat hasznalt tartomanyahoz igazodva.
+- A formula bar, a cellakijeloles es a session-only formula-overlay ugyanazt a
+  parse soran megorzott A1-koordinatat hasznalja rendezett es szurt allapotban is.
+- Az alkalmazason belul beirt overlay-kepletek tamogatjak az `FKERES`/`VLOOKUP`
+  pontos es kozelito kereseset, valamint a `HA`/`IF` felteteles agakat. Magyar es
+  angol fuggvenynev, illetve kovetkezetes pontosvesszos vagy vesszos elvalasztas
+  hasznalhato.
+- A lookup az azonos munkalapos veges tartomany elso oszlopaban keres, 1-alapu
+  eredmenyoszlopot hasznal, kezeli az abszolut referenciat, es ertheto hibaval
+  jelzi a hianyzo talalatot, forditott tartomanyt vagy hibas oszlopindexet.
+- A `HA`/`IF` tamogatja az `=`, `<>`, `<`, `<=`, `>` es `>=` osszehasonlitast,
+  illetve szam-, szoveg-, cellahivatkozas- vagy tamogatott kepletagat.
+- Overlay-ertek valtozasakor minden erintett lookup es felteteles overlay-keplet
+  automatikusan ujraszamolodik, es az eredmeny azonnal megjelenik.
+- A tobb munkalapos, egyszeri parse, virtualizalt DataGrid, cache-alapu meglevo
+  formulaertekek es read-only XLSX fajlkezeles valtozatlan maradt.
+- Automatikus teszt fedi az oszlopkodokat, az eredeti sorszam stabilitasat,
+  a lookup/IF aliasokat es hibakat, a dependency-frissitest, a tobb worksheetet,
+  az overlay cimzest es a 100 002 cellas cache-regressziot.
+- A tamogatas csak session-only overlay-kepletekre vonatkozik. Az eredeti XLSX
+  kepletei tovabbra is a mentett cache-bol jelennek meg; nincs XLSX-visszairas
+  vagy automatikus visszamentes.
+- Nem keszult verzioemeles, tag vagy release.
+
 ## Spreadsheet Formula Layer MVP
 
 - Session-only, memoriaalapu cella-overlay kerult a read-only XLSX nezet fole;

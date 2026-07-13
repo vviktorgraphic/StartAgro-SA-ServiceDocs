@@ -535,6 +535,41 @@ workbook teszt; production release es verzioemeles nelkul
 
 ---
 
+## Done Excel-style row and column headers and overlay lookup formulas
+
+Bal oldali, fix es read-only eredeti Excel-sorszamok, amelyek rendezes, szures
+es lapozas utan is valtozatlanok
+
+Az eredeti worksheet-oszlopok Excel-kodjai az uzleti fejlec felett: A-Z, AA,
+AB, AZ, BA es tovabbi oszlopok
+
+Munkalaponkent megorzott eredeti sor- es oszlopkoordinatak, beleertve az eltero
+hasznalt tartomanyt es fejlecsort
+
+A formula bar, cellakijeloles es session-only overlay kozos A1-cimzese rendezett
+es szurt allapotban is
+
+Overlay `FKERES`/`VLOOKUP` pontos es kozelito egyezessel, azonos munkalapos veges
+es abszolut tartomannyal, 1-alapu eredmenyoszloppal es explicit hibakezelessel
+
+Overlay `HA`/`IF` magyar es angol aliasszal, hat osszehasonlito operatorral,
+szam-, szoveg-, cellahivatkozas- es tamogatott kepletagakkal
+
+Kovetkezetes pontosvesszos vagy vesszos argumentumelvalasztas; dependency-alapu
+azonnali ujraszamitas a hivatkozott overlay-ertek valtozasakor
+
+Virtualizalt DataGrid, egyszeri workbook parse, cache-alapu meglevo
+formulaertekek es read-only XLSX fajlkezeles megtartva
+
+Automatikus oszlopkod-, sorstabilitas-, multi-worksheet-, lookup-, IF-,
+dependency-, overlay- es 100 002 cellas cache-regresszioteszt
+
+A lookup es IF csak session-only overlay-kepletre vonatkozik; az eredeti XLSX
+kepletek cache-alapuak, a fajl read-only, nincs automatikus XLSX-visszamentes,
+verzioemeles vagy release
+
+---
+
 ## Nyitott Spreadsheet Formula Layer feladatok
 
 Overlay perzisztencia kulon alkalmazasadatkent

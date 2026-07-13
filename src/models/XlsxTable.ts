@@ -14,6 +14,8 @@ export interface XlsxCellValue {
 
 export interface XlsxTableColumn {
 
+    excelColumnCode: string;
+
     field: string;
 
     headerName: string;
@@ -28,6 +30,8 @@ export type XlsxColumnType =
     | "date";
 
 export interface XlsxTableRow {
+
+    excelRowNumber: number;
 
     id: number;
 

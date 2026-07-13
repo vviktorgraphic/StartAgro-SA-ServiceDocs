@@ -13,8 +13,15 @@ type TokenType =
     | "divide"
     | "left-parenthesis"
     | "right-parenthesis"
-    | "comma"
+    | "separator"
     | "colon"
+    | "string"
+    | "equal"
+    | "not-equal"
+    | "less-than"
+    | "less-than-or-equal"
+    | "greater-than"
+    | "greater-than-or-equal"
     | "end";
 
 interface Token {
@@ -27,11 +34,19 @@ interface Token {
 
 type FormulaNode =
     | { type: "number"; value: number }
+    | { type: "string"; value: string }
+    | { type: "boolean"; value: boolean }
     | { type: "cell"; address: string }
     | { type: "range"; start: string; end: string }
     | {
         type: "binary";
         operator: "+" | "-" | "*" | "/";
+        left: FormulaNode;
+        right: FormulaNode;
+    }
+    | {
+        type: "comparison";
+        operator: "=" | "<>" | "<" | "<=" | ">" | ">=";
         left: FormulaNode;
         right: FormulaNode;
     }
@@ -42,9 +57,18 @@ type FormulaNode =
     }
     | {
         type: "function";
-        name: "SUM" | "MIN" | "MAX" | "ROUND" | "COUNT";
+        name: FormulaFunctionName;
         arguments: FormulaNode[];
     };
+
+type FormulaFunctionName =
+    "SUM"
+    | "MIN"
+    | "MAX"
+    | "ROUND"
+    | "COUNT"
+    | "VLOOKUP"
+    | "IF";
 
 type EvaluatedValue =
     SpreadsheetCellValue
@@ -58,7 +82,7 @@ interface EvaluationContext {
 
     visiting: Set<string>;
 
-    memo: Map<string, number>;
+    memo: Map<string, SpreadsheetCellValue>;
 
     depth: number;
 
@@ -78,6 +102,8 @@ class FormulaParser {
 
     private nestingDepth = 0;
 
+    private argumentSeparator: string | undefined;
+
     private readonly tokens: Token[];
 
     public constructor(
@@ -89,13 +115,41 @@ class FormulaParser {
     public parse(): FormulaNode {
 
         const result =
-            this.parseAddition();
+            this.parseComparison();
 
         if (this.current().type !== "end") {
             throw new SpreadsheetFormulaError("Nem támogatott képletszintaxis.");
         }
 
         return result;
+
+    }
+
+    private parseComparison(): FormulaNode {
+
+        let left = this.parseAddition();
+        const comparisonTypes: TokenType[] = [
+            "equal",
+            "not-equal",
+            "less-than",
+            "less-than-or-equal",
+            "greater-than",
+            "greater-than-or-equal"
+        ];
+
+        if (comparisonTypes.includes(this.current().type)) {
+            const operator = this.consume().text as
+                "=" | "<>" | "<" | "<=" | ">" | ">=";
+
+            left = {
+                type: "comparison",
+                operator,
+                left,
+                right: this.parseAddition()
+            };
+        }
+
+        return left;
 
     }
 
@@ -192,12 +246,20 @@ class FormulaParser {
             };
         }
 
+        if (token.type === "string") {
+            this.consume();
+            return {
+                type: "string",
+                value: token.text
+            };
+        }
+
         if (token.type === "left-parenthesis") {
             this.consume();
             this.enterNesting();
 
             try {
-                const expression = this.parseAddition();
+                const expression = this.parseComparison();
                 this.expect("right-parenthesis");
                 return expression;
             } finally {
@@ -210,6 +272,18 @@ class FormulaParser {
         }
 
         this.consume();
+
+        const booleanValue = parseBooleanLiteral(token.text);
+
+        if (
+            booleanValue !== undefined
+            && this.current().type !== "left-parenthesis"
+        ) {
+            return {
+                type: "boolean",
+                value: booleanValue
+            };
+        }
 
         if (this.current().type === "left-parenthesis") {
             return this.parseFunction(token.text);
@@ -238,10 +312,9 @@ class FormulaParser {
 
     private parseFunction(functionName: string): FormulaNode {
 
-        const name =
-            functionName.toUpperCase();
+        const name = normalizeFunctionName(functionName);
 
-        if (!isWhitelistedFunction(name)) {
+        if (!name) {
             throw new SpreadsheetFormulaError("Nem támogatott függvény.");
         }
 
@@ -251,11 +324,22 @@ class FormulaParser {
 
         try {
             if (this.current().type !== "right-parenthesis") {
-                args.push(this.parseAddition());
+                args.push(this.parseComparison());
 
-                while (this.current().type === "comma") {
-                    this.consume();
-                    args.push(this.parseAddition());
+                while (this.current().type === "separator") {
+                    const separator = this.consume().text;
+
+                    if (
+                        this.argumentSeparator
+                        && this.argumentSeparator !== separator
+                    ) {
+                        throw new SpreadsheetFormulaError(
+                            "A képlet argumentumelválasztói nem keverhetők."
+                        );
+                    }
+
+                    this.argumentSeparator = separator;
+                    args.push(this.parseComparison());
                 }
             }
 
@@ -268,7 +352,25 @@ class FormulaParser {
             throw new SpreadsheetFormulaError("A ROUND két argumentumot vár.");
         }
 
-        if (name !== "ROUND" && args.length === 0) {
+        if (name === "IF" && args.length !== 3) {
+            throw new SpreadsheetFormulaError("A HA/IF három argumentumot vár.");
+        }
+
+        if (
+            name === "VLOOKUP"
+            && (args.length < 3 || args.length > 4)
+        ) {
+            throw new SpreadsheetFormulaError(
+                "Az FKERES/VLOOKUP három vagy négy argumentumot vár."
+            );
+        }
+
+        if (
+            name !== "ROUND"
+            && name !== "IF"
+            && name !== "VLOOKUP"
+            && args.length === 0
+        ) {
             throw new SpreadsheetFormulaError("A függvény argumentumot vár.");
         }
 
@@ -494,17 +596,14 @@ export class SpreadsheetFormulaService {
     private evaluateFormula(
         key: string,
         context: EvaluationContext
-    ): number {
+    ): SpreadsheetCellValue {
 
         if (context.depth > maximumDepth) {
             throw new SpreadsheetFormulaError("Túl mély függőségi lánc.");
         }
 
-        const memoized =
-            context.memo.get(key);
-
-        if (memoized !== undefined) {
-            return memoized;
+        if (context.memo.has(key)) {
+            return context.memo.get(key) as SpreadsheetCellValue;
         }
 
         if (context.visiting.has(key)) {
@@ -522,11 +621,11 @@ export class SpreadsheetFormulaService {
         context.depth += 1;
 
         try {
-            const value = toScalar(
+            const value = toFormulaValue(
                 this.evaluateNode(formula, context)
             );
 
-            if (!Number.isFinite(value)) {
+            if (typeof value === "number" && !Number.isFinite(value)) {
                 throw new SpreadsheetFormulaError("Nem véges képleteredmény.");
             }
 
@@ -550,6 +649,8 @@ export class SpreadsheetFormulaService {
 
         switch (node.type) {
             case "number":
+            case "string":
+            case "boolean":
                 return node.value;
             case "cell":
                 return this.readCell(node.address, context);
@@ -570,8 +671,54 @@ export class SpreadsheetFormulaService {
             }
             case "binary":
                 return this.evaluateBinary(node, context);
+            case "comparison":
+                return this.evaluateComparison(node, context);
             case "function":
                 return this.evaluateFunction(node, context);
+        }
+
+    }
+
+    private evaluateComparison(
+        node: Extract<FormulaNode, { type: "comparison" }>,
+        context: EvaluationContext
+    ): boolean {
+
+        context.depth += 1;
+
+        try {
+            const left = toFormulaValue(
+                this.evaluateNode(node.left, context)
+            );
+            const right = toFormulaValue(
+                this.evaluateNode(node.right, context)
+            );
+
+            if (node.operator === "=") {
+                return valuesEqual(left, right);
+            }
+
+            if (node.operator === "<>") {
+                return !valuesEqual(left, right);
+            }
+
+            const comparison = compareValues(left, right);
+
+            if (node.operator === "<") {
+                return comparison < 0;
+            }
+
+            if (node.operator === "<=") {
+                return comparison <= 0;
+            }
+
+            if (node.operator === ">") {
+                return comparison > 0;
+            }
+
+            return comparison >= 0;
+        } finally {
+            context.depth -= 1;
         }
 
     }
@@ -613,11 +760,30 @@ export class SpreadsheetFormulaService {
     private evaluateFunction(
         node: Extract<FormulaNode, { type: "function" }>,
         context: EvaluationContext
-    ): number {
+    ): SpreadsheetCellValue {
 
         context.depth += 1;
 
         try {
+            if (node.name === "IF") {
+                const condition = toBoolean(
+                    toFormulaValue(
+                        this.evaluateNode(node.arguments[0], context)
+                    )
+                );
+
+                return toFormulaValue(
+                    this.evaluateNode(
+                        node.arguments[condition ? 1 : 2],
+                        context
+                    )
+                );
+            }
+
+            if (node.name === "VLOOKUP") {
+                return this.evaluateVlookup(node.arguments, context);
+            }
+
             if (node.name === "ROUND") {
                 const value = toScalar(
                     this.evaluateNode(node.arguments[0], context)
@@ -668,6 +834,88 @@ export class SpreadsheetFormulaService {
 
     }
 
+    private evaluateVlookup(
+        args: FormulaNode[],
+        context: EvaluationContext
+    ): SpreadsheetCellValue {
+
+        const range = args[1];
+
+        if (range.type !== "range") {
+            throw new SpreadsheetFormulaError(
+                "Az FKERES/VLOOKUP táblatartománya érvénytelen."
+            );
+        }
+
+        const start = decodeCellAddress(range.start);
+        const end = decodeCellAddress(range.end);
+
+        validateForwardRange(start, end);
+
+        const columnIndex = toScalar(
+            this.evaluateNode(args[2], context)
+        );
+        const width = end.column - start.column + 1;
+
+        if (
+            !Number.isInteger(columnIndex)
+            || columnIndex < 1
+            || columnIndex > width
+        ) {
+            throw new SpreadsheetFormulaError(
+                "Az FKERES/VLOOKUP oszlopindexe kívül esik a tartományon."
+            );
+        }
+
+        const lookupValue = toFormulaValue(
+            this.evaluateNode(args[0], context)
+        );
+        const approximate = args.length === 3
+            ? true
+            : parseLookupMode(
+                toFormulaValue(this.evaluateNode(args[3], context))
+            );
+        let matchingRow: number | undefined;
+
+        for (let row = start.row; row <= end.row; row += 1) {
+            const candidate = this.readCell(
+                encodeCellAddress(row, start.column),
+                context
+            );
+
+            if (valuesEqual(candidate, lookupValue)) {
+                matchingRow = row;
+                break;
+            }
+
+            if (candidate === null || candidate === "") {
+                continue;
+            }
+
+            if (
+                approximate
+                && compareValues(candidate, lookupValue) <= 0
+            ) {
+                matchingRow = row;
+            }
+        }
+
+        if (matchingRow === undefined) {
+            throw new SpreadsheetFormulaError(
+                "Az FKERES/VLOOKUP nem talált egyező értéket."
+            );
+        }
+
+        return this.readCell(
+            encodeCellAddress(
+                matchingRow,
+                start.column + columnIndex - 1
+            ),
+            context
+        );
+
+    }
+
     private readCell(
         address: string,
         context: EvaluationContext
@@ -685,7 +933,7 @@ export class SpreadsheetFormulaService {
 
                 if (
                     !override.error
-                    && isFiniteNumber(override.calculatedValue)
+                    && override.calculatedValue !== undefined
                 ) {
                     return override.calculatedValue;
                 }
@@ -813,6 +1061,40 @@ function tokenize(input: string): Token[] {
             continue;
         }
 
+        if (character === '"') {
+            position += 1;
+            let value = "";
+            let closed = false;
+
+            while (position < source.length) {
+                if (source[position] !== '"') {
+                    value += source[position];
+                    position += 1;
+                    continue;
+                }
+
+                if (source[position + 1] === '"') {
+                    value += '"';
+                    position += 2;
+                    continue;
+                }
+
+                position += 1;
+                closed = true;
+                break;
+            }
+
+            if (!closed) {
+                throw new SpreadsheetFormulaError("Lezáratlan szöveg.");
+            }
+
+            tokens.push({
+                type: "string",
+                text: value
+            });
+            continue;
+        }
+
         if (/\d/.test(character) || character === ".") {
             const start = position;
             let hasDecimalPoint = false;
@@ -837,12 +1119,12 @@ function tokenize(input: string): Token[] {
             continue;
         }
 
-        if (/[A-Za-z_$]/.test(character)) {
+        if (/[\p{L}_$]/u.test(character)) {
             const start = position;
 
             while (
                 position < source.length
-                && /[A-Za-z0-9_$]/.test(source[position])
+                && /[\p{L}0-9_$]/u.test(source[position])
             ) {
                 position += 1;
             }
@@ -854,6 +1136,24 @@ function tokenize(input: string): Token[] {
             continue;
         }
 
+        const comparison =
+            source.slice(position, position + 2);
+        const comparisonType =
+            ({
+                "<>": "not-equal",
+                "<=": "less-than-or-equal",
+                ">=": "greater-than-or-equal"
+            } as Record<string, TokenType>)[comparison];
+
+        if (comparisonType) {
+            tokens.push({
+                type: comparisonType,
+                text: comparison
+            });
+            position += 2;
+            continue;
+        }
+
         const tokenType =
             ({
                 "+": "plus",
@@ -862,8 +1162,12 @@ function tokenize(input: string): Token[] {
                 "/": "divide",
                 "(": "left-parenthesis",
                 ")": "right-parenthesis",
-                ",": "comma",
-                ":": "colon"
+                ",": "separator",
+                ";": "separator",
+                ":": "colon",
+                "=": "equal",
+                "<": "less-than",
+                ">": "greater-than"
             } as Record<string, TokenType>)[character];
 
         if (!tokenType) {
@@ -911,6 +1215,7 @@ function collectDependencies(
             collectDependencies(worksheetName, node.operand, result);
             break;
         case "binary":
+        case "comparison":
             collectDependencies(worksheetName, node.left, result);
             collectDependencies(worksheetName, node.right, result);
             break;
@@ -925,11 +1230,43 @@ function collectDependencies(
 
 }
 
-function isWhitelistedFunction(
+function normalizeFunctionName(
     name: string
-): name is "SUM" | "MIN" | "MAX" | "ROUND" | "COUNT" {
+): FormulaFunctionName | undefined {
 
-    return ["SUM", "MIN", "MAX", "ROUND", "COUNT"].includes(name);
+    return ({
+        SUM: "SUM",
+        SZUM: "SUM",
+        MIN: "MIN",
+        MAX: "MAX",
+        ROUND: "ROUND",
+        KEREKÍTÉS: "ROUND",
+        KEREKITES: "ROUND",
+        COUNT: "COUNT",
+        DARAB: "COUNT",
+        VLOOKUP: "VLOOKUP",
+        FKERES: "VLOOKUP",
+        IF: "IF",
+        HA: "IF"
+    } as Record<string, FormulaFunctionName>)[name.toLocaleUpperCase("hu-HU")];
+
+}
+
+function parseBooleanLiteral(
+    value: string
+): boolean | undefined {
+
+    const normalized = value.toUpperCase();
+
+    if (normalized === "TRUE" || normalized === "IGAZ") {
+        return true;
+    }
+
+    if (normalized === "FALSE" || normalized === "HAMIS") {
+        return false;
+    }
+
+    return undefined;
 
 }
 
@@ -955,10 +1292,11 @@ function expandRange(
 
     const startPosition = decodeCellAddress(start);
     const endPosition = decodeCellAddress(end);
-    const firstRow = Math.min(startPosition.row, endPosition.row);
-    const lastRow = Math.max(startPosition.row, endPosition.row);
-    const firstColumn = Math.min(startPosition.column, endPosition.column);
-    const lastColumn = Math.max(startPosition.column, endPosition.column);
+    validateForwardRange(startPosition, endPosition);
+    const firstRow = startPosition.row;
+    const lastRow = endPosition.row;
+    const firstColumn = startPosition.column;
+    const lastColumn = endPosition.column;
     const size =
         (lastRow - firstRow + 1)
         * (lastColumn - firstColumn + 1);
@@ -1002,6 +1340,17 @@ function decodeCellAddress(
 
 }
 
+function validateForwardRange(
+    start: { row: number; column: number },
+    end: { row: number; column: number }
+) {
+
+    if (start.row > end.row || start.column > end.column) {
+        throw new SpreadsheetFormulaError("Fordított cellatartomány.");
+    }
+
+}
+
 function encodeCellAddress(
     row: number,
     column: number
@@ -1037,6 +1386,100 @@ function toScalar(
     }
 
     return value;
+
+}
+
+function toFormulaValue(
+    value: EvaluatedValue
+): SpreadsheetCellValue {
+
+    if (Array.isArray(value)) {
+        throw new SpreadsheetFormulaError("A tartomány itt nem használható.");
+    }
+
+    return value;
+
+}
+
+function toBoolean(
+    value: SpreadsheetCellValue
+): boolean {
+
+    if (typeof value === "boolean") {
+        return value;
+    }
+
+    if (isFiniteNumber(value)) {
+        return value !== 0;
+    }
+
+    throw new SpreadsheetFormulaError("A HA/IF feltétele nem logikai érték.");
+
+}
+
+function parseLookupMode(
+    value: SpreadsheetCellValue
+): boolean {
+
+    if (typeof value === "boolean") {
+        return value;
+    }
+
+    if (value === 0) {
+        return false;
+    }
+
+    if (value === 1) {
+        return true;
+    }
+
+    throw new SpreadsheetFormulaError(
+        "Az FKERES/VLOOKUP egyezési módja csak 0/FALSE vagy 1/TRUE lehet."
+    );
+
+}
+
+function valuesEqual(
+    left: SpreadsheetCellValue,
+    right: SpreadsheetCellValue
+): boolean {
+
+    if (
+        (left === null || left === "")
+        && (right === null || right === "")
+    ) {
+        return true;
+    }
+
+    if (typeof left === "string" && typeof right === "string") {
+        return left.toLocaleUpperCase("hu-HU")
+            === right.toLocaleUpperCase("hu-HU");
+    }
+
+    return left === right;
+
+}
+
+function compareValues(
+    left: SpreadsheetCellValue,
+    right: SpreadsheetCellValue
+): number {
+
+    if (isFiniteNumber(left) && isFiniteNumber(right)) {
+        return left - right;
+    }
+
+    if (typeof left === "string" && typeof right === "string") {
+        return left.localeCompare(right, "hu-HU", {
+            sensitivity: "base"
+        });
+    }
+
+    if (typeof left === "boolean" && typeof right === "boolean") {
+        return Number(left) - Number(right);
+    }
+
+    throw new SpreadsheetFormulaError("Nem összehasonlítható értékek.");
 
 }
 

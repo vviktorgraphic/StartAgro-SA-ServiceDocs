@@ -8,6 +8,7 @@ import {
     XlsxTableRow,
     XlsxWorkbookData
 } from "../models/XlsxTable";
+import { getExcelColumnCode } from "../utils/ExcelCoordinates";
 
 type WorksheetCell = XLSX.CellObject & {
     w?: string;
@@ -168,6 +169,7 @@ class XlsxTableService {
                 );
 
             columns.push({
+                excelColumnCode: getExcelColumnCode(column),
                 field: `c${column - range.s.c}`,
                 headerName,
                 type: "text"
@@ -228,6 +230,7 @@ class XlsxTableService {
 
             if (hasValue) {
                 rows.push({
+                    excelRowNumber: row + 1,
                     id: row - headerRow,
                     cells,
                     searchText: searchValues.join(" ")

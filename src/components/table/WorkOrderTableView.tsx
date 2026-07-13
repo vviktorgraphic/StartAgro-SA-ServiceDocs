@@ -341,6 +341,7 @@ export default function WorkOrderTableView() {
         useMemo(
             () => buildGridColumns(
                 tableData?.columns ?? [],
+                tableData?.headerRowNumber ?? 0,
                 filters,
                 openColumnFilter,
                 activeCell
@@ -1014,6 +1015,7 @@ export default function WorkOrderTableView() {
                 paginationModel={paginationModel}
                 onPaginationModelChange={setPaginationModel}
                 pageSizeOptions={[25, 50, 100]}
+                columnHeaderHeight={64}
                 localeText={dataGridLocaleText}
                 showToolbar
                 sx={{
@@ -1026,6 +1028,17 @@ export default function WorkOrderTableView() {
                     border: 0,
                     "& .MuiDataGrid-cell": {
                         alignItems: "center"
+                    },
+                    "& .excel-row-number-column": {
+                        position: "sticky",
+                        left: 0,
+                        zIndex: 2,
+                        bgcolor: "background.paper",
+                        borderRight: 1,
+                        borderColor: "divider"
+                    },
+                    "& .MuiDataGrid-columnHeader.excel-row-number-column": {
+                        zIndex: 3
                     },
                     "& .spreadsheet-active-cell": {
                         outline: "2px solid",
@@ -1044,6 +1057,7 @@ export default function WorkOrderTableView() {
 
 function buildGridColumns(
     columns: XlsxTableColumn[],
+    headerRowNumber: number,
     filters: Record<string, ColumnFilter>,
     openColumnFilter: (
         field: string,
@@ -1052,7 +1066,25 @@ function buildGridColumns(
     activeCell: ActiveSpreadsheetCell | null
 ): GridColDef<XlsxTableRow>[] {
 
-    return columns.map(column => ({
+    const rowNumberColumn: GridColDef<XlsxTableRow> = {
+        field: "__excelRowNumber",
+        headerName: String(headerRowNumber),
+        width: 56,
+        minWidth: 56,
+        maxWidth: 56,
+        sortable: false,
+        filterable: false,
+        hideable: false,
+        resizable: false,
+        disableColumnMenu: true,
+        align: "center",
+        headerAlign: "center",
+        headerClassName: "excel-row-number-column",
+        cellClassName: "excel-row-number-column",
+        valueGetter: (_value, row) => row.excelRowNumber
+    };
+
+    const dataColumns: GridColDef<XlsxTableRow>[] = columns.map(column => ({
         field: column.field,
         headerName: column.headerName,
         width: 180,
@@ -1064,7 +1096,7 @@ function buildGridColumns(
             row.cells[column.field]?.displayValue ?? "",
         cellClassName: params =>
             activeCell?.rowId === params.row.id
-            && activeCell.field === column.field
+            && activeCell?.field === column.field
                 ? "spreadsheet-active-cell"
                 : "",
         sortComparator: (a, b) =>
@@ -1083,18 +1115,35 @@ function buildGridColumns(
                     alignItems: "center"
                 }}
             >
-                <Typography
-                    variant="body2"
-                    noWrap
-                    title={column.headerName}
+                <Stack
+                    spacing={0}
                     sx={{
-                        fontWeight: 600,
                         flexGrow: 1,
                         minWidth: 0
                     }}
                 >
-                    {column.headerName}
-                </Typography>
+                    <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{
+                            fontWeight: 700,
+                            lineHeight: 1.1
+                        }}
+                    >
+                        {column.excelColumnCode}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        noWrap
+                        title={column.headerName}
+                        sx={{
+                            fontWeight: 600,
+                            lineHeight: 1.3
+                        }}
+                    >
+                        {column.headerName}
+                    </Typography>
+                </Stack>
                 <Tooltip title="Oszlopszűrő">
                     <Button
                         size="small"
@@ -1119,6 +1168,11 @@ function buildGridColumns(
             </Stack>
         )
     }));
+
+    return [
+        rowNumberColumn,
+        ...dataColumns
+    ];
 
 }
 

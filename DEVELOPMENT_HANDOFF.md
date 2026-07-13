@@ -208,6 +208,12 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
 - Az eredeti oszlopsorrend megmarad.
 - A használt tartományon belüli üres cellák üres megjelenítési értékkel megmaradnak a nem üres rekordokban; teljesen üres adatsorok nem kerülnek be.
 - Az üres fejléc neve `Oszlop N`; duplikált fejlécek biztonságosan sorszámozódnak (`Név`, `Név 2`, ...).
+- Az uzleti fejlecek felett az eredeti worksheet-oszlop Excel-kodja jelenik meg
+  (`A`-`Z`, `AA`, `AB`, ...); a kod a hasznalt tartomany tenyleges oszlopabol
+  szarmazik, ezert munkalaponkent es eltolt tartomanynal is helyes.
+- A bal oldali, keskeny, fix es read-only sorazonosito az eredeti worksheet
+  Excel-sorszamat mutatja. A parse soran tarolt ertek rendezes, szures es lapozas
+  kozben nem valtozik, es nem resze az uzleti keresesnek vagy oszlopszuresnek.
 - Az eredeti XLSX fajl read-only. A felhasznalo a DataGrid cellait kijelolve kulon,
   session-only memoria-overlay-ben adhat meg erteket vagy sajat kepletet.
 - A MUI X DataGrid hivatalos `huHU` lokalizációját használja. A hivatalos locale-ból hiányzó pagination range formatter kapott minimális magyar kiegészítést.
@@ -247,29 +253,51 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
 - A `XlsxTableService` tovabbra is pontosan egyszer parse-olja a workbookot. A
   sormodell cellankent megtartja a cellacimet, a formula barhoz szukseges eredeti
   inputot es a szamitashoz hasznalhato cache-erteket; az XLSX fajlba nincs visszairas.
+- A cellacim, az oszlopkod es az Excel-sorszam az eredeti worksheet koordinataibol
+  szarmazik. A formula bar es az overlay kulcsa ugyanazt a tarolt A1-cimet hasznalja,
+  ezert a kijeloles es a visszaallitas rendezett vagy szurt nezetben is stabil.
 - A formula bar Enterrel commitol, Escape-pel visszaallitja a meg nem commitolt
   inputot, az **Eredeti ertek** gomb pedig torli az adott override-ot.
-- Tamogatott sajat kepletek: `SUM`, `MIN`, `MAX`, `ROUND`, `COUNT`, `+ - * /`,
-  zarojelek, azonos munkalapos relativ/abszolut cellahivatkozas es legfeljebb
-  10 000 cellas veges tartomany. Maximum dependency/parser melyseg: 100.
+- Tamogatott sajat overlay-kepletek: `SUM`/`SZUM`, `MIN`, `MAX`,
+  `ROUND`/`KEREKÍTÉS`, `COUNT`/`DARAB`, `FKERES`/`VLOOKUP`, `HA`/`IF`,
+  `+ - * /`, zarojelek, szoveg, logikai literal, illetve azonos munkalapos
+  relativ/abszolut cellahivatkozas es legfeljebb 10 000 cellas veges tartomany.
+  Maximum dependency/parser melyseg: 100.
+- Az argumentumelvalaszto egy kepleten belul kovetkezetesen pontosvesszo vagy
+  vesszo lehet. A `HA`/`IF` az `=`, `<>`, `<`, `<=`, `>` es `>=` operatorokat,
+  valamint szam-, szoveg-, cellahivatkozas- vagy tamogatott kepletagat kezel.
+- Az `FKERES`/`VLOOKUP` az azonos munkalapos veges tartomany elso oszlopaban
+  keres. Az eredmenyoszlop 1-alapu; `0`/`FALSE` pontos, `1`/`TRUE` vagy kihagyott
+  negyedik argumentum kozelito egyezest ker. Forditott tartomany, tartomanyon
+  kivuli oszlopindex es hianyzo talalat formula-hiba.
 - Nincs `eval`, `Function` konstruktor, HyperFormula production runtime vagy
-  tetszoleges JavaScript-vegrehajtas. `VLOOKUP`/FKERES, `IF`, worksheet-/workbook-
-  kozi referencia, teljes oszlop, named range es array formula nem tamogatott.
+  tetszoleges JavaScript-vegrehajtas. Worksheet-/workbook-kozi referencia, teljes
+  oszlop, named range es array formula nem tamogatott.
 - Hibas vagy nem tamogatott overlay-formula rovid hibaval a formula barban marad,
   de nem irja felul az eredeti cache-elt cellaerteket.
 - A reverse dependency graph a modositott cellatol elerheto overlay-kepleteket
   szamolja ujra. Lapozas, rendezes, szures es worksheet-valtas nem indit formula-
   ujraszamitast.
+- Lookup-kulcs vagy lookup-tartomany overlay-ertekenek modositasa az erintett
+  fuggosegi lancot azonnal ujraszamolja; az eredmenyhez nem kell a kepletes cellaba
+  kattintani.
 - A megjelenitett sormodell csak a sikeres override-ertekeket vetiti az eredeti
   sorokra. Kereses, oszlopszures, lathatoertek-lista es rendezes ezen dolgozik;
   a DataGrid virtualization es pagination bekapcsolva marad.
 - Automatikus teszt: `npm.cmd run test:spreadsheet-formulas`. Lefedi az ertek- es
-  szoveg-override-ot, whitelistes formulakat, precedenciat, zarojelet, abszolut
-  referenciat, dependency ujraszamitast, ciklust, hibakat, resetet, worksheet-
-  szeparaciot es 100 002 cellas cache-regressziot.
-- Manualis ellenorzesnel nagy workbookkal ellenorizendo a formula bar, a ket
-  munkalap, Enter/Escape/reset, dependency frissules, kereses/szures/rendezes/
-  lapozas, automatikus fajlvisszatoltes, valtozatlan fajl hash/mtime es a PDF modul.
+  szoveg-override-ot, magyar/angol aliasokat es elvalasztokat, lookup pontos es
+  kozelito egyezest, szoveges/numerikus kulcsot, abszolut es hibas tartomanyt,
+  hibas oszlopindexet, `HA`/`IF` agak es osszehasonlitasok mukodeset, dependency
+  ujraszamitast, ciklust, resetet, Excel-fejleceket, worksheet-szeparaciot es
+  100 002 cellas cache-regressziot.
+- Az FKERES/VLOOKUP es HA/IF csak az alkalmazasban beirt session-only overlay-
+  kepletekre ervenyes. A workbook eredeti kepletei valtozatlanul a mentett/cache-
+  elt erteket hasznaljak; az XLSX read-only, nincs visszairas vagy automatikus
+  XLSX-visszamentes.
+- Manualis ellenorzesnel nagy workbookkal ellenorizendo az Excel-fejlec, formula
+  bar, `FKERES`/`VLOOKUP`, `HA`/`IF`, azonnali dependency-frissules,
+  Enter/Escape/reset, munkalapvaltas, kereses/szures/rendezes/lapozas,
+  automatikus fajlvisszatoltes, valtozatlan fajl hash/mtime/meret es a PDF modul.
 
 ### Izolalt HyperFormula PoC
 
@@ -433,8 +461,11 @@ Stabil és működő állapotnak tekinthető:
 - Read-only XLSX Tallózás és automatikus utolsófájl-visszatöltés, magyar DataGrid, több worksheet, egyszeri workbook parse, munkalapválasztás és state reset.
 - XLSX globális/oszlopszűrés, rendezés, oszlopkezelés, scroll, pagination és virtualization.
 - XLSX mentett formulaeredmények egyszeri feloldása és stabil sorértékek lapozás közben.
+- Excel-szeru eredeti sor- es oszlopazonositok, stabil A1-cimzes a formula barban
+  es az overlay-ben rendezes, szures, lapozas es worksheet-valtas kozben.
 - Session-only Spreadsheet Formula Layer, formula bar, biztonsagos sajat evaluator
-  es dependency-alapu overlay-ujraszamitas az eredeti XLSX modositasa nelkul.
+  magyar/angol lookup es felteteles kepletekkel, valamint dependency-alapu
+  overlay-ujraszamitassal az eredeti XLSX modositasa nelkul.
 - 13 025 fájlos valós indexelési validáció.
 
 ## Recommended next steps
