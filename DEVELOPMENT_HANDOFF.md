@@ -16,9 +16,9 @@ Mindkét modul meglévő működését változatlanul kell megőrizni, kivéve, 
 - Repository neve: `StartAgro-SA-ServiceDocs`
 - GitHub: https://github.com/vviktorgraphic/StartAgro-SA-ServiceDocs
 - Alapértelmezett ág: `main`
-- Alkalmazásverzió: `0.2.0` (`package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`)
-- Legutóbbi release tag: `v0.2.0`
-- Dokumentált release: `StartAgro Service Documents v0.2.0`
+- Alkalmazásverzió: `0.3.0` (`package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json`)
+- Legutóbbi release tag: `v0.3.0`
+- Dokumentált release: `StartAgro Service Documents v0.3.0`
 
 A GitHub `main` ág az egyetlen igazságforrás. A lokális munkakönyvtár tartalmazhat nem commitolt tesztadatokat, ezért munka előtt mindig ellenőrizni kell a státuszt és meg kell őrizni a felhasználó idegen módosításait.
 
@@ -413,7 +413,7 @@ npm.cmd run release:build
 Artifactok:
 
 - Natív executable: `src-tauri/target/release/startagro-servicedocs.exe`
-- Tauri NSIS bundle: `src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.2.0_x64-setup.exe`
+- Tauri NSIS bundle: `src-tauri/target/release/bundle/nsis/StartAgro ServiceDocs_0.3.0_x64-setup.exe`
 - Másolt elsődleges installer: `install/StartAgro-ServiceDocs-Setup.exe`
 
 Az `install/`, `dist/` és `src-tauri/target/` generált/ignored output. Az alkalmazás és installer végleges ikonforrása a repository gyökerében lévő `start_agro_docs_icon.png`; a generált Tauri ikonok a `src-tauri/icons/` mappában vannak.
@@ -477,6 +477,9 @@ Stabil és működő állapotnak tekinthető:
 - Session-only Spreadsheet Formula Layer, formula bar, biztonsagos sajat evaluator
   magyar/angol lookup es felteteles kepletekkel, valamint dependency-alapu
   overlay-ujraszamitassal az eredeti XLSX modositasa nelkul.
+- StartAgro Service Documents v0.3.0 release a teljes workbook-overlayt törlő
+  **Módosítások törlése** művelettel; nincs overlay persistence, automatikus
+  mentés vagy visszatöltés, az eredeti XLSX mindig változatlan marad.
 - 13 025 fájlos valós indexelési validáció.
 
 ## Recommended next steps
@@ -488,7 +491,7 @@ A `ROADMAP.md` meglévő nyitott irányaihoz és reális validációs feladatokh
 3. Szerver-/hálózatimegosztás-teszt, különösen SQLite locking és több kliens esetén.
 4. A későbbi backlog portable storage feladata: implementáció és migrációs döntés, ha üzleti igény megerősíti.
 5. Későbbi 50 000 fájlos indexelési validáció.
-6. A `v0.2.0` release utáni változások következő kiadásának előkészítése.
+6. A `v0.3.0` release utáni változások következő kiadásának előkészítése.
 7. Később automatizált tesztek hozzáadása, ha a fenntartási érték indokolja.
 
 Ezek nem jelentenek új, a `ROADMAP.md`-tól független sprintet.

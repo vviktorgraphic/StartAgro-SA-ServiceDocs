@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.3.0 – Spreadsheet Formula Layer
+
+- Megjelent a session-only Spreadsheet Formula Layer: a formula barban megadott
+  cellaértékek és képletek külön memória-overlayben élnek, az eredeti XLSX fájl
+  minden esetben read-only és változatlan marad.
+- Támogatott overlay-függvények: `SUM`/`SZUM`, `MIN`, `MAX`,
+  `ROUND`/`KEREKÍTÉS`, `COUNT`/`DARAB`, `FKERES`/`VLOOKUP` és `HA`/`IF`,
+  valamint az alapműveletek, cellahivatkozások és véges tartományok.
+- A dependency graph az érintett overlay-képleteket automatikusan újraszámolja;
+  az Excel-szerű oszlopbetűk és eredeti sorszámok rendezés, szűrés, lapozás és
+  munkalapváltás közben is stabil cellacímet adnak.
+- A **Módosítások törlése** művelet megerősítés után a teljes workbook minden
+  worksheetjének aktuális érték- és képlet-overlayét, hibáit és dependency
+  kapcsolatait törli, majd visszaállítja az eredeti cache-elt cellaértékeket.
+- Az eredeti XLSX-képletek nem számolódnak újra: a workbook mentett/cache-elt
+  eredménye jelenik meg. Nincs XLSX-visszaírás, overlay persistence, automatikus
+  overlay-mentés vagy alkalmazásindításkori overlay-visszatöltés.
+
 ## Session-only workbook overlay reset
 
 - A Spreadsheet Formula Layer overlaye továbbra is kizárólag az aktuális

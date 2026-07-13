@@ -591,6 +591,25 @@ Az XLSX teljesen read-only marad; nincs verzióemelés, tag vagy release
 
 ---
 
+## Done StartAgro Service Documents v0.3.0 release
+
+A session-only Spreadsheet Formula Layer, formula bar és cella-overlay kiadása
+
+`SUM`/`SZUM`, `MIN`, `MAX`, `ROUND`/`KEREKÍTÉS`, `COUNT`/`DARAB`,
+`FKERES`/`VLOOKUP` és `HA`/`IF` overlay-képletek
+
+Dependency-alapú automatikus újraszámítás, Excel-szerű oszlopbetűk és eredeti
+sorszámok
+
+A teljes workbook aktuális overlayét törlő **Módosítások törlése** művelet
+
+Az overlay session-only; nincs persistence, automatikus mentés vagy visszatöltés
+
+Az eredeti XLSX read-only és változatlan; a meglévő képletek mentett/cache-elt
+eredménye jelenik meg
+
+---
+
 ## Nyitott Spreadsheet Formula Layer feladatok
 
 Uj sorok es oszlopok
