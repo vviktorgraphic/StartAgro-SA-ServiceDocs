@@ -1,5 +1,34 @@
 # Changelog
 
+## Formula engine proof of concept
+
+- Production kodtol izolalt, kulon `npm.cmd run poc:formulas` paranccsal futtathato
+  HyperFormula 3.3.0 PoC keszult egy kis mesterseges XLSX fixture-rel es egy
+  memoriaban elo nagyobb szintetikus workbookkal.
+- A SheetJS workbookonkent egyszer parse-ol, megorzi az eredeti munkalapsorrendet,
+  a HyperFormula engine pedig workbookonkent egyszer epul fel; az eredmenyek
+  egyszer kerulnek stabil, read-only osszehasonlito jelentésbe.
+- Validalt kepletek es adatok: `SUM`, `VLOOKUP`, `IF`, `COUNT`, `SUMIF`, azonos es
+  masik munkalapos hivatkozas, relativ es abszolut referencia, szoveg, szam es ures
+  cella.
+- A kis fixture 11 kepletes cellajabol 9 tamogatott eredmeny egyezett, 1
+  szandekosan elavult cache erteke eltert (`31` helyett `30`), 1 ismeretlen
+  fuggveny pedig izolalt `#NAME?` hibakent jelent meg a futas leallitasa nelkul.
+- A 5000 soros, ket munkalapos, 5000 kepletes, kb. 360.5 KiB-os szintetikus
+  workbook merese: SheetJS parse 103.4 ms, engine build 93.5 ms, egyszeri
+  eredmenykiolvasas 12.0 ms, teljes futas 219.3 ms. Ezek tajekoztato, egyetlen
+  helyi futasbol szarmazo ertekek, nem production teljesitmenygaranciak.
+- A belso XLSX formulak a fixture visszaolvasasakor angol fuggvenynevekkel jelentek
+  meg. A `VLOOKUP(...,FALSE)` csupasz literalt a motor nem fogadta el, a
+  `VLOOKUP(...,0)` exact-match alak helyesen szamolodott; valos workbookokra
+  kompatibilitasi lista szukseges.
+- HyperFormula licence `GPL-3.0-only`, GPLv3 vagy proprietary felhasznalasi
+  lehetoseggel. A PoC dependency nem jelent production licencjovahagyast;
+  production integracio elott uzleti/jogi dontes szukseges.
+- A production `XlsxTableService`, `WorkOrderTableView`, DataGrid, PDF-indexeles es
+  SQLite mukodes nem valtozott; a production XLSX modul tovabbra is a mentett
+  cache-ertekeket hasznalja.
+
 ## v0.2.0 – Last XLSX workbook restore
 
 - Az alkalmazas csak sikeres fajlolvasas es workbook-parse utan jegyzi meg a Tallozassal megnyitott XLSX teljes utvonalat.

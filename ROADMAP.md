@@ -464,6 +464,42 @@ Build ellenorzes: npm.cmd run build, npm.cmd run tauri build es npm.cmd run rele
 
 ---
 
+## Done Formula engine proof of concept
+
+Production kodtol izolalt HyperFormula 3.3.0 proof of concept
+
+Ket munkalapos, mesterseges XLSX fixture cache-elt es ujraszamolt
+formulaeredmenyeinek cellankenti osszehasonlitasa
+
+SUM, VLOOKUP, IF, COUNT, SUMIF, azonos es masik munkalapos, relativ es abszolut
+hivatkozas validalasa
+
+Nem tamogatott formula cellaszintu hibakezelese es szandekosan elavult cache
+elteresjelzese
+
+5000 soros, ket munkalapos, 5000 kepletes egyszeri betoltesi teljesitmenymeres
+
+Build ellenorzes: `npm.cmd run poc:formulas`, `npm.cmd run build` es
+`npm.cmd run tauri build`
+
+---
+
+## Nyitott formula engine production dontes
+
+A production integracio nincs eldontve es nincs implementalva
+
+HyperFormula production integracios terv
+
+GPLv3 vagy proprietary licenc uzleti/jogi jovahagyasa
+
+Tamogatott Excel fuggveny- es szintaxislista
+
+Explicit, lathato cache fallback strategia hibas vagy nem tamogatott kepletre
+
+Elfogadhato workbook meret-, cella-, formula- es betoltesi teljesitmenyhatarok
+
+---
+
 ## Nyitott feladatok – kozeljovo
 
 ### Sprint 027 – ImageRepository

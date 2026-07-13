@@ -235,6 +235,36 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
 - Ha a formula cache hiányzik, a cella biztonságosan üres marad.
 - Ha a cache elavult, a munkafüzetet import előtt Excelben újra kell számolni és el kell menteni.
 
+### Izolalt HyperFormula PoC
+
+- Helye: `src/poc/formula/FormulaEnginePoc.mjs`; dokumentacio es licencjegyzet:
+  `src/poc/formula/README.md`; kicsi, mesterseges fixture:
+  `src/poc/formula/fixtures/formula-engine-poc.xlsx`.
+- Futtatas: `npm.cmd run poc:formulas`.
+- A PoC SheetJS-szel workbookonkent egyszer parse-ol, az eredeti lapsorrendet
+  megtartja, a kepleteket es a nyers ertekeket egyetlen HyperFormula engine-be
+  tolti, majd minden formulaeredmenyt egyszer olvas ki. Nincs kapcsolata a
+  production UI-val, lapozassal, rendezessel vagy szuressel.
+- A kis fixture `SUM`, `VLOOKUP`, `IF`, `COUNT`, `SUMIF`, azonos/masik munkalapos,
+  relativ/abszolut referenciat, szoveges/numerikus/ures cellat validal. Kilenc
+  tamogatott eredmeny egyezett, egy szandekosan elavult cache elterest jelzett,
+  egy ismeretlen fuggveny cellaszintu `#NAME?` hibat adott a futas leallitasa
+  nelkul.
+- A 2026-07-13-i helyi meresben az 5000 soros, ketlapos, 5000 kepletes, kb.
+  360.5 KiB-os szintetikus workbook SheetJS parse ideje 103.4 ms, engine build
+  ideje 93.5 ms, egyszeri eredmenykiolvasasa 12.0 ms, teljes ideje 219.3 ms volt.
+  Ez iranymutato PoC adat, nem teljesitmenygarancia.
+- A fixture SheetJS-szel visszaolvasott belso formula-fuggvenynevei angolok. A
+  `VLOOKUP(...,FALSE)` es `VLOOKUP(...,0)` alakok kozott HyperFormula
+  kompatibilitasi elteres mutatkozott; production elott valos magyar Excel
+  workbookokkal fuggveny- es szintaxislistat kell kesziteni.
+- HyperFormula 3.3.0 licence `GPL-3.0-only`; GPLv3 vagy proprietary konstrukcio
+  valaszthato. A PoC `gpl-v3` kulcsa nem production licencjovahagyas.
+- Production elotti nyitott dontesek: uzleti/jogi licencjovahagyas, integracios
+  architektura, tamogatott fuggvenyek, explicit es lathato cache fallback,
+  workbook meret-/formula-/ido-hatarok. A production XLSX modul valtozatlanul a
+  mentett cache-erteket jeleniti meg.
+
 ## SQLite and storage
 
 ### Jelenlegi állapot
