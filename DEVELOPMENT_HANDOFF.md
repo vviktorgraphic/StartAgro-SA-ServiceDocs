@@ -258,6 +258,13 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
   ezert a kijeloles es a visszaallitas rendezett vagy szurt nezetben is stabil.
 - A formula bar Enterrel commitol, Escape-pel visszaallitja a meg nem commitolt
   inputot, az **Eredeti ertek** gomb pedig torli az adott override-ot.
+- A felső eszköztár **Módosítások törlése** gombja csak létező session-only
+  override esetén aktív. Megerősítés után a teljes workbook minden worksheetjének
+  érték- és képlet-overlayét, dependency graphját és overlay-hibáját üríti; a
+  kijelölt cella formula barja az eredeti inputra áll vissza.
+- A teljes törlés után a DataGrid az eredeti XLSX mentett/cache-elt értékeit
+  mutatja, és az overlay-alapú keresés, szűrés, rendezés és látható sorok azonnal
+  frissülnek. Megszakított megerősítés nem változtat semmit.
 - Tamogatott sajat overlay-kepletek: `SUM`/`SZUM`, `MIN`, `MAX`,
   `ROUND`/`KEREKÍTÉS`, `COUNT`/`DARAB`, `FKERES`/`VLOOKUP`, `HA`/`IF`,
   `+ - * /`, zarojelek, szoveg, logikai literal, illetve azonos munkalapos
@@ -294,6 +301,9 @@ Munkalapváltáskor alaphelyzetbe kerül a globális keresés, minden oszlopszű
   kepletekre ervenyes. A workbook eredeti kepletei valtozatlanul a mentett/cache-
   elt erteket hasznaljak; az XLSX read-only, nincs visszairas vagy automatikus
   XLSX-visszamentes.
+- Az overlay kizárólag az aktuális alkalmazás-munkamenetben él. Nincs overlay
+  fájl, Tauri app-data tárolás, hash-alapú overlay-azonosítás, automatikus mentés,
+  bezáráskori flush vagy alkalmazásindításkori overlay-visszatöltés.
 - Manualis ellenorzesnel nagy workbookkal ellenorizendo az Excel-fejlec, formula
   bar, `FKERES`/`VLOOKUP`, `HA`/`IF`, azonnali dependency-frissules,
   Enter/Escape/reset, munkalapvaltas, kereses/szures/rendezes/lapozas,
@@ -420,8 +430,9 @@ Az NSIS hook verziózott `StartAgro-ServiceDocs-icon-v2.ico` fájlt telepít és
 - Windows desktop shortcut ikoncache probléma még előfordulhat.
 - A `package.json` nem tartalmaz `test` scriptet; a projekt jelenleg valós fájlokkal, manuálisan és builddel validál.
 - A workbookban meglevo XLSX-formulak ujraszamitasa nincs; a mentett cache hasznalatos.
-- A Spreadsheet Formula Layer overlay session-only; nincs perzisztencia,
-  undo/redo, uj sor/oszlop, worksheet-kozi formula vagy overlay export.
+- A Spreadsheet Formula Layer overlay session-only; nincs automatikus mentés vagy
+  visszatöltés, perzisztencia, undo/redo, uj sor/oszlop, worksheet-kozi formula
+  vagy overlay export.
 - A Rust scanner jelenleg csak a kiválasztott mappa közvetlen fájljait vizsgálja, almappákat nem.
 - A régebbi `docs/` roadmap/specification fájlok történeti dokumentumok és több ponton elavultak; az aktuális root dokumentumok és a forráskód az irányadók.
 

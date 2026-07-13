@@ -5,6 +5,11 @@ import * as XLSX from "xlsx";
 import { createServer } from "vite";
 
 import { SpreadsheetFormulaService } from "./SpreadsheetFormulaService.ts";
+import {
+    clearSessionSpreadsheetOverrides,
+    hasSessionSpreadsheetOverrides,
+    resolveSessionFormulaInput
+} from "./SpreadsheetOverlaySessionService.ts";
 import { getExcelColumnCode } from "../utils/ExcelCoordinates.ts";
 
 assert.deepEqual(
@@ -329,6 +334,57 @@ assert.match(
     /nem keverhetők/i
 );
 
+const resetOriginals = [
+    ["Első", "A1", 2],
+    ["Első", "A2", 3],
+    ["Első", "D1", 1],
+    ["Első", "E1", "egy"],
+    ["Első", "D2", 2],
+    ["Első", "E2", "kettő"],
+    ["Második", "A1", 4]
+].map(([worksheetName, cellAddress, value]) => ({
+    worksheetName,
+    cellAddress,
+    value
+}));
+
+const resetService = new SpreadsheetFormulaService(resetOriginals);
+
+assert.equal(hasSessionSpreadsheetOverrides(resetService), false);
+
+resetService.setCellInput("Első", "A1", "2,0");
+resetService.setCellInput("Első", "B1", "=SUM(A1:A2)");
+resetService.setCellInput("Első", "C1", "=FKERES(A1;D1:E2;2;0)");
+resetService.setCellInput("Első", "F1", '=HA(B1=5;"igen";"nem")');
+resetService.setCellInput("Második", "B1", "=A1*2");
+
+assert.equal(hasSessionSpreadsheetOverrides(resetService), true);
+assert.equal(
+    resolveSessionFormulaInput(resetService, "Első", "A1", "2"),
+    "2,0"
+);
+assert.equal(clearSessionSpreadsheetOverrides(resetService, false), false);
+assert.equal(resetService.getOverride("Első", "A1").calculatedValue, 2);
+assert.equal(resetService.getOverride("Első", "B1").calculatedValue, 5);
+assert.equal(resetService.getOverride("Első", "C1").calculatedValue, "kettő");
+assert.equal(resetService.getOverride("Első", "F1").calculatedValue, "igen");
+assert.equal(resetService.getOverride("Második", "B1").calculatedValue, 8);
+
+assert.equal(clearSessionSpreadsheetOverrides(resetService, true), true);
+assert.equal(hasSessionSpreadsheetOverrides(resetService), false);
+assert.equal(resetService.getOverridesForWorksheet("Első").length, 0);
+assert.equal(resetService.getOverridesForWorksheet("Második").length, 0);
+assert.equal(
+    resolveSessionFormulaInput(resetService, "Első", "A1", "2"),
+    "2"
+);
+
+resetService.setCellInput("Első", "A1", "9");
+assert.equal(resetService.getOverride("Első", "B1"), undefined);
+assert.equal(resetService.getOverride("Első", "F1"), undefined);
+resetService.resetCell("Első", "A1");
+assert.equal(hasSessionSpreadsheetOverrides(resetService), false);
+
 const vite = await createServer({
     appType: "custom",
     logLevel: "silent",
@@ -445,6 +501,16 @@ try {
         ).calculatedValue,
         20
     );
+
+    parsedFormulaService.clearOverrides();
+    assert.equal(
+        parsedFormulaService.getOverride(
+            "Nagy",
+            selectedAfterSortAndFilter.cellAddress
+        ),
+        undefined
+    );
+    assert.equal(formulaCell.displayValue, "999");
 
     assert.equal(parsed.worksheets[1].headerRowNumber, 5);
     assert.equal(parsed.worksheets[1].rows[0].excelRowNumber, 6);

@@ -570,9 +570,28 @@ verzioemeles vagy release
 
 ---
 
-## Nyitott Spreadsheet Formula Layer feladatok
+## Done Session-only workbook overlay reset
 
-Overlay perzisztencia kulon alkalmazasadatkent
+A teljes workbook minden worksheetjére kiterjedő **Módosítások törlése** gomb
+
+Csak létező session-only override esetén aktív gombállapot
+
+Megerősítés megszakításakor változatlan overlay; jóváhagyáskor minden érték,
+képlet, dependency-kapcsolat és overlay-hiba törlése
+
+Kijelölt cella formula barjának és minden DataGrid-cellának visszaállítása az
+eredeti XLSX inputjára, illetve mentett/cache-elt értékére
+
+Keresés, szűrés, rendezés, lapozás, munkalapváltás és virtualizáció megtartva
+
+Az overlay kizárólag az aktuális alkalmazás-munkamenetben él; nincs automatikus
+mentés vagy visszatöltés, overlay fájl, app-data tárolás vagy hash-azonosítás
+
+Az XLSX teljesen read-only marad; nincs verzióemelés, tag vagy release
+
+---
+
+## Nyitott Spreadsheet Formula Layer feladatok
 
 Uj sorok es oszlopok
 

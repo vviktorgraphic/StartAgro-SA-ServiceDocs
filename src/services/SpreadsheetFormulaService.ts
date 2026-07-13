@@ -556,6 +556,21 @@ export class SpreadsheetFormulaService {
 
     }
 
+    public clearOverrides() {
+
+        this.overrides.clear();
+        this.compiled.clear();
+        this.dependencies.clear();
+        this.reverseDependencies.clear();
+
+    }
+
+    public hasOverrides(): boolean {
+
+        return this.overrides.size > 0;
+
+    }
+
     private recalculate(
         affected: Set<string>
     ) {

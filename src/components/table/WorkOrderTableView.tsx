@@ -8,6 +8,10 @@ import {
     Button,
     Checkbox,
     CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     FormControl,
     InputLabel,
     ListItemText,
@@ -35,6 +39,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { XlsxTableColumn, XlsxTableRow, XlsxWorkbookData } from "../../models/XlsxTable";
 import { dialogService } from "../../services/DialogService";
 import { SpreadsheetFormulaService } from "../../services/SpreadsheetFormulaService";
+import {
+    clearSessionSpreadsheetOverrides,
+    hasSessionSpreadsheetOverrides,
+    resolveSessionFormulaInput
+} from "../../services/SpreadsheetOverlaySessionService";
 import { xlsxTableService } from "../../services/XlsxTableService";
 import { tauriService } from "../../tauri/TauriService";
 
@@ -161,6 +170,9 @@ export default function WorkOrderTableView() {
 
     const [overlayRevision, setOverlayRevision] =
         useState(0);
+
+    const [isClearChangesOpen, setIsClearChangesOpen] =
+        useState(false);
 
     const tableData =
         workbookData?.worksheets[activeWorksheetIndex] ?? null;
@@ -458,11 +470,12 @@ export default function WorkOrderTableView() {
 
         setActiveCell(selection);
         setFormulaInput(
-            spreadsheetFormulaService.current?.getOverride(
+            resolveSessionFormulaInput(
+                spreadsheetFormulaService.current,
                 selection.worksheetName,
-                selection.cellAddress
-            )?.input
-            ?? cell.originalInput
+                selection.cellAddress,
+                cell.originalInput
+            )
         );
 
     }
@@ -539,6 +552,28 @@ export default function WorkOrderTableView() {
 
     }
 
+    function clearWorkbookChanges(
+        confirmed: boolean
+    ) {
+
+        setIsClearChangesOpen(false);
+
+        if (!clearSessionSpreadsheetOverrides(
+            spreadsheetFormulaService.current,
+            confirmed
+        )) {
+            return;
+        }
+
+        if (activeCell && tableData) {
+            const originalCell = findCell(tableData.rows, activeCell);
+            setFormulaInput(originalCell?.originalInput ?? "");
+        }
+
+        setOverlayRevision(current => current + 1);
+
+    }
+
     const hasFilters =
         globalSearch.length > 0
         || Object.keys(filters).length > 0;
@@ -550,6 +585,11 @@ export default function WorkOrderTableView() {
                 activeCell.cellAddress
             )
             : undefined;
+
+    const hasWorkbookChanges =
+        hasSessionSpreadsheetOverrides(
+            spreadsheetFormulaService.current
+        );
 
     return (
 
@@ -687,6 +727,15 @@ export default function WorkOrderTableView() {
                     disabled={isLoading}
                 >
                     Tallózás
+                </Button>
+
+                <Button
+                    variant="outlined"
+                    startIcon={<ClearAllIcon />}
+                    disabled={!hasWorkbookChanges || isLoading}
+                    onClick={() => setIsClearChangesOpen(true)}
+                >
+                    Módosítások törlése
                 </Button>
 
             </Toolbar>
@@ -943,6 +992,31 @@ export default function WorkOrderTableView() {
                 )}
 
             </Popover>
+
+            <Dialog
+                open={isClearChangesOpen}
+                onClose={() => clearWorkbookChanges(false)}
+            >
+                <DialogTitle>Módosítások törlése</DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        Minden aktuális cellamódosítás és overlay-képlet elveszik.
+                        Biztosan folytatja?
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => clearWorkbookChanges(false)}>
+                        Mégse
+                    </Button>
+                    <Button
+                        color="error"
+                        variant="contained"
+                        onClick={() => clearWorkbookChanges(true)}
+                    >
+                        Módosítások törlése
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
         </Box>
 

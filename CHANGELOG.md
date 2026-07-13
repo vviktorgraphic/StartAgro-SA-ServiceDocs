@@ -1,5 +1,25 @@
 # Changelog
 
+## Session-only workbook overlay reset
+
+- A Spreadsheet Formula Layer overlaye továbbra is kizárólag az aktuális
+  alkalmazás-munkamenetben él; nincs automatikus mentés, visszatöltés, overlay
+  fájl, Tauri app-data tárolás vagy hash-alapú azonosítás.
+- A Munkalapok táblázat eszköztár új **Módosítások törlése** gombja csak akkor
+  aktív, ha a workbook legalább egy worksheetjén van érték- vagy képlet-overlay.
+- Rövid megerősítés után a művelet a teljes workbook minden worksheetjének
+  override-ját, fordított dependency-kapcsolatát és overlay-hibáját üríti.
+- A kijelölt cella formula barja és a DataGrid minden cellája az eredeti XLSX
+  inputjára, illetve mentett/cache-elt megjelenítési értékére áll vissza; a
+  keresés, szűrés, rendezés, lapozás és virtualizáció változatlanul működik.
+- Megszakított megerősítés nem módosítja az overlayt. A törlés kizárólag memóriát
+  érint, az eredeti XLSX fájlhoz semmilyen írás nem történik.
+- Automatikus teszt fedi az üres/aktív gombállapot alapját, a megszakított és
+  jóváhagyott teljes törlést, több worksheetet, érték-, SUM-, FKERES- és HA-
+  overlayt, dependency-ürítést, formula bar visszaállítást és a 100 002 cellás
+  cache-regressziót.
+- Nem készült verzióemelés, tag vagy release.
+
 ## Excel-style row and column headers and overlay lookup formulas
 
 - A Munkalapok tablazat bal oldali, fix es read-only sorazonositoja az eredeti
